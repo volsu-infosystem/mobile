@@ -19,7 +19,7 @@ class DanielApi {
   static DanielApi get instance => _instance; // Singleton
   static Dio _dio;
 
-  Future<dynamic> requestPassCode(String email) async {
+  Future<Response<dynamic>> requestPassCode(String email) async {
     const url = "/auth/request";
     Response<dynamic> response;
     try {
@@ -34,7 +34,7 @@ class DanielApi {
       if (e.response != null) {
         // statusCode != 2xx && != 304
         // Обработка таких ошибок на стороне бизнес-логики
-        return response;
+        return e.response;
       } else {
         // Проблемы с соединением. Ответа от сервера не пришло.
         throw ConnectionFailure(e.message, e);

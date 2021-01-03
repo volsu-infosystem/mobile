@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
@@ -30,24 +31,34 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> requestPassCodeForEmail(String email) async {
-    print("requestPassCodeForEmail");
-    if (email == "mosb-192_962941@volsu.ru") {
-      return;
+    print("ed__ requestPassCodeForEmail");
+    Response<dynamic> response;
+    try {
+      response = await DanielApi.instance.requestPassCode(email);
+
+      if (response.statusCode >= 400) {
+        print("ed__ EmailIsNotInWhiteList ${response.statusCode}");
+        throw EmailIsNotInWhiteList("email");
+      }
+    } on ConnectionFailure catch (e) {
+      print("ed__ ConnectionFailure");
+      throw ConnectionFailure("");
     }
-    throw EmailIsNotInWhiteList("");
-    // TODO: Обращение к серверу
-    return DanielApi.instance.requestPassCode(_email);
   }
 
   Future<void> authWithCode(String email, String code) async {
-    await Future.delayed(Duration(seconds: 1));
+    print("ed__ authWithCode");
+    await Future.delayed(Duration(milliseconds: 1500));
+    // TODO: Обращение к серверу
     if (code == "123456") {
+      print("ed__ Token is correct");
+      // TODO: Сохранение токена в sharedPreferences
       _token = "x";
       _email = email;
       notifyListeners();
       return;
     }
+    print("ed__ InvalidPassCode");
     throw InvalidPassCode("");
-    // TODO: Обращение к серверу
   }
 }

@@ -83,9 +83,9 @@ class _AuthController extends State<AuthScreen> {
         setState(() {
           _authStep = AuthStep.inputCode;
         });
-      } catch (e) {
+      } on InvalidPassCode catch (e) {
         setState(() {
-          errorMsg = e.toString();
+          errorMsg = "Неверный код";
         });
       }
     }
@@ -94,7 +94,7 @@ class _AuthController extends State<AuthScreen> {
 
   String _validateEmail(String value) {
     if (!value.contains("@")) {
-      return "Введите адрес эл. почты";
+      return "Введи адрес эл. почты";
     }
     if (!value.endsWith("@volsu.ru")) {
       return "Почта должна быть на домене @volsu.ru";
@@ -103,9 +103,6 @@ class _AuthController extends State<AuthScreen> {
   }
 
   String _validatePassCode(String value) {
-    if (value.length != 6) {
-      return "Код неверный";
-    }
     return null;
   }
 }
