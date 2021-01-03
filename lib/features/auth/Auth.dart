@@ -127,9 +127,6 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("AuthScreen"),
-      ),
       body: body,
     );
   }

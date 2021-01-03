@@ -48,17 +48,29 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> authWithCode(String email, String code) async {
     print("ed__ authWithCode");
-    await Future.delayed(Duration(milliseconds: 1500));
-    // TODO: Обращение к серверу
-    if (code == "123456") {
-      print("ed__ Token is correct");
-      // TODO: Сохранение токена в sharedPreferences
-      _token = "x";
-      _email = email;
-      notifyListeners();
-      return;
+    Response<dynamic> response;
+    try {
+      response = await DanielApi.instance.authWithCode(email, code);
+
+      if (response.statusCode >= 400) {
+        throw InvalidPassCode("");
+      }
+    } on ConnectionFailure catch (e) {
+      throw ConnectionFailure("");
     }
-    print("ed__ InvalidPassCode");
-    throw InvalidPassCode("");
+
+    // OLD
+    // await Future.delayed(Duration(milliseconds: 1500));
+    // // TODO: Обращение к серверу
+    // if (code == "123456") {
+    //   print("ed__ Token is correct");
+    //   // TODO: Сохранение токена в sharedPreferences
+    //   _token = "x";
+    //   _email = email;
+    //   notifyListeners();
+    //   return;
+    // }
+    // print("ed__ InvalidPassCode");
+    // throw InvalidPassCode("");
   }
 }

@@ -15,8 +15,10 @@ class DanielApi {
       requestBody: true,
     ));
   }
+
   static final _instance = DanielApi._();
   static DanielApi get instance => _instance; // Singleton
+
   static Dio _dio;
 
   Future<Response<dynamic>> requestPassCode(String email) async {
@@ -39,6 +41,26 @@ class DanielApi {
         // Проблемы с соединением. Ответа от сервера не пришло.
         throw ConnectionFailure(e.message, e);
       }
+    }
+  }
+
+  Future<Response<dynamic>> authWithCode(String email, String passCode) async {
+    const url = "auth/login";
+    Response<dynamic> response;
+    try {
+      response = await _dio.post(
+        url,
+        data: {
+          "email": email,
+          "pass": passCode,
+        },
+      );
+      return response;
+    } on DioError catch (e) {
+      if (e.response != null)
+        return e.response;
+      else
+        throw ConnectionFailure(e.message, e);
     }
   }
 }
