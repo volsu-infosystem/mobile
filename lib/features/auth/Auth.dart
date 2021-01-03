@@ -5,6 +5,8 @@ import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
 import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
 import 'package:volsu_app_v1/network/DanielApi.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
+import 'package:volsu_app_v1/themes/styles.dart';
+import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -121,9 +123,9 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
     Widget body;
 
     if (state._authStep == AuthStep.inputEmail) {
-      body = _buildBodyEmail();
+      body = _buildBodyEmail(context);
     } else {
-      body = _buildBodyCode();
+      body = _buildBodyCode(context);
     }
 
     return Scaffold(
@@ -143,24 +145,26 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
           );
   }
 
-  Widget _buildBodyEmail() {
+  Widget _buildBodyEmail(BuildContext context) {
+    final theme = Provider.of<AppTheme>(context, listen: false);
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 45),
+      padding: EdgeInsets.symmetric(horizontal: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 44),
+          SizedBox(height: 70),
           Text(
             "Привет, студент!",
             textAlign: TextAlign.center,
+            style: AppTextStyles.h1,
           ),
-          SizedBox(height: 54),
+          SizedBox(height: 40),
           Text(
-            "Введи свою почту на домене @volsu.ru,\nчтобы авторизоваться",
+            "Введи свою почту на домене\n@volsu.ru, чтобы авторизоваться",
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 14),
+          SizedBox(height: 20),
           Form(
             key: state._formEmailKey,
             child: TextFormField(
@@ -168,26 +172,49 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
               keyboardType: TextInputType.emailAddress,
               onSaved: (value) => state._email = value,
               validator: state._validateEmail,
+              style: AppTextStyles.largeInput,
+              cursorWidth: 1.2,
+              cursorColor: theme.colors.primary,
+              textAlign: TextAlign.center,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                border: OutlineInputBorder(
+                  gapPadding: 0,
+                  borderSide: BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
           ),
           _buildErrorMessage(),
-          SizedBox(height: 14),
-          state.isEmailFormLoading
-              ? Container(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : RaisedButton(
-                  onPressed: state._handleEmailEntered,
-                  child: Text("Далее"),
-                )
+          SizedBox(height: 44),
+          Container(
+            child: state.isEmailFormLoading
+                ? Container(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Container(
+                    height: 50,
+                    width: 200,
+                    child: RaisedButton(
+                      onPressed: state._handleEmailEntered,
+                      child: Text("Далее"),
+                      color: theme.colors.primary,
+                      textColor: theme.colors.foregroundOnPrimary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildBodyCode() {
+  Widget _buildBodyCode(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 45),

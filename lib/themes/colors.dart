@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Шаблон для определния всех цветов в приложении
-abstract class AppColorStyle {
+abstract class AppAppearanceGenerator {
   MaterialColor materialColor(int hex) {
     return MaterialColor(hex, {
       50: Color(hex).withOpacity(0.1),
@@ -17,36 +17,47 @@ abstract class AppColorStyle {
     });
   }
 
-  AppColors get colors;
+  AppAppearance get colors;
 }
 
-class AppColors {
+class AppAppearance {
   MaterialColor background;
   MaterialColor foreground;
+  MaterialColor foregroundOnPrimary;
 
   MaterialColor primary;
+  MaterialColor error;
 
-  AppColors({
+  MaterialColor inputBorders;
+
+  AppAppearance({
     this.background,
     this.foreground,
     this.primary,
+    this.error,
+    this.inputBorders,
+    this.foregroundOnPrimary,
   });
 }
 
-class LightColorStyle extends AppColorStyle {
+class LightAppAppearance extends AppAppearanceGenerator {
   @override
-  AppColors get colors => AppColors(
+  AppAppearance get colors => AppAppearance(
         primary: materialColor(0xff2B82D8),
         background: materialColor(0xffffffff),
         foreground: materialColor(0xff000000),
+        error: materialColor(0xffff0000),
+        inputBorders: materialColor(0xffEEEEEE),
+        foregroundOnPrimary: materialColor(0xffffffff),
       );
 }
 
-class DarkColorStyle extends AppColorStyle {
-  @override
-  AppColors get colors => AppColors(
-        primary: materialColor(0xff2B82D8),
-        background: materialColor(0xff333333),
-        foreground: materialColor(0xffffffff),
-      );
-}
+// class DarkAppAppearance extends AppAppearanceGenerator {
+//   @override
+//   AppAppearance get colors => AppAppearance(
+//         primary: materialColor(0xff2B82D8),
+//         background: materialColor(0xff333333),
+//         foreground: materialColor(0xffffffff),
+//         error: materialColor(0xffff0000),
+//       );
+// }

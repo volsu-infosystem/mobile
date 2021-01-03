@@ -12,7 +12,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => AuthProvider()),
-        ChangeNotifierProvider(create: (ctx) => AppTheme()),
+        ChangeNotifierProvider(create: (ctx) => AppTheme(ctx)),
       ],
       child: MyApp(),
     ),
@@ -22,11 +22,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("main rebuild");
     final auth = context.watch<AuthProvider>();
-    final theme = Provider.of<AppTheme>(context);
+    final appTheme = Provider.of<AppTheme>(context);
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: AppTheme.theme,
+      theme: appTheme.theme,
       home: auth.isAuth ? HomeScreen() : AuthScreen(),
     );
   }
