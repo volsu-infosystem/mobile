@@ -1,13 +1,22 @@
 import 'BaseException.dart';
 
-class InvalidPassCode extends BaseException {
-  const InvalidPassCode(String msg) : super("InvalidPassCode: ", msg);
+class NetworkException extends BaseException {
+  const NetworkException(
+    String msg, [
+    Exception previous,
+  ]) : super("NetworkException", msg, previous);
 }
 
-class ServerError extends BaseException {
-  const ServerError(String msg) : super("ServerError: ", msg);
+class ConnectionFailure extends NetworkException {
+  const ConnectionFailure(
+    String msg, [
+    Exception previous,
+  ]) : super(msg, previous);
 }
 
-class EmailNotAllowed extends BaseException {
-  const EmailNotAllowed(String msg) : super("EmailNotAllowed: ", msg);
+class ErrorStatusCode extends NetworkException {
+  const ErrorStatusCode(
+    String msg, [
+    Exception previous,
+  ]) : super(msg, previous);
 }

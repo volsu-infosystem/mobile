@@ -16,33 +16,29 @@ class DanielApi {
     ));
   }
   static final _instance = DanielApi._();
-  static DanielApi get instance => _instance;
-
+  static DanielApi get instance => _instance; // Singleton
   static Dio _dio;
 
   Future<dynamic> requestPassCode(String email) async {
     const url = "/auth/request";
-
+    Response<dynamic> response;
     try {
-      final response = await _dio.post(
+      response = await _dio.post(
         url,
         data: {
           "email": email,
         },
       );
+      return response;
     } on DioError catch (e) {
-      if (e.response.statusCode == 400) {
-        throw EmailNotAllowed("");
+      if (e.response != null) {
+        // statusCode != 2xx && != 304
+        // Обработка таких ошибок на стороне бизнес-логики
+        return response;
+      } else {
+        // Проблемы с соединением. Ответа от сервера не пришло.
+        throw ConnectionFailure(e.message, e);
       }
-      throw ServerError("requestPassCode");
-      // if (e.response != null) {
-      //   // response code is not 2xx and is also not 304.
-      //
-      // } else {
-      //   // Something happened in setting up or sending
-      //   // the request that triggered an Error
-      //   print("ed__ DioError.else catch");
-      // }
     }
   }
 }

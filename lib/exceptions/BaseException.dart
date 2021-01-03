@@ -1,8 +1,14 @@
 class BaseException implements Exception {
-  final String prefix;
+  final String tag;
   final String msg;
-  const BaseException(this.prefix, this.msg);
+  final Exception previous;
+
+  const BaseException(
+    this.tag,
+    this.msg, [
+    this.previous,
+  ]);
 
   @override
-  String toString() => "$prefix$msg";
+  String toString() => "$tag: $msg\n>>>>${previous.toString()}";
 }

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
 import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
 import 'package:volsu_app_v1/network/DanielApi.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
-
-enum AuthStep {
-  inputEmail,
-  inputCode,
-}
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -20,6 +16,11 @@ class AuthScreen extends StatefulWidget {
 *
 * **********************************************
 */
+
+enum AuthStep {
+  inputEmail,
+  inputCode,
+}
 
 class _AuthController extends State<AuthScreen> {
   @override
@@ -37,20 +38,26 @@ class _AuthController extends State<AuthScreen> {
   bool isPassCodeFormLoading = false;
 
   void _handleEmailEntered() async {
-    print("_handleEmailEntered");
-    setState(() => isEmailFormLoading = true);
+    setState(() {
+      errorMsg = null;
+      isEmailFormLoading = true;
+    });
+
     if (_formEmailKey.currentState.validate()) {
       _formEmailKey.currentState.save();
-      final auth = Provider.of<AuthProvider>(context, listen: false);
 
+      final auth = Provider.of<AuthProvider>(context, listen: false);
       try {
-        final response = await auth.requestPassCodeForEmail(_email);
+        await auth.requestPassCodeForEmail(_email);
+        // Код выслался без ошибок
         setState(() {
           _authStep = AuthStep.inputCode;
+          errorMsg = null;
         });
-      } on EmailNotAllowed catch (e) {
+      } on EmailIsNotInWhiteList catch (e) {
         setState(() {
           errorMsg = "Данный email пока не подключён к системе";
+          // TODO Заменить на полноэкранный диалог с возможностью подписаться на рассылку
         });
       } catch (e) {
         setState(() {
@@ -61,7 +68,29 @@ class _AuthController extends State<AuthScreen> {
     setState(() => isEmailFormLoading = false);
   }
 
-  void _handlePassCodeEntered() {}
+  void _handlePassCodeEntered() async {
+    setState(() {
+      errorMsg = null;
+      isPassCodeFormLoading = true;
+    });
+
+    if (_formCodeKey.currentState.validate()) {
+      _formCodeKey.currentState.save();
+
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      try {
+        await auth.authWithCode(_email, _passCode);
+        setState(() {
+          _authStep = AuthStep.inputCode;
+        });
+      } catch (e) {
+        setState(() {
+          errorMsg = e.toString();
+        });
+      }
+    }
+    setState(() => isPassCodeFormLoading = false);
+  }
 
   String _validateEmail(String value) {
     if (!value.contains("@")) {
@@ -110,7 +139,7 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
 
   Widget _buildErrorMessage() {
     return state.errorMsg == null
-        ? null
+        ? SizedBox(height: 0, width: 0)
         : Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
@@ -178,7 +207,7 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
           ),
           SizedBox(height: 54),
           Text(
-            "Введи шестизначный код, который мы отправили на почту",
+            "Введи шестизначный код,\nкоторый мы отправили на почту",
             textAlign: TextAlign.center,
           ),
           Text(
@@ -198,11 +227,18 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
               validator: state._validatePassCode,
             ),
           ),
+          _buildErrorMessage(),
           SizedBox(height: 14),
-          RaisedButton(
-            onPressed: state._handlePassCodeEntered,
-            child: Text("Далее"),
-          ),
+          state.isPassCodeFormLoading
+              ? Container(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : RaisedButton(
+                  onPressed: state._handlePassCodeEntered,
+                  child: Text("Далее"),
+                )
         ],
       ),
     );
