@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
-import 'package:volsu_app_v1/features/auth/Auth2PassCode.dart';
+import 'package:volsu_app_v1/features/auth/AuthPasscode.dart';
+import 'package:volsu_app_v1/features/auth/RegistrationProcessProvider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
-class Auth1EmailScreen extends StatefulWidget {
+class AuthEmail extends StatefulWidget {
   @override
-  _Auth1EmailController createState() => _Auth1EmailController();
+  _AuthEmailController createState() => _AuthEmailController();
 }
 
 /*
@@ -17,32 +18,9 @@ class Auth1EmailScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _Auth1EmailController extends State<Auth1EmailScreen> {
+class _AuthEmailController extends State<AuthEmail> {
   @override
-  Widget build(BuildContext context) => _Auth1EmailView(this);
-
-  @override
-  void initState() {
-    checkForSkipStep();
-    super.initState();
-  }
-
-  void checkForSkipStep() async {
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    final cachedEmail = await auth.isEmailSaved();
-    if (cachedEmail != null) {
-      _email = cachedEmail;
-      goToNextStep();
-    }
-  }
-
-  void goToNextStep() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => Auth2PassCodeScreen(_email),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => _AuthEmailView(this);
 
   String _email;
 
@@ -70,12 +48,13 @@ class _Auth1EmailController extends State<Auth1EmailScreen> {
       await auth.requestPassCodeForEmail(_email);
 
       // Код выслался без ошибок
-      await auth.saveEmail(_email);
+      final regProcess =
+          Provider.of<RegistrationProcessProvider>(context, listen: false);
+      await regProcess.saveEmail(_email);
       setState(() {
         errorMsg = null;
         isLoading = false;
       });
-      goToNextStep();
     } on EmailIsNotInWhiteList catch (e) {
       setState(() {
         errorMsg = "Данный email пока не подключён к системе";
@@ -110,9 +89,8 @@ class _Auth1EmailController extends State<Auth1EmailScreen> {
 * **********************************************
 */
 
-class _Auth1EmailView
-    extends WidgetView<Auth1EmailScreen, _Auth1EmailController> {
-  _Auth1EmailView(_Auth1EmailController state) : super(state);
+class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
+  _AuthEmailView(_AuthEmailController state) : super(state);
 
   @override
   Widget build(BuildContext context) {

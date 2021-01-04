@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 
 import 'themes/AppTheme.dart';
-import 'features/auth/Auth1Email.dart';
+import 'features/auth/AuthEmail.dart';
 import 'features/home/sHome.dart';
 import 'themes/AppTheme.dart';
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme.theme,
-      home: auth.isAuth ? HomeScreen() : Auth1EmailScreen(),
+      home: auth.isAuth ? HomeScreen() : AuthEmail(),
     );
   }
 }

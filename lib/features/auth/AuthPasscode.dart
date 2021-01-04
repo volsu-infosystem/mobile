@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
+import 'package:volsu_app_v1/features/auth/RegistrationProcessProvider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 
 import '../../architecture_generics.dart';
 
-class Auth2PassCodeScreen extends StatefulWidget {
-  final String _email;
-  Auth2PassCodeScreen(this._email);
-
+class AuthPasscodeScreen extends StatefulWidget {
   @override
-  _Auth2PassCodeController createState() => _Auth2PassCodeController();
+  _AuthPasscodeController createState() => _AuthPasscodeController();
 }
 
 /*
@@ -19,15 +17,21 @@ class Auth2PassCodeScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _Auth2PassCodeController extends State<Auth2PassCodeScreen> {
+class _AuthPasscodeController extends State<AuthPasscodeScreen> {
   @override
-  Widget build(BuildContext context) => _Auth2PassCodeView(this);
+  Widget build(BuildContext context) => _AuthPasscodeView(this);
 
   final _formCodeKey = GlobalKey<FormState>();
   String _passCode;
 
   String errorMsg;
   bool isLoading = false;
+
+  void _handleAnotherEmail() {
+    final regProcess =
+        Provider.of<RegistrationProcessProvider>(context, listen: false);
+    regProcess.clearSavedEmail();
+  }
 
   void _handlePassCodeEntered() async {
     setState(() {
@@ -39,8 +43,12 @@ class _Auth2PassCodeController extends State<Auth2PassCodeScreen> {
       _formCodeKey.currentState.save();
 
       final auth = Provider.of<AuthProvider>(context, listen: false);
+      final regProcess =
+          Provider.of<RegistrationProcessProvider>(context, listen: false);
+      final email = await regProcess.getEmailSaved();
       try {
-        await auth.authWithCode(widget._email, _passCode);
+        await auth.authWithCode(email, _passCode);
+        await regProcess.passCodeCompleted();
         setState(() {
           Navigator.popUntil(context, ModalRoute.withName('/'));
         });
@@ -64,9 +72,9 @@ class _Auth2PassCodeController extends State<Auth2PassCodeScreen> {
 * **********************************************
 */
 
-class _Auth2PassCodeView
-    extends WidgetView<Auth2PassCodeScreen, _Auth2PassCodeController> {
-  _Auth2PassCodeView(_Auth2PassCodeController state) : super(state);
+class _AuthPasscodeView
+    extends WidgetView<AuthPasscodeScreen, _AuthPasscodeController> {
+  _AuthPasscodeView(_AuthPasscodeController state) : super(state);
 
   Widget _buildErrorMessage() {
     return state.errorMsg == null
@@ -82,6 +90,8 @@ class _Auth2PassCodeView
 
   @override
   Widget build(BuildContext context) {
+    final regProcess =
+        Provider.of<RegistrationProcessProvider>(context, listen: false);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -100,7 +110,7 @@ class _Auth2PassCodeView
               textAlign: TextAlign.center,
             ),
             Text(
-              state.widget._email,
+              state.widget.regPro,
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -118,6 +128,10 @@ class _Auth2PassCodeView
             ),
             _buildErrorMessage(),
             SizedBox(height: 14),
+            FlatButton(
+              onPressed: state._handleAnotherEmail,
+              child: Text("Ввести другой емейл"),
+            ),
             state.isLoading
                 ? Container(
                     width: 20,
