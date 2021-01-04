@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:volsu_app_v1/themes/colors.dart';
 
-import 'styles.dart';
-
 enum ColorStyle { light, dark }
+
+const opensans = "Open Sans";
+const montserrat = "Montserrat";
+
+const regular = FontWeight.w400;
+const semibold = FontWeight.w600;
+const bold = FontWeight.w700;
 
 class AppTheme with ChangeNotifier {
   final BuildContext context;
@@ -25,12 +30,10 @@ class AppTheme with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Тут переоопределяются только цвета.
-  /// Стили для шрифтов создаются в отдельном файле, не вставляюстя в ThemeData
-  /// и используются как обращение к статическим полям класса
+  /// Тут переоопределяются только глобальные цвета.
   ThemeData get theme {
     return ThemeData(
-      fontFamily: AppTextStyles.opensans,
+      fontFamily: opensans,
       primarySwatch: colors.primary,
       backgroundColor: colors.background,
       scaffoldBackgroundColor: colors.background,

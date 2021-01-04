@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 
 import 'themes/AppTheme.dart';
-import 'features/auth/Auth.dart';
+import 'features/auth/Auth1Email.dart';
 import 'features/home/sHome.dart';
 import 'themes/AppTheme.dart';
 
