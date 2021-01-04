@@ -25,4 +25,12 @@ class UserCredentials {
   }
 
   String toJson() => json.encode(this);
+
+  UserCredentials copy() {
+    return UserCredentials(
+      email: email,
+      token: token,
+      subgroup: subgroup,
+    );
+  }
 }

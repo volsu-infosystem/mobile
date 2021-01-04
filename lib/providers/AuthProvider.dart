@@ -13,21 +13,36 @@ class AuthProvider extends ChangeNotifier {
   UserCredentials _userCredentials;
 
   AuthProvider() {
-    getUserCredentialsCache().then((value) => _userCredentials = value);
+    getUserCredentialsCache().then((value) {
+      _userCredentials = value;
+      notifyListeners();
+    });
   }
 
-  bool get isAuth => _userCredentials.isReady;
-  String get token => _userCredentials.token;
+  bool get isAuth {
+    if (_userCredentials == null) {
+      return false;
+    }
+    return _userCredentials.isReady;
+  }
+
+  String get token {
+    if (_userCredentials == null) {
+      return null;
+    }
+    return _userCredentials.token;
+  }
+
+  UserCredentials get userCredentials => _userCredentials.copy();
 
   void logout() {
     _userCredentials = null;
     updateUserCredentialsCache();
-    notifyListeners();
   }
 
   /// Запрашивает отправку кода на почту. Если запрос удался,
-  /// записывает данный емейл в userCredentials и обновляет
-  /// локальное хранилище
+  /// записывает данный емейл в [_userCredentials] и
+  /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> requestPassCodeForEmail(String email) async {
     Response<dynamic> response;
     try {
@@ -45,8 +60,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// Производит авторизацию на сервере с данной почтой и кодом. Если
-  /// запрос удался, записывает возвращённый токен в userCredentials и
-  /// обновляет локальное хранилище
+  /// запрос удался, записывает возвращённый токен в [_userCredentials] и
+  /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> authWithCode(String email, String code) async {
     Response<dynamic> response;
     try {
@@ -65,6 +80,8 @@ class AuthProvider extends ChangeNotifier {
 
   static const sharpref_userCredentials = "sharpref_userCredentials";
 
+  /// Перезаписывает текущую версию [_userCredentials] из оперативной памяти
+  /// в локальное хранилище и вызывает notifyListeners();
   Future<void> updateUserCredentialsCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_userCredentials == null) {
