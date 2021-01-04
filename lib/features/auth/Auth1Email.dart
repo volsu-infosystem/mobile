@@ -21,6 +21,29 @@ class _Auth1EmailController extends State<Auth1EmailScreen> {
   @override
   Widget build(BuildContext context) => _Auth1EmailView(this);
 
+  @override
+  void initState() {
+    checkForSkipStep();
+    super.initState();
+  }
+
+  void checkForSkipStep() async {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final cachedEmail = await auth.isEmailSaved();
+    if (cachedEmail != null) {
+      _email = cachedEmail;
+      goToNextStep();
+    }
+  }
+
+  void goToNextStep() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => Auth2PassCodeScreen(_email),
+      ),
+    );
+  }
+
   String _email;
 
   final _formEmailKey = GlobalKey<FormState>();
@@ -28,7 +51,7 @@ class _Auth1EmailController extends State<Auth1EmailScreen> {
   String errorMsg;
   bool isLoading = false;
 
-  void _handleEmailEntered() async {
+  void _handleBtnClick() async {
     setState(() {
       errorMsg = null;
       isLoading = true;
@@ -36,31 +59,38 @@ class _Auth1EmailController extends State<Auth1EmailScreen> {
 
     if (_formEmailKey.currentState.validate()) {
       _formEmailKey.currentState.save();
-
-      final auth = Provider.of<AuthProvider>(context, listen: false);
-      try {
-        await auth.requestPassCodeForEmail(_email);
-        // Код выслался без ошибок
-        setState(() {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (ctx) => Auth2PassCodeScreen(_email),
-            ),
-          );
-          errorMsg = null;
-        });
-      } on EmailIsNotInWhiteList catch (e) {
-        setState(() {
-          errorMsg = "Данный email пока не подключён к системе";
-          // TODO Заменить на полноэкранный диалог с возможностью подписаться на рассылку
-        });
-      } catch (e) {
-        setState(() {
-          errorMsg = e.toString();
-        });
-      }
+      await _sendRequest();
     }
     setState(() => isLoading = false);
+  }
+
+  Future<void> _sendRequest() async {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    try {
+      await auth.requestPassCodeForEmail(_email);
+
+      // Код выслался без ошибок
+      await auth.saveEmail(_email);
+      setState(() {
+        errorMsg = null;
+        isLoading = false;
+      });
+      goToNextStep();
+    } on EmailIsNotInWhiteList catch (e) {
+      setState(() {
+        errorMsg = "Данный email пока не подключён к системе";
+        // TODO Заменить на полноэкранный диалог с возможностью подписаться на рассылку
+      });
+    } catch (e) {
+      setState(() {
+        errorMsg = e.toString();
+      });
+    }
+  }
+
+  void clearSharpref() {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    auth.clearSavedEmail();
   }
 
   String _validateEmail(String value) {
@@ -155,7 +185,8 @@ class _Auth1EmailView
                     height: 50,
                     width: 200,
                     child: RaisedButton(
-                      onPressed: state._handleEmailEntered,
+                      onPressed: state._handleBtnClick,
+                      onLongPress: state.clearSharpref,
                       child: Text("Далее"),
                       color: theme.colors.primary,
                       textColor: theme.colors.foregroundOnPrimary,

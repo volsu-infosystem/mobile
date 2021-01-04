@@ -3,68 +3,81 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
 import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
+import 'package:volsu_app_v1/models/UserCredentials.dart';
 import 'package:volsu_app_v1/network/DanielApi.dart';
 
 class AuthProvider extends ChangeNotifier {
-  String _token;
-  String get token => _token;
+  // String _token;
+  // String get token => _token;
+  //
+  // String _email;
+  // String get email => _email;
 
-  String _email;
-  String get email => _email;
+  UserCredentials _userCredentials;
 
-  bool get isAuth => _token != null;
+  bool get isAuth => _userCredentials != null;
+  String get token => _userCredentials.token;
 
   void logout() {
-    this._token = null;
-    this._email = null;
+    _userCredentials = null;
     notifyListeners();
   }
 
   Future<void> requestPassCodeForEmail(String email) async {
-    print("ed__ requestPassCodeForEmail");
     Response<dynamic> response;
     try {
       response = await DanielApi.instance.requestPassCode(email);
 
       if (response.statusCode >= 400) {
-        print("ed__ EmailIsNotInWhiteList ${response.statusCode}");
-        throw EmailIsNotInWhiteList("email");
+        throw EmailIsNotInWhiteList(email);
       }
     } on ConnectionFailure catch (e) {
-      print("ed__ ConnectionFailure");
       throw ConnectionFailure("");
     }
   }
 
   Future<void> authWithCode(String email, String code) async {
-    print("ed__ authWithCode");
     Response<dynamic> response;
     try {
       response = await DanielApi.instance.authWithCode(email, code);
-      // TEST IMPLEMENTATION
-      // if (code == "123456") {
-      //   _updateCredentials(token: "test_token", email: email);
-      //   return;
-      // }
-      // END OF TEST IMPLEMENTATION
       if (response.statusCode >= 400) {
         throw InvalidPassCode("");
       }
-      // TODO: OK
-      _updateCredentials(
+      _userCredentials = UserCredentials(
         email: email,
         token: (response.data)['access_token'] as String,
       );
+      notifyListeners();
     } on ConnectionFailure catch (e) {
       throw ConnectionFailure("");
     }
   }
 
-  void _updateCredentials({String token, String email}) {
-    this._token = token;
-    this._email = email;
-    notifyListeners();
+  Future<void> saveEmail(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(step1Email, email);
+    print("Email cached: $email");
+  }
+
+  Future<void> clearSavedEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(step1Email);
+    print("Email cached: clear");
+  }
+
+  static const step1Email = "step1email";
+  Future<String> isEmailSaved() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey(step1Email)) {
+      print("Email cached: clear: didn't find");
+      return null;
+    } else {
+      final email = prefs.getString(step1Email);
+      print("Email cached: saved $email");
+      return email;
+    }
   }
 }
