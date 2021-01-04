@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
-import 'package:volsu_app_v1/features/auth/RegistrationProcessProvider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 
 import '../../architecture_generics.dart';

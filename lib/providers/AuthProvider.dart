@@ -35,7 +35,12 @@ class AuthProvider extends ChangeNotifier {
 
   /// Read only.
   /// Изменения на выданный объект не затронут общего состояния приложения
-  UserCredentials get userCredentials => _userCredentials.copy();
+  UserCredentials get userCredentials {
+    if (_userCredentials == null) {
+      return null;
+    }
+    return _userCredentials.copy();
+  }
 
   Future<void> logout() async {
     _userCredentials = null;
