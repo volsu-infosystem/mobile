@@ -7,6 +7,9 @@ import 'package:volsu_app_v1/models/UserCredentials.dart';
 import 'package:volsu_app_v1/network/DanielApi.dart';
 
 class AuthProvider extends ChangeNotifier {
+  /// За любым обновлением поля у [_userCredentials] **необходимо** вызывать
+  /// [_updateUserCredentialsCache()],чтобы в локальном хранилище и оперативной
+  /// памяти были одинаковые версии объекта.
   UserCredentials _userCredentials;
 
   AuthProvider() {

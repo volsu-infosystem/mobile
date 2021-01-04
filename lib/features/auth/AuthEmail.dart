@@ -49,7 +49,6 @@ class _AuthEmailController extends State<AuthEmail> {
       // Код выслался без ошибок
       setState(() {
         errorMsg = null;
-        isLoading = false;
       });
     } on EmailIsNotInWhiteList catch (e) {
       setState(() {

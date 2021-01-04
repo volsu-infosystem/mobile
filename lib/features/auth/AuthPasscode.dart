@@ -29,6 +29,7 @@ class _AuthPasscodeController extends State<AuthPasscodeScreen> {
 
   void _handleAnotherEmail() {
     final auth = Provider.of<AuthProvider>(context, listen: false);
+    auth.resetEmail();
   }
 
   void _handlePassCodeEntered() async {
@@ -43,7 +44,10 @@ class _AuthPasscodeController extends State<AuthPasscodeScreen> {
       final auth = Provider.of<AuthProvider>(context, listen: false);
       try {
         await auth.authWithCode(auth.userCredentials.email, _passCode);
+
+        // Success
         setState(() {
+          // Сбрасываю стек, чтобы нельзя было вернуться
           Navigator.popUntil(context, ModalRoute.withName('/'));
         });
       } on InvalidPassCode catch (e) {
