@@ -7,12 +7,12 @@ class UserCredentials {
 
   UserCredentials({this.email, this.token, this.subgroup});
 
+  bool get hasCorrectEmail => email != null && email.isNotEmpty;
+  bool get hasCorrectToken => token != null && token.isNotEmpty;
+  bool get hasCorrectSubgroup => true; // TODO subgroup != null;
+
   bool get isReady {
-    return email != null &&
-        token != null &&
-        email.isNotEmpty &&
-        token.isNotEmpty &&
-        subgroup != null;
+    return hasCorrectEmail && hasCorrectToken && hasCorrectSubgroup;
   }
 
   UserCredentials.fromMap(Map<String, dynamic> json)

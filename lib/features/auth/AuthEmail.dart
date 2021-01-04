@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
 import 'package:volsu_app_v1/features/auth/AuthPasscode.dart';
-import 'package:volsu_app_v1/features/auth/RegistrationProcessProvider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
@@ -48,9 +47,6 @@ class _AuthEmailController extends State<AuthEmail> {
       await auth.requestPassCodeForEmail(_email);
 
       // Код выслался без ошибок
-      final regProcess =
-          Provider.of<RegistrationProcessProvider>(context, listen: false);
-      await regProcess.saveEmail(_email);
       setState(() {
         errorMsg = null;
         isLoading = false;
@@ -65,11 +61,6 @@ class _AuthEmailController extends State<AuthEmail> {
         errorMsg = e.toString();
       });
     }
-  }
-
-  void clearSharpref() {
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    auth.clearSavedEmail();
   }
 
   String _validateEmail(String value) {
@@ -164,7 +155,6 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
                     width: 200,
                     child: RaisedButton(
                       onPressed: state._handleBtnClick,
-                      onLongPress: state.clearSharpref,
                       child: Text("Далее"),
                       color: theme.colors.primary,
                       textColor: theme.colors.foregroundOnPrimary,

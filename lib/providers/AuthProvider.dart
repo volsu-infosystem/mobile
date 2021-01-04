@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
 import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
@@ -13,7 +10,7 @@ class AuthProvider extends ChangeNotifier {
   UserCredentials _userCredentials;
 
   AuthProvider() {
-    getUserCredentialsCache().then((value) {
+    _getUserCredentialsCache().then((value) {
       _userCredentials = value;
       notifyListeners();
     });
@@ -33,11 +30,13 @@ class AuthProvider extends ChangeNotifier {
     return _userCredentials.token;
   }
 
+  /// Read only.
+  /// Изменения на выданный объект не затронут общего состояния приложения
   UserCredentials get userCredentials => _userCredentials.copy();
 
-  void logout() {
+  Future<void> logout() async {
     _userCredentials = null;
-    updateUserCredentialsCache();
+    _updateUserCredentialsCache();
   }
 
   /// Запрашивает отправку кода на почту. Если запрос удался,
@@ -53,7 +52,7 @@ class AuthProvider extends ChangeNotifier {
 
       // Success
       _userCredentials = UserCredentials(email: email);
-      updateUserCredentialsCache();
+      _updateUserCredentialsCache();
     } on ConnectionFailure catch (e) {
       throw ConnectionFailure("");
     }
@@ -72,80 +71,37 @@ class AuthProvider extends ChangeNotifier {
 
       // Success
       _userCredentials.token = (response.data)['access_token'] as String;
-      updateUserCredentialsCache();
+      _updateUserCredentialsCache();
     } on ConnectionFailure catch (e) {
       throw ConnectionFailure("");
     }
   }
 
-  static const sharpref_userCredentials = "sharpref_userCredentials";
+  Future<void> resetEmail() async => logout();
+
+  static const _sharpref_userCredentials = "sharpref_userCredentials";
 
   /// Перезаписывает текущую версию [_userCredentials] из оперативной памяти
   /// в локальное хранилище и вызывает notifyListeners();
-  Future<void> updateUserCredentialsCache() async {
+  Future<void> _updateUserCredentialsCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_userCredentials == null) {
-      if (prefs.containsKey(sharpref_userCredentials)) {
-        prefs.remove(sharpref_userCredentials);
+      if (prefs.containsKey(_sharpref_userCredentials)) {
+        prefs.remove(_sharpref_userCredentials);
       }
     } else {
-      prefs.setString(sharpref_userCredentials, _userCredentials.toJson());
+      prefs.setString(_sharpref_userCredentials, _userCredentials.toJson());
     }
     notifyListeners();
   }
 
-  Future<UserCredentials> getUserCredentialsCache() async {
+  Future<UserCredentials> _getUserCredentialsCache() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey(sharpref_userCredentials)) {
+    if (!prefs.containsKey(_sharpref_userCredentials)) {
       return null;
     } else {
       return UserCredentials.fromJson(
-          prefs.getString(sharpref_userCredentials));
+          prefs.getString(_sharpref_userCredentials));
     }
   }
-
-  // static const _step1Email = "step1email";
-  // Future<void> saveEmail(String email) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString(_step1Email, email);
-  //   print("Email cached: $email");
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> clearSavedEmail() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.remove(_step1Email);
-  //   print("Email cached: clear");
-  //   notifyListeners();
-  // }
-  //
-  // Future<String> getEmailSaved() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   if (!prefs.containsKey(_step1Email)) {
-  //     print("Email cached: clear: didn't find");
-  //     return null;
-  //   } else {
-  //     final email = prefs.getString(_step1Email);
-  //     print("Email cached: saved $email");
-  //     return email;
-  //   }
-  // }
-  //
-  // static const _step2pass = "step2pass";
-  // Future<void> passCodeCompleted() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setBool(_step2pass, true);
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> clearPassCodeCache() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.remove(_step2pass);
-  //   notifyListeners();
-  // }
-  //
-  // Future<bool> isPassCodeCompleted() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.containsKey(_step2pass);
-  // }
 }

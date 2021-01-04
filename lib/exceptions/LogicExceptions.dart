@@ -21,3 +21,10 @@ class EmailIsNotInWhiteList extends LogicException {
     Exception previous,
   ]) : super("EmailIsNotInWhiteList", msg, previous);
 }
+
+class ThereIsNoWayItCanBeReached extends LogicException {
+  const ThereIsNoWayItCanBeReached(
+    String msg, [
+    Exception previous,
+  ]) : super("ThereIsNoWayItCanBeDone", msg, previous);
+}

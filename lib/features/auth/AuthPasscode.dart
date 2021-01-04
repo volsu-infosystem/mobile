@@ -28,9 +28,7 @@ class _AuthPasscodeController extends State<AuthPasscodeScreen> {
   bool isLoading = false;
 
   void _handleAnotherEmail() {
-    final regProcess =
-        Provider.of<RegistrationProcessProvider>(context, listen: false);
-    regProcess.clearSavedEmail();
+    final auth = Provider.of<AuthProvider>(context, listen: false);
   }
 
   void _handlePassCodeEntered() async {
@@ -43,12 +41,8 @@ class _AuthPasscodeController extends State<AuthPasscodeScreen> {
       _formCodeKey.currentState.save();
 
       final auth = Provider.of<AuthProvider>(context, listen: false);
-      final regProcess =
-          Provider.of<RegistrationProcessProvider>(context, listen: false);
-      final email = await regProcess.getEmailSaved();
       try {
-        await auth.authWithCode(email, _passCode);
-        await regProcess.passCodeCompleted();
+        await auth.authWithCode(auth.userCredentials.email, _passCode);
         setState(() {
           Navigator.popUntil(context, ModalRoute.withName('/'));
         });
@@ -90,8 +84,7 @@ class _AuthPasscodeView
 
   @override
   Widget build(BuildContext context) {
-    final regProcess =
-        Provider.of<RegistrationProcessProvider>(context, listen: false);
+    final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -110,7 +103,7 @@ class _AuthPasscodeView
               textAlign: TextAlign.center,
             ),
             Text(
-              state.widget.regPro,
+              auth.userCredentials.email,
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
