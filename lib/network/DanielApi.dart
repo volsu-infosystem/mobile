@@ -27,9 +27,11 @@ class DanielApi {
     try {
       response = await _dio.post(
         url,
-        data: {
-          "email": email,
-        },
+        data: json.encode(
+          {
+            "email": email,
+          },
+        ),
       );
       return response;
     } on DioError catch (e) {
@@ -50,10 +52,12 @@ class DanielApi {
     try {
       response = await _dio.post(
         url,
-        data: {
-          "email": email,
-          "Code": passCode,
-        },
+        data: json.encode(
+          {
+            "email": email,
+            "secretCode": int.parse(passCode),
+          },
+        ),
       );
       return response;
     } on DioError catch (e) {

@@ -44,16 +44,19 @@ class AuthProvider extends ChangeNotifier {
     try {
       response = await DanielApi.instance.authWithCode(email, code);
       // TEST IMPLEMENTATION
-      if (code == "123456") {
-        _updateCredentials(token: "test_token", email: email);
-        return;
-      }
+      // if (code == "123456") {
+      //   _updateCredentials(token: "test_token", email: email);
+      //   return;
+      // }
       // END OF TEST IMPLEMENTATION
       if (response.statusCode >= 400) {
         throw InvalidPassCode("");
       }
       // TODO: OK
-      print(json.decode(response.data));
+      _updateCredentials(
+        email: email,
+        token: (response.data)['access_token'] as String,
+      );
     } on ConnectionFailure catch (e) {
       throw ConnectionFailure("");
     }
