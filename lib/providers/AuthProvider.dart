@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -14,19 +16,9 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isAuth => _token != null;
 
-  void updateToken(String token) {
-    this._token = token;
-    notifyListeners();
-  }
-
   void logout() {
     this._token = null;
-    notifyListeners();
-  }
-
-  void updateCredentials({String token, String email}) {
-    this._token = token;
-    this._email = email;
+    this._email = null;
     notifyListeners();
   }
 
@@ -51,26 +43,25 @@ class AuthProvider extends ChangeNotifier {
     Response<dynamic> response;
     try {
       response = await DanielApi.instance.authWithCode(email, code);
-
+      // TEST IMPLEMENTATION
+      if (code == "123456") {
+        _updateCredentials(token: "test_token", email: email);
+        return;
+      }
+      // END OF TEST IMPLEMENTATION
       if (response.statusCode >= 400) {
         throw InvalidPassCode("");
       }
+      // TODO: OK
+      print(json.decode(response.data));
     } on ConnectionFailure catch (e) {
       throw ConnectionFailure("");
     }
+  }
 
-    // OLD
-    // await Future.delayed(Duration(milliseconds: 1500));
-    // // TODO: Обращение к серверу
-    // if (code == "123456") {
-    //   print("ed__ Token is correct");
-    //   // TODO: Сохранение токена в sharedPreferences
-    //   _token = "x";
-    //   _email = email;
-    //   notifyListeners();
-    //   return;
-    // }
-    // print("ed__ InvalidPassCode");
-    // throw InvalidPassCode("");
+  void _updateCredentials({String token, String email}) {
+    this._token = token;
+    this._email = email;
+    notifyListeners();
   }
 }

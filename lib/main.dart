@@ -22,13 +22,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("main rebuild");
     final auth = context.watch<AuthProvider>();
     final appTheme = Provider.of<AppTheme>(context);
+    print("main rebuild. auth.isAuth=${auth.isAuth}");
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme.theme,
-      home: auth.isAuth ? HomeScreen() : AuthScreen(),
+      home: auth.isAuth ? HomeScreen() : Auth1EmailScreen(),
     );
   }
 }

@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
-import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
-import 'package:volsu_app_v1/network/DanielApi.dart';
+import 'package:volsu_app_v1/features/auth/Auth2PassCode.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
-class AuthScreen extends StatefulWidget {
+class Auth1EmailScreen extends StatefulWidget {
   @override
-  _AuthController createState() => _AuthController();
+  _Auth1EmailController createState() => _Auth1EmailController();
 }
 
 /*
@@ -18,21 +17,21 @@ class AuthScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _AuthController extends State<AuthScreen> {
+class _Auth1EmailController extends State<Auth1EmailScreen> {
   @override
-  Widget build(BuildContext context) => _AuthView(this);
+  Widget build(BuildContext context) => _Auth1EmailView(this);
 
   String _email;
 
   final _formEmailKey = GlobalKey<FormState>();
 
   String errorMsg;
-  bool isEmailFormLoading = false;
+  bool isLoading = false;
 
   void _handleEmailEntered() async {
     setState(() {
       errorMsg = null;
-      isEmailFormLoading = true;
+      isLoading = true;
     });
 
     if (_formEmailKey.currentState.validate()) {
@@ -43,7 +42,11 @@ class _AuthController extends State<AuthScreen> {
         await auth.requestPassCodeForEmail(_email);
         // Код выслался без ошибок
         setState(() {
-          // TODO: Go to Auth2PassCode
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => Auth2PassCodeScreen(_email),
+            ),
+          );
           errorMsg = null;
         });
       } on EmailIsNotInWhiteList catch (e) {
@@ -57,7 +60,7 @@ class _AuthController extends State<AuthScreen> {
         });
       }
     }
-    setState(() => isEmailFormLoading = false);
+    setState(() => isLoading = false);
   }
 
   String _validateEmail(String value) {
@@ -77,8 +80,9 @@ class _AuthController extends State<AuthScreen> {
 * **********************************************
 */
 
-class _AuthView extends WidgetView<AuthScreen, _AuthController> {
-  _AuthView(_AuthController state) : super(state);
+class _Auth1EmailView
+    extends WidgetView<Auth1EmailScreen, _Auth1EmailController> {
+  _Auth1EmailView(_Auth1EmailController state) : super(state);
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +145,7 @@ class _AuthView extends WidgetView<AuthScreen, _AuthController> {
           _buildErrorMessage(),
           SizedBox(height: 44),
           Container(
-            child: state.isEmailFormLoading
+            child: state.isLoading
                 ? Container(
                     width: 20,
                     height: 20,

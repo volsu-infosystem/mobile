@@ -22,7 +22,7 @@ class DanielApi {
   static Dio _dio;
 
   Future<Response<dynamic>> requestPassCode(String email) async {
-    const url = "/auth/request";
+    const url = "auth/request";
     Response<dynamic> response;
     try {
       response = await _dio.post(
@@ -52,7 +52,7 @@ class DanielApi {
         url,
         data: {
           "email": email,
-          "pass": passCode,
+          "Code": passCode,
         },
       );
       return response;

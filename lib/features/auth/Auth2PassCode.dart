@@ -27,12 +27,12 @@ class _Auth2PassCodeController extends State<Auth2PassCodeScreen> {
   String _passCode;
 
   String errorMsg;
-  bool isPassCodeFormLoading = false;
+  bool isLoading = false;
 
   void _handlePassCodeEntered() async {
     setState(() {
       errorMsg = null;
-      isPassCodeFormLoading = true;
+      isLoading = true;
     });
 
     if (_formCodeKey.currentState.validate()) {
@@ -42,7 +42,7 @@ class _Auth2PassCodeController extends State<Auth2PassCodeScreen> {
       try {
         await auth.authWithCode(widget._email, _passCode);
         setState(() {
-          // TODO: Go to next screen
+          Navigator.popUntil(context, ModalRoute.withName('/'));
         });
       } on InvalidPassCode catch (e) {
         setState(() {
@@ -50,7 +50,7 @@ class _Auth2PassCodeController extends State<Auth2PassCodeScreen> {
         });
       }
     }
-    setState(() => isPassCodeFormLoading = false);
+    setState(() => isLoading = false);
   }
 
   String _validatePassCode(String value) {
@@ -118,7 +118,7 @@ class _Auth2PassCodeView
             ),
             _buildErrorMessage(),
             SizedBox(height: 14),
-            state.isPassCodeFormLoading
+            state.isLoading
                 ? Container(
                     width: 20,
                     height: 20,
