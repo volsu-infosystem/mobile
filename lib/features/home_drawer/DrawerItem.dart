@@ -18,6 +18,8 @@ class DrawerItem extends StatelessWidget {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return InkWell(
       onTap: onTap,
+      highlightColor: theme.colors.splashOnBackground,
+      splashColor: theme.colors.splashOnBackground,
       child: Padding(
         padding: const EdgeInsets.only(
           left: 12,
@@ -34,7 +36,12 @@ class DrawerItem extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child: Text(label, style: TextStyle(fontWeight: semibold,),),
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontWeight: semibold,
+                  ),
+                ),
               ),
             ),
           ],
