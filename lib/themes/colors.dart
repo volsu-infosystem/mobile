@@ -31,6 +31,7 @@ class AppAppearance {
   MaterialColor text;
   MaterialColor textOnPrimary;
   MaterialColor textWeak;
+  MaterialColor textOnError;
 
   MaterialColor primary;
   MaterialColor error;
@@ -53,6 +54,7 @@ class AppAppearance {
     @required this.textWeak,
     @required this.iconOnBackground,
     @required this.iconOnBackground_selected,
+    @required this.textOnError,
   });
 }
 
@@ -70,6 +72,7 @@ class LightAppAppearance extends AppAppearanceGenerator {
         textWeak: matColor(0xffB6B6B6),
         iconOnBackground: matColor(0xff2F2F2F),
         iconOnBackground_selected: matColor(0xff2B82D8),
+        textOnError: matColor(0xffffffff),
       );
 }
 

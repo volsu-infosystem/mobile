@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/providers/AuthProvider.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
@@ -18,6 +20,29 @@ class HomeDrawerScreen extends StatefulWidget {
 class _HomeDrawerController extends State<HomeDrawerScreen> {
   @override
   Widget build(BuildContext context) => _HomeDrawerView(this);
+
+  var isLogoutDialogShow = false;
+
+  void _onDrawerItemClicked_profile() {}
+  void _onDrawerItemClicked_rating() {}
+  void _onDrawerItemClicked_timetable() {}
+  void _onDrawerItemClicked_navigation() {}
+  void _onDrawerItemClicked_mail() {}
+  void _onDrawerItemClicked_notifications() {}
+  void _onDrawerItemClicked_help() {}
+  void _onDrawerItemClicked_settings() {}
+  void _onDrawerItemClicked_logout() {
+    setState(() => isLogoutDialogShow = true);
+  }
+
+  void _onLogoutDialogClicked_confirm() {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    auth.logout();
+  }
+
+  void _onLogoutDialogClicked_dismiss() {
+    setState(() => isLogoutDialogShow = false);
+  }
 }
 
 /*
@@ -30,9 +55,12 @@ class _HomeDrawerView
     extends WidgetView<HomeDrawerScreen, _HomeDrawerController> {
   _HomeDrawerView(_HomeDrawerController state) : super(state);
 
-  Widget _buildUserArea() {
+  Widget _buildUserArea(BuildContext context) {
+    final theme = Provider.of<AppTheme>(context, listen: false);
     return InkWell(
-      onTap: () {},
+      onTap: state._onDrawerItemClicked_profile,
+      highlightColor: theme.colors.splashOnBackground,
+      splashColor: theme.colors.splashOnBackground,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -79,55 +107,107 @@ class _HomeDrawerView
         DrawerItem(
           label: "Рейтинг",
           icon: Icons.bar_chart_rounded,
-          onTap: () {},
+          onTap: state._onDrawerItemClicked_rating,
         ),
         DrawerItem(
           label: "Расписание",
           icon: Icons.calendar_view_day_rounded,
-          onTap: () {},
+          onTap: state._onDrawerItemClicked_timetable,
         ),
         DrawerItem(
           label: "Навигация в вузе",
           icon: Icons.map_outlined,
-          onTap: () {},
+          onTap: state._onDrawerItemClicked_navigation,
         ),
         DrawerItem(
           label: "Почта",
           icon: Icons.alternate_email_rounded,
-          onTap: () {},
+          onTap: state._onDrawerItemClicked_mail,
         ),
         DrawerItem(
           label: "Уведомления",
           icon: Icons.notifications_none_rounded,
-          onTap: () {},
+          onTap: state._onDrawerItemClicked_notifications,
         ),
       ],
     );
   }
 
   Widget _buildBottomContent() {
-    return Padding(
-      padding: const EdgeInsets.only(
-          right:
-              50), // Хоть это выглядит и не красиво, но по UX -- защита от случайных нажатий на опасные кнопки (помощь, настройки, сменить аккаунт)
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          DrawerItem(
-            label: "Помощь",
-            icon: Icons.help_outline_rounded,
-            onTap: () {},
-          ),
-          DrawerItem(
-            label: "Настройки",
-            icon: Icons.settings_outlined,
-            onTap: () {},
-          ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        DrawerItem(
+          label: "Помощь",
+          icon: Icons.help_outline_rounded,
+          onTap: state._onDrawerItemClicked_help,
+        ),
+        DrawerItem(
+          label: "Настройки",
+          icon: Icons.settings_outlined,
+          onTap: state._onDrawerItemClicked_settings,
+        ),
+        if (state.isLogoutDialogShow == false)
           DrawerItem(
             label: "Сменить пользователя",
             icon: Icons.logout,
-            onTap: () {},
+            onTap: state._onDrawerItemClicked_logout,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildLogoutDialog(BuildContext context) {
+    final theme = Provider.of<AppTheme>(context, listen: false);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Divider(),
+          Text(
+            "Выйти из аккаунта?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: semibold,
+            ),
+          ),
+          Text(
+            "Если захочешь вернуться, тебе снова нужно будет ввести код с почты",
+            style: TextStyle(),
+          ),
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              OutlineButton(
+                onPressed: state._onLogoutDialogClicked_confirm,
+                child: Text(
+                  "Выйти",
+                ),
+                textColor: theme.colors.error,
+                highlightedBorderColor: theme.colors.error,
+                borderSide: BorderSide(
+                  color: theme.colors.error,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: FlatButton(
+                    hoverColor: theme.colors.splashOnBackground,
+                    highlightColor: theme.colors.splashOnBackground,
+                    onPressed: state._onLogoutDialogClicked_dismiss,
+                    child: Text("Отменить"),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+            ],
           ),
         ],
       ),
@@ -140,11 +220,11 @@ class _HomeDrawerView
       child: SafeArea(
         child: Column(
           children: [
-            _buildUserArea(),
+            _buildUserArea(context),
             Expanded(child: _buildMainContent()),
             SizedBox(height: 42),
             Wrap(children: [_buildBottomContent()]),
-            SizedBox(height: 12),
+            if (state.isLogoutDialogShow) _buildLogoutDialog(context),
           ],
         ),
       ),
