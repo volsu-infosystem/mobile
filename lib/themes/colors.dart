@@ -39,6 +39,9 @@ class AppAppearance {
 
   MaterialColor splashOnBackground;
 
+  MaterialColor iconOnBackground;
+  MaterialColor iconOnBackground_selected;
+
   AppAppearance({
     @required this.background,
     @required this.text,
@@ -48,6 +51,8 @@ class AppAppearance {
     @required this.textOnPrimary,
     @required this.splashOnBackground,
     @required this.textWeak,
+    @required this.iconOnBackground,
+    @required this.iconOnBackground_selected,
   });
 }
 
@@ -63,6 +68,8 @@ class LightAppAppearance extends AppAppearanceGenerator {
         textOnPrimary: matColor(0xffffffff),
         splashOnBackground: matColor(0xffE5E5E5),
         textWeak: matColor(0xffB6B6B6),
+        iconOnBackground: matColor(0xff2F2F2F),
+        iconOnBackground_selected: matColor(0xff2B82D8),
       );
 }
 

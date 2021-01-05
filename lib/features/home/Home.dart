@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/features/notifications/Notifications.dart';
+import 'package:volsu_app_v1/features/rating/Rating.dart';
+import 'package:volsu_app_v1/features/search/Search.dart';
 import 'package:volsu_app_v1/features/timetable/Timetable.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
+import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
 
@@ -22,8 +26,9 @@ class _HomeController extends State<HomeScreen> {
 
   final pages = <Widget>[
     TimetableScreen(),
-    TimetableScreen(),
-    TimetableScreen(),
+    RatingScreen(),
+    SearchScreen(),
+    NotificationsScreen(),
   ];
 
   var _curTab = 0;
@@ -42,15 +47,17 @@ class _HomeController extends State<HomeScreen> {
     super.dispose();
   }
 
+  void showMenu() {}
+
   void goToPage(int pos) {
-    if (pos == 2) {
-      final auth = Provider.of<AuthProvider>(context, listen: false);
-      auth.logout();
+    if (pos == 4) {
+      showMenu();
+    } else {
+      setState(() {
+        _curTab = pos;
+        _pageController.jumpToPage(_curTab);
+      });
     }
-    setState(() {
-      _curTab = pos;
-      _pageController.jumpToPage(_curTab);
-    });
   }
 }
 
@@ -65,6 +72,7 @@ class _HomeView extends WidgetView<HomeScreen, _HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<AppTheme>(context, listen: false);
     return Scaffold(
         body: PageView(
           controller: state._pageController,
@@ -72,20 +80,35 @@ class _HomeView extends WidgetView<HomeScreen, _HomeController> {
           children: state.pages,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: theme.colors.background,
+          elevation: 20,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: theme.colors.iconOnBackground_selected,
+          unselectedItemColor: theme.colors.iconOnBackground,
           currentIndex: state._curTab,
           onTap: state.goToPage,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.looks_one_rounded),
-              label: 'One',
+              icon: Icon(Icons.calendar_view_day_rounded),
+              label: 'Расписание',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.looks_two_rounded),
-              label: 'Two',
+              icon: Icon(Icons.bar_chart_rounded),
+              label: 'Рейтинг',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.three_k),
-              label: 'Log out',
+              icon: Icon(Icons.search_rounded),
+              label: 'Поиск',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_none_rounded),
+              label: 'Уведомления',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu_rounded),
+              label: 'Меню',
             ),
           ],
         ));
