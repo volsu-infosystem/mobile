@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
     final appTheme = Provider.of<AppTheme>(context);
-    print("main rebuild. auth.isAuth=${auth.isAuth}");
+    print("ed__ main rebuild. auth.isAuth=${auth.isAuth}");
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme.theme,

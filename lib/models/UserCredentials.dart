@@ -21,10 +21,22 @@ class UserCredentials {
         subgroup = json['subgroup'];
 
   static UserCredentials fromJson(String json) {
+    print("ed__ UserCredentials.fromJson");
     return UserCredentials.fromMap(jsonDecode(json));
   }
 
-  String toJson() => json.encode(this);
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'token': token,
+      'subgroup': subgroup,
+    };
+  }
+
+  String toJson() {
+    print("ed__ UserCredentials.toJson");
+    return json.encode(this.toMap());
+  }
 
   UserCredentials copy() {
     return UserCredentials(
@@ -32,5 +44,18 @@ class UserCredentials {
       token: token,
       subgroup: subgroup,
     );
+  }
+
+  @override
+  String toString() {
+    String t;
+    if (token == null) {
+      t = "<NULL>";
+    } else if (token.isEmpty) {
+      t = "<EMPTY>";
+    } else {
+      t = "OK (length=${token.length})";
+    }
+    return 'UserCredentials{email: $email, token: $t, subgroup: $subgroup}';
   }
 }
