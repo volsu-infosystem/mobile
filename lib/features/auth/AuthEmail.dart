@@ -52,12 +52,26 @@ class _AuthEmailController extends State<AuthEmail> {
         errorMsg = null;
       });
     } on EmailIsNotInWhiteList catch (e) {
-      setState(() {
-        errorMsg = "Данный email пока не подключён к системе";
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (ctx) => AccessSubscriptionScreen(_email)),
-        );
-      });
+      setState(
+        () {
+          errorMsg = " ";
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+                builder: (ctx) => AccessSubscriptionScreen(_email)),
+          )
+              .then(
+            (value) {
+              _formEmailKey.currentState.reset();
+              setState(
+                () {
+                  errorMsg = null;
+                },
+              );
+            },
+          );
+        },
+      );
     } catch (e) {
       setState(() {
         errorMsg = e.toString();
