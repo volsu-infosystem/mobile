@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// Шаблон для определния всех цветов в приложении
 abstract class AppAppearanceGenerator {
   MaterialColor matColor(int hex) {
+    print("matColor");
     final color = Color(hex);
     List strengths = <double>[.05];
     Map swatch = <int, Color>{};
@@ -59,21 +60,31 @@ class AppAppearance {
 }
 
 class LightAppAppearance extends AppAppearanceGenerator {
-  // TODO: Оптимизировать генерацию цветов. Сейчас функция [matColor()] вызывается каждый раз при обращении к [colors], хотя по логике эта функция должна быть вообще compile-time const. В крайнем случай, runtime const с ленивой инициализацией
+  void _calculateColors() {
+    _colors = AppAppearance(
+      primary: matColor(0xff2B82D8),
+      background: matColor(0xffffffff),
+      text: matColor(0xff000000),
+      error: matColor(0xffff0000),
+      inputBorders: matColor(0xffD7D7D7),
+      textOnPrimary: matColor(0xffffffff),
+      splashOnBackground: matColor(0xffE5E5E5),
+      textWeak: matColor(0xffB6B6B6),
+      iconOnBackground: matColor(0xff2F2F2F),
+      iconOnBackground_selected: matColor(0xff2B82D8),
+      textOnError: matColor(0xffffffff),
+    );
+  }
+
+  AppAppearance _colors;
+
   @override
-  AppAppearance get colors => AppAppearance(
-        primary: matColor(0xff2B82D8),
-        background: matColor(0xffffffff),
-        text: matColor(0xff000000),
-        error: matColor(0xffff0000),
-        inputBorders: matColor(0xffD7D7D7),
-        textOnPrimary: matColor(0xffffffff),
-        splashOnBackground: matColor(0xffE5E5E5),
-        textWeak: matColor(0xffB6B6B6),
-        iconOnBackground: matColor(0xff2F2F2F),
-        iconOnBackground_selected: matColor(0xff2B82D8),
-        textOnError: matColor(0xffffffff),
-      );
+  AppAppearance get colors {
+    if (_colors == null) {
+      _calculateColors();
+    }
+    return _colors;
+  }
 }
 
 // class DarkAppAppearance extends AppAppearanceGenerator {
