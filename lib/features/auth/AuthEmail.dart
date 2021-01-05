@@ -154,7 +154,7 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   gapPadding: 0,
-                  borderSide: BorderSide(color: theme.colors.error),
+                  borderSide: BorderSide(color: theme.colors.errorText),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
