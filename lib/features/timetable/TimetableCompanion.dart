@@ -10,8 +10,8 @@ class TimetableCompanion extends StatelessWidget {
 
   TimetableCompanion({
     @required this.label,
-    @required this.icon,
     @required this.color,
+    this.icon,
     this.action,
   });
 
@@ -20,7 +20,7 @@ class TimetableCompanion extends StatelessWidget {
     final theme = Provider.of<AppTheme>(context, listen: false);
     const radius = 14.0;
     return InkWell(
-      onTap: () {},
+      onTap: action,
       hoverColor: theme.colors.splashOnBackground,
       highlightColor: theme.colors.splashOnBackground,
       customBorder: RoundedRectangleBorder(

@@ -49,6 +49,12 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
               color: theme.colors.primary,
               action: () {},
             ),
+            SizedBox(height: 12),
+            TimetableCompanion(
+              label: "Сегодня пар нет",
+              icon: Icons.hourglass_empty_rounded,
+              color: theme.colors.primary,
+            ),
           ],
         ),
       ),
