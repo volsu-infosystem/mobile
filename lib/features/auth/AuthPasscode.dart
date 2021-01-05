@@ -182,7 +182,7 @@ class _AuthPasscodeView
                           ),
                         ),
                         color: theme.colors.primary,
-                        textColor: theme.colors.foregroundOnPrimary,
+                        textColor: theme.colors.textOnPrimary,
                         highlightColor: theme.colors.primary[600],
                         splashColor: theme.colors.primary,
                         highlightElevation: 0,

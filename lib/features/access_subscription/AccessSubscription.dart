@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
@@ -36,6 +37,7 @@ class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
   }
 
   bool isLoading = false;
+  bool wasSent = false;
 
   void _handleBtnClick() async {
     setState(() {
@@ -47,6 +49,7 @@ class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
     }
     setState(() {
       isLoading = false;
+      wasSent = true;
     });
   }
 
@@ -88,24 +91,35 @@ class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
                     ),
                   )
                 : Container(
-                    child: RaisedButton(
-                      onPressed: state._handleBtnClick,
-                      child: Text(
-                        "Отправить",
-                        style: TextStyle(
-                          fontWeight: semibold,
-                        ),
-                      ),
-                      color: theme.colors.primary,
-                      textColor: theme.colors.foregroundOnPrimary,
-                      highlightColor: theme.colors.primary[600],
-                      splashColor: theme.colors.primary,
-                      highlightElevation: 0,
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                    child: state.wasSent
+                        ? Center(
+                            child: Text(
+                              "Ты получишь уведомление, когда откроется доступ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: theme.colors.textWeak,
+                                fontSize: 12,
+                              ),
+                            ),
+                          )
+                        : RaisedButton(
+                            onPressed: state._handleBtnClick,
+                            child: Text(
+                              "Отправить",
+                              style: TextStyle(
+                                fontWeight: semibold,
+                              ),
+                            ),
+                            color: theme.colors.primary,
+                            textColor: theme.colors.textOnPrimary,
+                            highlightColor: theme.colors.primary[600],
+                            splashColor: theme.colors.primary,
+                            highlightElevation: 0,
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                   ),
           ),
           SizedBox(height: _paddingBetween / 2),
@@ -149,7 +163,7 @@ class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
                       text: TextSpan(
                           style: TextStyle(
                             fontSize: 15,
-                            color: theme.colors.foreground,
+                            color: theme.colors.text,
                             fontFamily: opensans,
                           ),
                           children: [

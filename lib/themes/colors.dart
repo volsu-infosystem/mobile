@@ -28,8 +28,9 @@ abstract class AppAppearanceGenerator {
 
 class AppAppearance {
   MaterialColor background;
-  MaterialColor foreground;
-  MaterialColor foregroundOnPrimary;
+  MaterialColor text;
+  MaterialColor textOnPrimary;
+  MaterialColor textWeak;
 
   MaterialColor primary;
   MaterialColor error;
@@ -40,12 +41,13 @@ class AppAppearance {
 
   AppAppearance({
     @required this.background,
-    @required this.foreground,
+    @required this.text,
     @required this.primary,
     @required this.error,
     @required this.inputBorders,
-    @required this.foregroundOnPrimary,
+    @required this.textOnPrimary,
     @required this.splashOnBackground,
+    @required this.textWeak,
   });
 }
 
@@ -55,11 +57,12 @@ class LightAppAppearance extends AppAppearanceGenerator {
   AppAppearance get colors => AppAppearance(
         primary: matColor(0xff2B82D8),
         background: matColor(0xffffffff),
-        foreground: matColor(0xff000000),
+        text: matColor(0xff000000),
         error: matColor(0xffff0000),
         inputBorders: matColor(0xffD7D7D7),
-        foregroundOnPrimary: matColor(0xffffffff),
+        textOnPrimary: matColor(0xffffffff),
         splashOnBackground: matColor(0xffE5E5E5),
+        textWeak: matColor(0xffB6B6B6),
       );
 }
 
