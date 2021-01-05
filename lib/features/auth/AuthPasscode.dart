@@ -88,7 +88,7 @@ class _AuthPasscodeView
             padding: const EdgeInsets.only(top: 12),
             child: Text(
               state.errorMsg.toString(),
-              style: TextStyle(color: theme.colors.errorText),
+              style: TextStyle(color: theme.colors.error),
             ),
           );
   }
@@ -156,7 +156,7 @@ class _AuthPasscodeView
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       gapPadding: 0,
-                      borderSide: BorderSide(color: theme.colors.errorText),
+                      borderSide: BorderSide(color: theme.colors.error),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),

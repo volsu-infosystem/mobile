@@ -32,7 +32,7 @@ class AppAppearance {
   MaterialColor foregroundOnPrimary;
 
   MaterialColor primary;
-  MaterialColor errorText;
+  MaterialColor error;
 
   MaterialColor inputBorders;
 
@@ -42,7 +42,7 @@ class AppAppearance {
     @required this.background,
     @required this.foreground,
     @required this.primary,
-    @required this.errorText,
+    @required this.error,
     @required this.inputBorders,
     @required this.foregroundOnPrimary,
     @required this.splashOnBackground,
@@ -56,7 +56,7 @@ class LightAppAppearance extends AppAppearanceGenerator {
         primary: matColor(0xff2B82D8),
         background: matColor(0xffffffff),
         foreground: matColor(0xff000000),
-        errorText: matColor(0xffff0000),
+        error: matColor(0xffff0000),
         inputBorders: matColor(0xffD7D7D7),
         foregroundOnPrimary: matColor(0xffffffff),
         splashOnBackground: matColor(0xffE5E5E5),

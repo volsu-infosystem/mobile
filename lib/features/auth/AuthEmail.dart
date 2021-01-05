@@ -142,6 +142,11 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(0),
                 fillColor: theme.colors.inputBorders,
+                border: OutlineInputBorder(
+                  gapPadding: 0,
+                  borderSide: BorderSide(color: theme.colors.inputBorders),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 enabledBorder: OutlineInputBorder(
                   gapPadding: 0,
                   borderSide: BorderSide(color: theme.colors.inputBorders),
@@ -154,7 +159,7 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   gapPadding: 0,
-                  borderSide: BorderSide(color: theme.colors.errorText),
+                  borderSide: BorderSide(color: theme.colors.error),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
