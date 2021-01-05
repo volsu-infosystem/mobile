@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
     final appTheme = Provider.of<AppTheme>(context);
     print("ed__ main rebuild. auth.isAuth=${auth.isAuth}");
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ВолГУ',
       theme: appTheme.theme,
       home: auth.isAuth ? HomeScreen() : _getCorrespondingAuthBody(auth),
     );

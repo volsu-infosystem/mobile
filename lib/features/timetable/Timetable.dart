@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/features/timetable/TimetableCompanion.dart';
+import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
 
@@ -33,8 +36,22 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Timetable"),
+    final theme = Provider.of<AppTheme>(context, listen: false);
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          children: [
+            SizedBox(height: 12),
+            TimetableCompanion(
+              label: "Сегодня пары с 10:10 до 15:10",
+              icon: Icons.school_rounded,
+              color: theme.colors.primary,
+              action: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
