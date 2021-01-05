@@ -46,10 +46,12 @@ class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
     if (_formContactsKey.currentState.validate()) {
       _formContactsKey.currentState.save();
       await Future.delayed(Duration(seconds: 1));
+      setState(() {
+        wasSent = true;
+      });
     }
     setState(() {
       isLoading = false;
-      wasSent = true;
     });
   }
 
