@@ -4,9 +4,9 @@ import 'package:volsu_app_v1/features/auth/AuthPasscode.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 
 import 'exceptions/LogicExceptions.dart';
+import 'features/home/Home.dart';
 import 'themes/AppTheme.dart';
 import 'features/auth/AuthEmail.dart';
-import 'features/home/sHome.dart';
 import 'themes/AppTheme.dart';
 
 void main() {
