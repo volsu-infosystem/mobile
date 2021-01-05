@@ -202,7 +202,7 @@ class _HomeDrawerView
                     hoverColor: theme.colors.splashOnBackground,
                     highlightColor: theme.colors.splashOnBackground,
                     onPressed: state._onLogoutDialogClicked_dismiss,
-                    child: Text("Отменить"),
+                    child: Text("Остаться"),
                   ),
                 ),
               ),
