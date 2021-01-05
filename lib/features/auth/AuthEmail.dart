@@ -113,6 +113,11 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
           Text(
             "Привет, студент!",
             textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: opensans,
+              fontWeight: semibold,
+              fontSize: 22,
+            ),
           ),
           SizedBox(height: 40),
           Text(
@@ -125,16 +130,31 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
             child: TextFormField(
               // Email
               keyboardType: TextInputType.emailAddress,
-              onSaved: (value) => state._email = value,
+              onSaved: (value) => state._email = value.toLowerCase(),
               validator: state._validateEmail,
               cursorWidth: 1.2,
               cursorColor: theme.colors.primary,
               textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: semibold,
+                fontSize: 18,
+              ),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(0),
-                border: OutlineInputBorder(
+                fillColor: theme.colors.inputBorders,
+                enabledBorder: OutlineInputBorder(
                   gapPadding: 0,
-                  borderSide: BorderSide(color: Colors.black),
+                  borderSide: BorderSide(color: theme.colors.inputBorders),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  gapPadding: 0,
+                  borderSide: BorderSide(color: theme.colors.primary),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  gapPadding: 0,
+                  borderSide: BorderSide(color: theme.colors.error),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -150,15 +170,24 @@ class _AuthEmailView extends WidgetView<AuthEmail, _AuthEmailController> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : Container(
-                    height: 50,
+                    height: 45,
                     width: 200,
                     child: RaisedButton(
                       onPressed: state._handleBtnClick,
-                      child: Text("Далее"),
+                      child: Text(
+                        "Далее",
+                        style: TextStyle(
+                          fontWeight: semibold,
+                        ),
+                      ),
                       color: theme.colors.primary,
                       textColor: theme.colors.foregroundOnPrimary,
+                      highlightColor: theme.colors.primary[600],
+                      splashColor: theme.colors.primary,
+                      highlightElevation: 0,
+                      elevation: 4,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),

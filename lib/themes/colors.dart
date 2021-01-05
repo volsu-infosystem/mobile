@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 
 /// Шаблон для определния всех цветов в приложении
 abstract class AppAppearanceGenerator {
-  MaterialColor materialColor(int hex) {
-    return MaterialColor(hex, {
-      50: Color(hex).withOpacity(0.1),
-      100: Color(hex).withOpacity(0.2),
-      200: Color(hex).withOpacity(0.3),
-      300: Color(hex).withOpacity(0.4),
-      400: Color(hex).withOpacity(0.5),
-      500: Color(hex).withOpacity(0.6),
-      600: Color(hex).withOpacity(0.7),
-      700: Color(hex).withOpacity(0.8),
-      800: Color(hex).withOpacity(0.9),
-      900: Color(hex).withOpacity(1),
+  MaterialColor matColor(int hex) {
+    final color = Color(hex);
+    List strengths = <double>[.05];
+    Map swatch = <int, Color>{};
+    final int r = color.red, g = color.green, b = color.blue;
+
+    for (int i = 1; i < 10; i++) {
+      strengths.add(0.1 * i);
+    }
+    strengths.forEach((strength) {
+      final double ds = 0.5 - strength;
+      swatch[(strength * 1000).round()] = Color.fromRGBO(
+        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+        1,
+      );
     });
+    return MaterialColor(color.value, swatch);
   }
 
   AppAppearance get colors;
@@ -41,23 +47,24 @@ class AppAppearance {
 }
 
 class LightAppAppearance extends AppAppearanceGenerator {
+  // TODO: Оптимизировать генерацию цветов. Сейчас функция [matColor()] вызывается каждый раз при обращении к [colors], хотя по логике эта функция должна быть вообще compile-time const. В крайнем случай, runtime const с ленивой инициализацией
   @override
   AppAppearance get colors => AppAppearance(
-        primary: materialColor(0xff2B82D8),
-        background: materialColor(0xffffffff),
-        foreground: materialColor(0xff000000),
-        error: materialColor(0xffff0000),
-        inputBorders: materialColor(0xffEEEEEE),
-        foregroundOnPrimary: materialColor(0xffffffff),
+        primary: matColor(0xff2B82D8),
+        background: matColor(0xffffffff),
+        foreground: matColor(0xff000000),
+        error: matColor(0xffff0000),
+        inputBorders: matColor(0xffD7D7D7),
+        foregroundOnPrimary: matColor(0xffffffff),
       );
 }
 
 // class DarkAppAppearance extends AppAppearanceGenerator {
 //   @override
 //   AppAppearance get colors => AppAppearance(
-//         primary: materialColor(0xff2B82D8),
-//         background: materialColor(0xff333333),
-//         foreground: materialColor(0xffffffff),
-//         error: materialColor(0xffff0000),
+//         primary: matColor(0xff2B82D8),
+//         background: matColor(0xff333333),
+//         foreground: matColor(0xffffffff),
+//         error: matColor(0xffff0000),
 //       );
 // }
