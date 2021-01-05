@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
+import 'DrawerItem.dart';
 
 class HomeDrawerScreen extends StatefulWidget {
   @override
@@ -70,12 +71,81 @@ class _HomeDrawerView
     );
   }
 
+  Widget _buildMainContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        DrawerItem(
+          label: "Рейтинг",
+          icon: Icons.bar_chart_rounded,
+          onTap: () {},
+        ),
+        DrawerItem(
+          label: "Рейтинг",
+          icon: Icons.bar_chart_rounded,
+          onTap: () {},
+        ),
+        DrawerItem(
+          label: "Рейтинг",
+          icon: Icons.bar_chart_rounded,
+          onTap: () {},
+        ),
+        DrawerItem(
+          label: "Рейтинг",
+          icon: Icons.bar_chart_rounded,
+          onTap: () {},
+        ),
+        DrawerItem(
+          label: "Рейтинг",
+          icon: Icons.bar_chart_rounded,
+          onTap: () {},
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomContent() {
+    return Padding(
+      padding: const EdgeInsets.only(
+          right:
+              50), // Хоть это выглядит и не красиво, но по UX -- защита от случайных нажатий на опасные кнопки (помощь, настройки, сменить аккаунт)
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          DrawerItem(
+            label: "xx",
+            icon: Icons.bar_chart_rounded,
+            onTap: () {},
+          ),
+          DrawerItem(
+            label: "xx",
+            icon: Icons.bar_chart_rounded,
+            onTap: () {},
+          ),
+          DrawerItem(
+            label: "xx",
+            icon: Icons.bar_chart_rounded,
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
         child: Column(
-          children: [_buildUserArea()],
+          children: [
+            _buildUserArea(),
+            Expanded(child: _buildMainContent()),
+            SizedBox(height: 42),
+            Wrap(children: [_buildBottomContent()]),
+            SizedBox(height: 12),
+          ],
         ),
       ),
     );
