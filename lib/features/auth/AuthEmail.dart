@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
+import 'package:volsu_app_v1/features/access_subscription/AccessSubscription.dart';
 import 'package:volsu_app_v1/features/auth/AuthPasscode.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
@@ -53,7 +54,9 @@ class _AuthEmailController extends State<AuthEmail> {
     } on EmailIsNotInWhiteList catch (e) {
       setState(() {
         errorMsg = "Данный email пока не подключён к системе";
-        // TODO Заменить на полноэкранный диалог с возможностью подписаться на рассылку
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (ctx) => AccessSubscriptionScreen(_email)),
+        );
       });
     } catch (e) {
       setState(() {
