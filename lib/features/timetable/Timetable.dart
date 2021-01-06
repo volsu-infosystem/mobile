@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/features/timetable/LessonItem.dart';
 import 'package:volsu_app_v1/features/timetable/TimetableCompanion.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
@@ -54,6 +55,47 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
               label: "Сегодня пар нет",
               icon: Icons.hourglass_empty_rounded,
               color: theme.colors.primary,
+            ),
+            SizedBox(height: 20),
+            LessonItem(
+              onTap: null,
+              location: "4-21 Г",
+              type: "Лекция",
+              endTime: "10:00",
+              name: "Математический анализ",
+              startTime: "08:30",
+              teacherName: "Клячин Владимир Александрович",
+              isWarning: true,
+            ),
+            SizedBox(height: 20),
+            LessonItem(
+              onTap: null,
+              location: "4-21 Г",
+              type: "Лекция",
+              endTime: "10:00",
+              name: "Информатика и программирование",
+              startTime: "08:30",
+              teacherName: "Клячин Владимир Александрович",
+            ),
+            SizedBox(height: 20),
+            LessonItem(
+              onTap: null,
+              location: "4-21 Г",
+              type: "Лекция",
+              endTime: "10:00",
+              name: "Математический анализ",
+              startTime: "08:30",
+              teacherName: "Клячин Владимир Александрович",
+            ),
+            SizedBox(height: 20),
+            LessonItem(
+              onTap: null,
+              location: "4-21 Г",
+              type: "Лекция",
+              endTime: "10:00",
+              name: "Математический анализ",
+              startTime: "08:30",
+              teacherName: "Клячин Владимир Александрович",
             ),
           ],
         ),

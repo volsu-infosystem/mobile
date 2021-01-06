@@ -44,6 +44,8 @@ class AppAppearance {
   MaterialColor iconOnBackground;
   MaterialColor iconOnBackground_selected;
 
+  MaterialColor divider;
+
   AppAppearance({
     @required this.background,
     @required this.text,
@@ -56,10 +58,11 @@ class AppAppearance {
     @required this.iconOnBackground,
     @required this.iconOnBackground_selected,
     @required this.textOnError,
+    @required this.divider,
   });
 }
 
-class LightAppAppearance extends AppAppearanceGenerator {
+class WhiteAppAppearance extends AppAppearanceGenerator {
   void _calculateColors() {
     _colors = AppAppearance(
       primary: matColor(0xff2B82D8),
@@ -69,10 +72,11 @@ class LightAppAppearance extends AppAppearanceGenerator {
       inputBorders: matColor(0xffD7D7D7),
       textOnPrimary: matColor(0xffffffff),
       splashOnBackground: matColor(0xffE5E5E5),
-      textWeak: matColor(0xffB6B6B6),
+      textWeak: matColor(0xff676767),
       iconOnBackground: matColor(0xff2F2F2F),
       iconOnBackground_selected: matColor(0xff2B82D8),
       textOnError: matColor(0xffffffff),
+      divider: matColor(0xffEAEAEA),
     );
   }
 

@@ -15,7 +15,7 @@ class AppTheme with ChangeNotifier {
   AppTheme(this.context);
   ColorStyle cs = ColorStyle.light;
 
-  static LightAppAppearance light = LightAppAppearance();
+  static WhiteAppAppearance light = WhiteAppAppearance();
 
   AppAppearance get colors {
     return light.colors;
