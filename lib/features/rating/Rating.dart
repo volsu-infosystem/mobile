@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:volsu_app_v1/features/_globals/WorkInProgress.dart';
 
 import '../../architecture_generics.dart';
 
@@ -31,10 +32,22 @@ class _RatingController extends State<RatingScreen>
 class _RatingView extends WidgetView<RatingScreen, _RatingController> {
   _RatingView(_RatingController state) : super(state);
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBody() {
     return Center(
       child: Text("Rating"),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        _buildBody(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: WorkInProgress(),
+        ),
+      ],
     );
   }
 }

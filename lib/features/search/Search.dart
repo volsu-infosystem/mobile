@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:volsu_app_v1/features/_globals/WorkInProgress.dart';
 
 import '../../architecture_generics.dart';
 
@@ -31,10 +32,22 @@ class _SearchController extends State<SearchScreen>
 class _SearchView extends WidgetView<SearchScreen, _SearchController> {
   _SearchView(_SearchController state) : super(state);
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBody() {
     return Center(
       child: Text("Search"),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        _buildBody(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: WorkInProgress(),
+        ),
+      ],
     );
   }
 }
