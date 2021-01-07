@@ -6,6 +6,7 @@ import 'package:volsu_app_v1/features/rating/Rating.dart';
 import 'package:volsu_app_v1/features/search/Search.dart';
 import 'package:volsu_app_v1/features/timetable/Timetable.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
+import 'package:volsu_app_v1/providers/TimetableProvider.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
@@ -26,7 +27,10 @@ class _HomeController extends State<HomeScreen> {
   Widget build(BuildContext context) => _HomeView(this);
 
   final pages = <Widget>[
-    TimetableScreen(),
+    ChangeNotifierProvider(
+      create: (ctx) => TimetableProvider(),
+      child: TimetableScreen(),
+    ),
     RatingScreen(),
     SearchScreen(),
     NotificationsScreen(),

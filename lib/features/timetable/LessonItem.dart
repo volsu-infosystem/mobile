@@ -12,6 +12,7 @@ class LessonItem extends StatelessWidget {
   final bool isWarning;
   final Function onTap;
 
+  @deprecated
   LessonItem({
     @required this.type,
     @required this.name,
