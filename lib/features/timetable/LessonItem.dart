@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/features/_globals/MyPopupItem.dart';
+import 'package:volsu_app_v1/features/_globals/LessonLPMenu.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 import 'package:volsu_app_v1/utils/CustomPopupMenu.dart';
 
@@ -130,6 +130,9 @@ class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
     return GestureDetector(
       onLongPress: _showPopup,
       onTapDown: storePosition,
+      onTap: () {
+        print("LessonItem #${widget.name} clicked");
+      },
       // TODO: IntrinsicHeight согласно документации дорог в использование. Нужно посмотреть как это можно оптимизировать, используя другой виджет
       child: IntrinsicHeight(
         child: Card(
