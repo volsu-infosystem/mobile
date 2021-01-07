@@ -29,7 +29,7 @@ class _TimetableController extends State<TimetableScreen>
     final theme = Provider.of<AppTheme>(context, listen: false);
     if (pos < 3)
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         child: TimetableCompanion(
           label: "Сегодня пары с 10:10 до 15:10",
           icon: Icons.school_rounded,
@@ -38,17 +38,14 @@ class _TimetableController extends State<TimetableScreen>
         ),
       );
     else
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: LessonItem(
-          onTap: null,
-          location: "4-21 Г",
-          type: "Лекция",
-          endTime: "10:00",
-          name: "[$pos] Информатика и программирование",
-          startTime: "08:30",
-          teacherName: "Клячин Владимир Александрович",
-        ),
+      return LessonItem(
+        onTap: null,
+        location: "4-21 Г",
+        type: "Лекция",
+        endTime: "10:00",
+        name: "[$pos] Информатика и программирование",
+        startTime: "08:30",
+        teacherName: "Клячин Владимир Александрович",
       );
   }
 }
@@ -66,12 +63,9 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: ListView.builder(
-          itemBuilder: (ctx, pos) => state._buildTimetableItem(pos),
-          itemCount: 15,
-        ),
+      child: ListView.builder(
+        itemBuilder: (ctx, pos) => state._buildTimetableItem(pos),
+        itemCount: 15,
       ),
     );
   }

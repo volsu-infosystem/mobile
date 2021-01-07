@@ -15,10 +15,10 @@ class AppTheme with ChangeNotifier {
   AppTheme(this.context);
   ColorStyle cs = ColorStyle.light;
 
-  static WhiteAppAppearance light = WhiteAppAppearance();
+  static WhiteAppAppearance white = WhiteAppAppearance();
 
   AppAppearance get colors {
-    return light.colors;
+    return white.colors;
     // if (cs == ColorStyle.light) {
     //   return LightAppAppearance().colors;
     // } else {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/features/_globals/MyPopupItem.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/utils/CustomPopupMenu.dart';
 
-class LessonItem extends StatelessWidget {
+class LessonItem extends StatefulWidget {
   final String type;
   final String name;
   final String location;
@@ -12,7 +14,6 @@ class LessonItem extends StatelessWidget {
   final bool isWarning;
   final Function onTap;
 
-  @deprecated
   LessonItem({
     @required this.type,
     @required this.name,
@@ -24,6 +25,26 @@ class LessonItem extends StatelessWidget {
     this.isWarning = false,
   });
 
+  @override
+  _LessonItemState createState() => _LessonItemState();
+}
+
+class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
+  bool isHighlighted = false;
+
+  void _showPopup() {
+    setState(() => isHighlighted = true);
+    this.showMenu(
+      color: Colors.transparent,
+      elevation: 0,
+      context: context,
+      items: [LessonLPMenu()],
+    ).then((value) {
+      print("showMenu clicked $value");
+      setState(() => isHighlighted = false);
+    });
+  }
+
   Widget _buildTimeArea(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return Container(
@@ -34,7 +55,7 @@ class LessonItem extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              startTime,
+              widget.startTime,
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: semibold,
@@ -42,7 +63,7 @@ class LessonItem extends StatelessWidget {
             ),
           ),
           Text(
-            endTime,
+            widget.endTime,
             style: TextStyle(
               fontSize: 12,
               color: theme.colors.textWeak,
@@ -61,16 +82,16 @@ class LessonItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (isWarning)
+            if (widget.isWarning)
               Icon(
                 Icons.warning_rounded,
                 color: theme.colors.error,
                 size: 14,
               ),
-            if (isWarning) SizedBox(width: 4),
+            if (widget.isWarning) SizedBox(width: 4),
             Expanded(
               child: Text(
-                type.toUpperCase(),
+                widget.type.toUpperCase(),
                 style: TextStyle(
                   color: theme.colors.primary,
                   fontFamily: montserrat,
@@ -83,7 +104,7 @@ class LessonItem extends StatelessWidget {
         ),
         SizedBox(height: 2),
         Text(
-          name,
+          widget.name,
           style: TextStyle(
             fontFamily: montserrat,
             fontWeight: semibold,
@@ -91,10 +112,10 @@ class LessonItem extends StatelessWidget {
           ),
         ),
         SizedBox(height: 2),
-        Text(location),
+        Text(widget.location),
         SizedBox(height: 2),
         Text(
-          teacherName,
+          widget.teacherName,
           style: TextStyle(
             color: theme.colors.textWeak,
           ),
@@ -106,14 +127,27 @@ class LessonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
-    // TODO: IntrinsicHeight согласно документации дорог в использование. Нужно посмотреть как это можно оптимизировать, используя другой виджет
-    return IntrinsicHeight(
-      child: Row(
-        children: [
-          _buildTimeArea(context),
-          VerticalDivider(thickness: 1, color: theme.colors.divider),
-          Expanded(child: _buildBody(context)),
-        ],
+    return GestureDetector(
+      onLongPress: _showPopup,
+      onTapDown: storePosition,
+      // TODO: IntrinsicHeight согласно документации дорог в использование. Нужно посмотреть как это можно оптимизировать, используя другой виджет
+      child: IntrinsicHeight(
+        child: Card(
+          color: isHighlighted
+              ? theme.colors.splashOnBackground[50]
+              : theme.colors.background,
+          elevation: isHighlighted ? 4 : 0,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: [
+                _buildTimeArea(context),
+                VerticalDivider(thickness: 1, color: theme.colors.divider),
+                Expanded(child: _buildBody(context)),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
