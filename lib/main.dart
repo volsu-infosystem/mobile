@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/auth/AuthPasscode.dart';
 import 'package:volsu_app_v1/providers/AuthProvider.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting("ru_RU");
     final auth = Provider.of<AuthProvider>(context);
     final appTheme = Provider.of<AppTheme>(context);
     print("ed__ main rebuild. auth.isAuth=${auth.isAuth}");

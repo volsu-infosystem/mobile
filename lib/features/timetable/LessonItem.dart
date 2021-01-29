@@ -4,7 +4,7 @@ import 'package:volsu_app_v1/features/_globals/LessonLPMenu.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 import 'package:volsu_app_v1/utils/CustomPopupMenu.dart';
 
-class LessonItem extends StatefulWidget {
+class LessonItemView extends StatefulWidget {
   final String type;
   final String name;
   final String location;
@@ -14,7 +14,7 @@ class LessonItem extends StatefulWidget {
   final bool isWarning;
   final Function onTap;
 
-  LessonItem({
+  LessonItemView({
     @required this.type,
     @required this.name,
     @required this.location,
@@ -26,10 +26,10 @@ class LessonItem extends StatefulWidget {
   });
 
   @override
-  _LessonItemState createState() => _LessonItemState();
+  _LessonItemViewState createState() => _LessonItemViewState();
 }
 
-class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
+class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
   bool isHighlighted = false;
 
   void _showPopup() {
@@ -48,7 +48,7 @@ class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
   Widget _buildTimeArea(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return Container(
-      width: 50,
+      width: 48,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -65,7 +65,7 @@ class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
           Text(
             widget.endTime,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 13,
               color: theme.colors.textWeak,
             ),
           ),
@@ -108,7 +108,7 @@ class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
           style: TextStyle(
             fontFamily: montserrat,
             fontWeight: semibold,
-            fontSize: 15,
+            fontSize: 16,
           ),
         ),
         SizedBox(height: 2),
@@ -136,17 +136,22 @@ class _LessonItemState extends State<LessonItem> with CustomPopupMenu {
       // TODO: IntrinsicHeight согласно документации дорог в использование. Нужно посмотреть как это можно оптимизировать, используя другой виджет
       child: IntrinsicHeight(
         child: Card(
-          color: isHighlighted
-              ? theme.colors.splashOnBackground[50]
-              : theme.colors.background,
+          color: isHighlighted ? theme.colors.splashOnBackground[50] : theme.colors.background,
           elevation: isHighlighted ? 4 : 0,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
-                _buildTimeArea(context),
-                VerticalDivider(thickness: 1, color: theme.colors.divider),
-                Expanded(child: _buildBody(context)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: _buildTimeArea(context),
+                ),
+                VerticalDivider(thickness: 2, color: theme.colors.divider),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: _buildBody(context),
+                )),
               ],
             ),
           ),
