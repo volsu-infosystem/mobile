@@ -1,5 +1,7 @@
 import 'dart:core';
 
+import 'package:flutter/material.dart';
+
 extension DateTimeWeekExtensions on DateTime {
   /// The ISO 8601 week of year [1..53].
   ///
@@ -39,4 +41,8 @@ extension DateTimeWeekExtensions on DateTime {
   bool get isLeapYear {
     return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
   }
+}
+
+extension TimeToMins on TimeOfDay {
+  int mins() => this.hour * 60 + this.minute;
 }

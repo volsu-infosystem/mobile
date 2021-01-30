@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/timetable/DateHeader.dart';
-import 'package:volsu_app_v1/features/timetable/LessonItem.dart';
 import 'package:volsu_app_v1/features/timetable/TimetableCompanion.dart';
 import 'package:volsu_app_v1/providers/TimetableProvider.dart';
 import 'package:volsu_app_v1/storage/LessonModel.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
+import 'LessonItem.dart';
 import 'NoLessons.dart';
 import 'TimetableBreak.dart';
 
@@ -38,16 +38,17 @@ class _TimetableController extends State<TimetableScreen>
     if (pos >= _timetableWidgets.length) {
       final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
       final theme = Provider.of<AppTheme>(context, listen: false);
+
       List<LessonModel> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
       _timetableWidgets.add(DateHeader(_dateToLoad));
-      _dateToLoad = _dateToLoad.add(Duration(days: 1));
       if (dayLessons.isEmpty) {
         _timetableWidgets.add(NoLessons());
       } else {
         for (int i = 0; i < dayLessons.length; i++) {
           _timetableWidgets.add(
-            LessonItemView(
+            LessonItem(
               lessonModel: dayLessons[i],
+              date: _dateToLoad,
               onTap: null,
             ),
           );
@@ -77,8 +78,8 @@ class _TimetableController extends State<TimetableScreen>
           }
         }
       }
+      _dateToLoad = _dateToLoad.add(Duration(days: 1));
     }
-
     return _timetableWidgets[pos];
   }
 }

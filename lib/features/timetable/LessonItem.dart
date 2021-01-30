@@ -1,27 +1,88 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/_globals/LessonLPMenu.dart';
 import 'package:volsu_app_v1/storage/LessonModel.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 import 'package:volsu_app_v1/utils/CustomPopupMenu.dart';
 
-class LessonItemView extends StatefulWidget {
+import '../../architecture_generics.dart';
+import 'package:volsu_app_v1/utils/extensions.dart';
+
+class LessonItem extends StatefulWidget {
   final LessonModel lessonModel;
   final Function onTap;
+  final DateTime date;
 
-  LessonItemView({
+  LessonItem({
     @required this.lessonModel,
+    @required this.date,
     @required this.onTap,
   });
 
   @override
-  _LessonItemViewState createState() => _LessonItemViewState();
+  _LessonItemController createState() => _LessonItemController();
 }
 
-class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
+/*
+************************************************
+*
+* **********************************************
+*/
+
+enum LessonItemTimeState { past, now, futureToday, futureNotToday }
+
+class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
+  @override
+  Widget build(BuildContext context) => _LessonItemView(this);
+
   bool isHighlighted = false;
   bool isWarning = false;
+  LessonItemTimeState timeState = LessonItemTimeState.futureNotToday;
+
+  Timer timeStateUpdating;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTimeState();
+    if (timeState == LessonItemTimeState.now || timeState == LessonItemTimeState.futureToday) {
+      timeStateUpdating = Timer.periodic(Duration(seconds: 5), (timer) {
+        _updateTimeState();
+        if (timeState == LessonItemTimeState.past) {
+          timer.cancel();
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    if (timeStateUpdating?.isActive ?? false) {
+      timeStateUpdating.cancel();
+    }
+    super.dispose();
+  }
+
+  void _updateTimeState() {
+    print("_updateTimeState: " +
+        widget.date.toIso8601String() +
+        " - " +
+        widget.lessonModel.startTime.hour.toString());
+    final minsNow = DateTime.now().hour * 60 + DateTime.now().minute;
+    setState(() {
+      if (widget.date.ordinalDate != DateTime.now().ordinalDate) {
+        timeState = LessonItemTimeState.futureNotToday;
+      } else if (widget.lessonModel.endTime.mins() < minsNow) {
+        timeState = LessonItemTimeState.past;
+      } else if (widget.lessonModel.startTime.mins() > minsNow) {
+        timeState = LessonItemTimeState.futureToday;
+      } else {
+        timeState = LessonItemTimeState.now;
+      }
+    });
+  }
 
   void _showPopup() {
     setState(() => isHighlighted = true);
@@ -35,6 +96,16 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
       setState(() => isHighlighted = false);
     });
   }
+}
+
+/*
+************************************************
+*
+* **********************************************
+*/
+
+class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
+  _LessonItemView(_LessonItemController state) : super(state);
 
   Widget _buildTimeArea(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
@@ -73,13 +144,13 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
       children: [
         Row(
           children: [
-            if (isWarning)
+            if (state.isWarning)
               Icon(
                 Icons.warning_rounded,
                 color: theme.colors.error,
                 size: 14,
               ),
-            if (isWarning) SizedBox(width: 4),
+            if (state.isWarning) SizedBox(width: 4),
             Expanded(
               child: Text(
                 widget.lessonModel.type.toUpperCase(),
@@ -119,35 +190,44 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return GestureDetector(
-      onLongPress: _showPopup,
-      onTapDown: storePosition,
+      onLongPress: state._showPopup,
+      onTapDown: state.storePosition,
       onTap: () {
         print("LessonItem #${widget.lessonModel.name} clicked");
       },
       // TODO: IntrinsicHeight согласно документации дорог в использовании. Нужно посмотреть как это можно оптимизировать, используя другой виджет
       child: IntrinsicHeight(
-        child: Card(
-          margin: EdgeInsets.all(0),
-          color: isHighlighted ? theme.colors.splashOnBackground[50] : theme.colors.background,
-          elevation: isHighlighted ? 4 : 0,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: _buildTimeArea(context),
-                ),
-                SizedBox(width: 2),
-                VerticalDivider(thickness: 2, color: theme.colors.divider),
-                SizedBox(width: 2),
-                Expanded(
-                  child: Padding(
+        child: Opacity(
+          opacity: state.timeState == LessonItemTimeState.past ? 0.3 : 1.0,
+          child: Card(
+            margin: EdgeInsets.all(0),
+            color:
+                state.isHighlighted ? theme.colors.splashOnBackground[50] : theme.colors.background,
+            elevation: state.isHighlighted ? 4 : 0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: _buildBody(context),
+                    child: _buildTimeArea(context),
                   ),
-                ),
-              ],
+                  SizedBox(width: 2),
+                  VerticalDivider(
+                    thickness: 2,
+                    color: state.timeState == LessonItemTimeState.now
+                        ? theme.colors.primary
+                        : theme.colors.divider,
+                  ),
+                  SizedBox(width: 2),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: _buildBody(context),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
