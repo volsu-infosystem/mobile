@@ -10,6 +10,7 @@ import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 import '../../architecture_generics.dart';
 import 'NoLessons.dart';
+import 'TimetableBreak.dart';
 
 class TimetableScreen extends StatefulWidget {
   @override
@@ -52,16 +53,27 @@ class _TimetableController extends State<TimetableScreen>
           );
 
           if (i != dayLessons.length - 1) {
-            _timetableWidgets.add(
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Container(
-                  width: double.infinity,
-                  height: 1,
-                  color: theme.colors.divider[200],
+            final minCur = dayLessons[i].endTime.hour * 60 + dayLessons[i].endTime.minute;
+            final minNext =
+                dayLessons[i + 1].startTime.hour * 60 + dayLessons[i + 1].startTime.minute;
+
+            if (minNext - minCur > 20) {
+              final h = (minNext - minCur) ~/ 60;
+              final m = (minNext - minCur) % 60;
+              _timetableWidgets.add(TimetableBreak("Перерыв $hч $mмин"));
+            } else {
+              _timetableWidgets.add(
+                // My divider
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: theme.colors.divider[100],
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           }
         }
       }

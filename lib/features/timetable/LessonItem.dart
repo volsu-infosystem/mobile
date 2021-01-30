@@ -39,7 +39,7 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
   Widget _buildTimeArea(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return Container(
-      width: 50,
+      width: 52,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -56,8 +56,8 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
           Text(
             widget.lessonModel.endTime.format(context),
             style: TextStyle(
-              fontSize: 12,
-              color: theme.colors.textWeak,
+              fontSize: 11,
+              color: theme.colors.textWeak[200],
             ),
           ),
           SizedBox(height: 2),
