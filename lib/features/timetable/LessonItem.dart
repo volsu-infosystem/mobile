@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/_globals/LessonLPMenu.dart';
+import 'package:volsu_app_v1/storage/LessonModel.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 import 'package:volsu_app_v1/utils/CustomPopupMenu.dart';
 
 class LessonItemView extends StatefulWidget {
-  final String type;
-  final String name;
-  final String location;
-  final String teacherName;
-  final String startTime;
-  final String endTime;
-  final bool isWarning;
+  final LessonModel lessonModel;
   final Function onTap;
 
   LessonItemView({
-    @required this.type,
-    @required this.name,
-    @required this.location,
-    @required this.teacherName,
-    @required this.startTime,
-    @required this.endTime,
+    @required this.lessonModel,
     @required this.onTap,
-    this.isWarning = false,
   });
 
   @override
@@ -31,6 +21,7 @@ class LessonItemView extends StatefulWidget {
 
 class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
   bool isHighlighted = false;
+  bool isWarning = false;
 
   void _showPopup() {
     setState(() => isHighlighted = true);
@@ -48,14 +39,14 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
   Widget _buildTimeArea(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return Container(
-      width: 48,
+      width: 50,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
             child: Text(
-              widget.startTime,
+              widget.lessonModel.startTime.format(context),
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: semibold,
@@ -63,9 +54,9 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
             ),
           ),
           Text(
-            widget.endTime,
+            widget.lessonModel.endTime.format(context),
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 12,
               color: theme.colors.textWeak,
             ),
           ),
@@ -82,16 +73,16 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
       children: [
         Row(
           children: [
-            if (widget.isWarning)
+            if (isWarning)
               Icon(
                 Icons.warning_rounded,
                 color: theme.colors.error,
                 size: 14,
               ),
-            if (widget.isWarning) SizedBox(width: 4),
+            if (isWarning) SizedBox(width: 4),
             Expanded(
               child: Text(
-                widget.type.toUpperCase(),
+                widget.lessonModel.type.toUpperCase(),
                 style: TextStyle(
                   color: theme.colors.primary,
                   fontFamily: montserrat,
@@ -104,18 +95,18 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
         ),
         SizedBox(height: 2),
         Text(
-          widget.name,
+          widget.lessonModel.name,
           style: TextStyle(
             fontFamily: montserrat,
             fontWeight: semibold,
-            fontSize: 16,
+            fontSize: 15,
           ),
         ),
         SizedBox(height: 2),
-        Text(widget.location),
+        Text(widget.lessonModel.location),
         SizedBox(height: 2),
         Text(
-          widget.teacherName,
+          widget.lessonModel.teacherName,
           style: TextStyle(
             color: theme.colors.textWeak,
           ),
@@ -131,11 +122,12 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
       onLongPress: _showPopup,
       onTapDown: storePosition,
       onTap: () {
-        print("LessonItem #${widget.name} clicked");
+        print("LessonItem #${widget.lessonModel.name} clicked");
       },
-      // TODO: IntrinsicHeight согласно документации дорог в использование. Нужно посмотреть как это можно оптимизировать, используя другой виджет
+      // TODO: IntrinsicHeight согласно документации дорог в использовании. Нужно посмотреть как это можно оптимизировать, используя другой виджет
       child: IntrinsicHeight(
         child: Card(
+          margin: EdgeInsets.all(0),
           color: isHighlighted ? theme.colors.splashOnBackground[50] : theme.colors.background,
           elevation: isHighlighted ? 4 : 0,
           child: Padding(
@@ -146,12 +138,15 @@ class _LessonItemViewState extends State<LessonItemView> with CustomPopupMenu {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: _buildTimeArea(context),
                 ),
+                SizedBox(width: 2),
                 VerticalDivider(thickness: 2, color: theme.colors.divider),
+                SizedBox(width: 2),
                 Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: _buildBody(context),
-                )),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: _buildBody(context),
+                  ),
+                ),
               ],
             ),
           ),

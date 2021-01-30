@@ -36,6 +36,7 @@ class _TimetableController extends State<TimetableScreen>
   Widget _buildTimetableItem(int pos) {
     if (pos >= _timetableWidgets.length) {
       final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
+      final theme = Provider.of<AppTheme>(context, listen: false);
       List<LessonModel> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
       _timetableWidgets.add(DateHeader(_dateToLoad));
       _dateToLoad = _dateToLoad.add(Duration(days: 1));
@@ -45,19 +46,23 @@ class _TimetableController extends State<TimetableScreen>
         for (int i = 0; i < dayLessons.length; i++) {
           _timetableWidgets.add(
             LessonItemView(
-              name: dayLessons[i].name,
-              teacherName: dayLessons[i].teacherName,
-              location: dayLessons[i].location,
-              type: dayLessons[i].type,
-              startTime: dayLessons[i].startTime.hour.toString() +
-                  ":" +
-                  dayLessons[i].startTime.minute.toString(),
-              endTime: dayLessons[i].endTime.hour.toString() +
-                  ":" +
-                  dayLessons[i].endTime.minute.toString(),
+              lessonModel: dayLessons[i],
               onTap: null,
             ),
           );
+
+          if (i != dayLessons.length - 1) {
+            _timetableWidgets.add(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Container(
+                  width: double.infinity,
+                  height: 1,
+                  color: theme.colors.divider[200],
+                ),
+              ),
+            );
+          }
         }
       }
     }
@@ -83,6 +88,7 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemBuilder: (ctx, pos) => state._buildTimetableItem(pos),
+              padding: EdgeInsets.all(0),
             ),
     );
   }
