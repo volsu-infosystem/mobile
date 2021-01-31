@@ -48,7 +48,7 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
     super.initState();
     _updateTimeState();
     if (timeState == LessonItemTimeState.now || timeState == LessonItemTimeState.futureToday) {
-      timeStateUpdating = Timer.periodic(Duration(seconds: 5), (timer) {
+      timeStateUpdating = Timer.periodic(Duration(seconds: 20), (timer) {
         _updateTimeState();
         if (timeState == LessonItemTimeState.past) {
           timer.cancel();
@@ -66,10 +66,6 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
   }
 
   void _updateTimeState() {
-    print("_updateTimeState: " +
-        widget.date.toIso8601String() +
-        " - " +
-        widget.lessonModel.startTime.hour.toString());
     final minsNow = DateTime.now().hour * 60 + DateTime.now().minute;
     setState(() {
       if (widget.date.ordinalDate != DateTime.now().ordinalDate) {
@@ -90,7 +86,7 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
       color: Colors.transparent,
       elevation: 0,
       context: context,
-      items: [LessonLPMenu()],
+      items: [LessonLPMenu(widget.lessonModel, widget.date)],
     ).then((value) {
       print("showMenu clicked $value");
       setState(() => isHighlighted = false);

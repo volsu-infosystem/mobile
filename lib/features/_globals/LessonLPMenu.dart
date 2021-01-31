@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+import 'package:volsu_app_v1/storage/LessonModel.dart';
 import 'package:volsu_app_v1/themes/AppTheme.dart';
 
 /// LP означает Long Press
 class LessonLPMenu extends PopupMenuEntry<int> {
+  final LessonModel lessonModel;
+  final DateTime date;
+
+  LessonLPMenu(
+    this.lessonModel,
+    this.date,
+  );
+
   @override
   _LessonLPMenuState createState() => _LessonLPMenuState();
 
@@ -17,14 +29,32 @@ class LessonLPMenu extends PopupMenuEntry<int> {
 }
 
 class _LessonLPMenuState extends State<LessonLPMenu> {
+  String getCopyableString() {
+    return widget.lessonModel.name +
+        ".\nДата и время: " +
+        DateFormat("d MMMM, E", "ru_RU").format(widget.date) +
+        " " +
+        widget.lessonModel.startTime.format(context) +
+        " - " +
+        widget.lessonModel.endTime.format(context) +
+        ".\nПреподаватель: " +
+        widget.lessonModel.teacherName +
+        ".\nМесто проведения: " +
+        widget.lessonModel.location;
+  }
+
   Widget _buildItem({
     @required IconData icon,
     @required String label,
     @required int value,
+    @required Function onTap,
   }) {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return InkWell(
-      onTap: () => Navigator.of(context).pop(value),
+      onTap: () {
+        onTap();
+        Navigator.of(context).pop(value);
+      },
       highlightColor: theme.colors.splashOnBackground,
       splashColor: theme.colors.splashOnBackground,
       child: Container(
@@ -67,22 +97,33 @@ class _LessonLPMenuState extends State<LessonLPMenu> {
               icon: Icons.alarm_rounded,
               label: "Уведомить за...",
               value: 1,
+              onTap: () {},
             ),
             _buildItem(
               icon: Icons.map_outlined,
               label: "Где аудитория?",
               value: 2,
+              onTap: () {},
             ),
             Divider(),
             _buildItem(
               icon: Icons.share_outlined,
               label: "Поделиться",
               value: 3,
+              onTap: () {
+                // Share.share(getCopyableString());
+              },
             ),
             _buildItem(
               icon: Icons.copy_rounded,
               label: "Копировать",
               value: 4,
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: getCopyableString()));
+                // Scaffold.of(context).showSnackBar(SnackBar(
+                //   content: Text("Скопировано!"),
+                // ));
+              },
             ),
           ],
         ),
