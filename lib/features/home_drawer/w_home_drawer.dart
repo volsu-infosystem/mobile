@@ -6,7 +6,7 @@ import 'package:volsu_app_v1/themes/app_theme.dart';
 import '../../architecture_generics.dart';
 import 'w_drawer_item.dart';
 
-class HomeDrawerScreen extends StatefulWidget {
+class HomeDrawer extends StatefulWidget {
   @override
   _HomeDrawerController createState() => _HomeDrawerController();
 }
@@ -17,7 +17,7 @@ class HomeDrawerScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _HomeDrawerController extends State<HomeDrawerScreen> {
+class _HomeDrawerController extends State<HomeDrawer> {
   @override
   Widget build(BuildContext context) => _HomeDrawerView(this);
 
@@ -51,7 +51,7 @@ class _HomeDrawerController extends State<HomeDrawerScreen> {
 * **********************************************
 */
 
-class _HomeDrawerView extends WidgetView<HomeDrawerScreen, _HomeDrawerController> {
+class _HomeDrawerView extends WidgetView<HomeDrawer, _HomeDrawerController> {
   _HomeDrawerView(_HomeDrawerController state) : super(state);
 
   Widget _buildUserArea(BuildContext context) {

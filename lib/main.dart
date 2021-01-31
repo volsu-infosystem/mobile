@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     if (auth.userCredentials == null || !auth.userCredentials.hasCorrectEmail) {
       return AuthEmail();
     } else if (!auth.userCredentials.hasCorrectToken) {
-      return AuthPasscodeScreen();
+      return AuthPasscode();
     } else if (!auth.userCredentials.hasCorrectSubgroup) {
       // TODO: Во время разработки вход в эту ветку невозможен. В будущем нужно вернуть экран выбора подгруппы ( return AuthSubgroupPickerScreen(); );
     } else {

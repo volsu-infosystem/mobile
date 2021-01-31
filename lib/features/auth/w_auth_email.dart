@@ -57,7 +57,7 @@ class _AuthEmailController extends State<AuthEmail> {
           errorMsg = " ";
           Navigator.of(context)
               .push(
-            MaterialPageRoute(builder: (ctx) => AccessSubscriptionScreen(_email)),
+            MaterialPageRoute(builder: (ctx) => AccessSubscription(_email)),
           )
               .then(
             (value) {

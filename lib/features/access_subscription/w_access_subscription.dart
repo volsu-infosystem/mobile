@@ -6,10 +6,10 @@ import 'package:volsu_app_v1/themes/app_theme.dart';
 
 import '../../architecture_generics.dart';
 
-class AccessSubscriptionScreen extends StatefulWidget {
+class AccessSubscription extends StatefulWidget {
   final String email;
 
-  const AccessSubscriptionScreen(this.email);
+  const AccessSubscription(this.email);
 
   @override
   _AccessSubscriptionController createState() => _AccessSubscriptionController();
@@ -21,7 +21,7 @@ class AccessSubscriptionScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
+class _AccessSubscriptionController extends State<AccessSubscription> {
   @override
   Widget build(BuildContext context) => _AccessSubscriptionView(this);
 
@@ -66,7 +66,7 @@ class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
 */
 
 class _AccessSubscriptionView
-    extends WidgetView<AccessSubscriptionScreen, _AccessSubscriptionController> {
+    extends WidgetView<AccessSubscription, _AccessSubscriptionController> {
   _AccessSubscriptionView(_AccessSubscriptionController state) : super(state);
 
   Widget _buildButtonArea(BuildContext context) {

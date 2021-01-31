@@ -6,7 +6,7 @@ import 'package:volsu_app_v1/themes/app_theme.dart';
 
 import '../../architecture_generics.dart';
 
-class AuthPasscodeScreen extends StatefulWidget {
+class AuthPasscode extends StatefulWidget {
   @override
   _AuthPasscodeController createState() => _AuthPasscodeController();
 }
@@ -17,7 +17,7 @@ class AuthPasscodeScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _AuthPasscodeController extends State<AuthPasscodeScreen> {
+class _AuthPasscodeController extends State<AuthPasscode> {
   @override
   Widget build(BuildContext context) => _AuthPasscodeView(this);
 
@@ -76,7 +76,7 @@ class _AuthPasscodeController extends State<AuthPasscodeScreen> {
 * **********************************************
 */
 
-class _AuthPasscodeView extends WidgetView<AuthPasscodeScreen, _AuthPasscodeController> {
+class _AuthPasscodeView extends WidgetView<AuthPasscode, _AuthPasscodeController> {
   _AuthPasscodeView(_AuthPasscodeController state) : super(state);
 
   Widget _buildErrorMessage(BuildContext context) {

@@ -86,7 +86,7 @@ class _HomeView extends WidgetView<HomeScreen, _HomeController> {
           physics: NeverScrollableScrollPhysics(),
           children: state.pages,
         ),
-        endDrawer: HomeDrawerScreen(),
+        endDrawer: HomeDrawer(),
         bottomNavigationBar: Builder(
           builder: (context) => BottomNavigationBar(
             backgroundColor: theme.colors.background,
