@@ -1,4 +1,4 @@
-import 'BaseException.dart';
+import 'base_exception.dart';
 
 class LogicException extends BaseException {
   const LogicException(

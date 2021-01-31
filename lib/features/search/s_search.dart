@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/features/_globals/WorkInProgress.dart';
+import 'package:volsu_app_v1/features/_globals/w_work_in_progress.dart';
 
 import '../../architecture_generics.dart';
 
-class RatingScreen extends StatefulWidget {
+class SearchScreen extends StatefulWidget {
   @override
-  _RatingController createState() => _RatingController();
+  _SearchController createState() => _SearchController();
 }
 
 /*
@@ -14,13 +14,13 @@ class RatingScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _RatingController extends State<RatingScreen>
-    with AutomaticKeepAliveClientMixin<RatingScreen> {
+class _SearchController extends State<SearchScreen>
+    with AutomaticKeepAliveClientMixin<SearchScreen> {
   @override
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) => _RatingView(this);
+  Widget build(BuildContext context) => _SearchView(this);
 }
 
 /*
@@ -29,12 +29,12 @@ class _RatingController extends State<RatingScreen>
 * **********************************************
 */
 
-class _RatingView extends WidgetView<RatingScreen, _RatingController> {
-  _RatingView(_RatingController state) : super(state);
+class _SearchView extends WidgetView<SearchScreen, _SearchController> {
+  _SearchView(_SearchController state) : super(state);
 
   Widget _buildBody() {
     return Center(
-      child: Text("Rating"),
+      child: Text("Search"),
     );
   }
 

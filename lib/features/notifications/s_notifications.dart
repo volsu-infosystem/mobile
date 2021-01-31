@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/features/_globals/WorkInProgress.dart';
+import 'package:volsu_app_v1/features/_globals/w_work_in_progress.dart';
 
 import '../../architecture_generics.dart';
 
-class SearchScreen extends StatefulWidget {
+class NotificationsScreen extends StatefulWidget {
   @override
-  _SearchController createState() => _SearchController();
+  _NotificationsController createState() => _NotificationsController();
 }
 
 /*
@@ -14,13 +14,13 @@ class SearchScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _SearchController extends State<SearchScreen>
-    with AutomaticKeepAliveClientMixin<SearchScreen> {
+class _NotificationsController extends State<NotificationsScreen>
+    with AutomaticKeepAliveClientMixin<NotificationsScreen> {
   @override
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) => _SearchView(this);
+  Widget build(BuildContext context) => _NotificationsView(this);
 }
 
 /*
@@ -29,12 +29,12 @@ class _SearchController extends State<SearchScreen>
 * **********************************************
 */
 
-class _SearchView extends WidgetView<SearchScreen, _SearchController> {
-  _SearchView(_SearchController state) : super(state);
+class _NotificationsView extends WidgetView<NotificationsScreen, _NotificationsController> {
+  _NotificationsView(_NotificationsController state) : super(state);
 
   Widget _buildBody() {
     return Center(
-      child: Text("Search"),
+      child: Text("Notifications"),
     );
   }
 

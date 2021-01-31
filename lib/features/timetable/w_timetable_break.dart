@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
 class TimetableBreak extends StatelessWidget {
   final String text;

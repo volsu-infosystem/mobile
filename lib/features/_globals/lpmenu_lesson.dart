@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:volsu_app_v1/storage/LessonModel.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
 /// LP означает Long Press
 class LessonLPMenu extends PopupMenuEntry<int> {

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
-import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
-import 'package:volsu_app_v1/models/UserCredentials.dart';
-import 'package:volsu_app_v1/network/DanielApi.dart';
+import 'package:volsu_app_v1/exceptions/logic_exceptions.dart';
+import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
+import 'package:volsu_app_v1/models/user_credentials.dart';
+import 'package:volsu_app_v1/network/daniel_api.dart';
 
 class AuthProvider extends ChangeNotifier {
   /// За любым обновлением поля у [_userCredentials] **необходимо** вызывать
@@ -119,8 +119,7 @@ class AuthProvider extends ChangeNotifier {
       print("ed__ UC from cache: null");
       return null;
     } else {
-      final uc =
-          UserCredentials.fromJson(prefs.getString(_sharpref_userCredentials));
+      final uc = UserCredentials.fromJson(prefs.getString(_sharpref_userCredentials));
       print("ed__ UC from cache: $uc");
       return uc;
     }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/features/_globals/WorkInProgress.dart';
+import 'package:volsu_app_v1/features/_globals/w_work_in_progress.dart';
 
 import '../../architecture_generics.dart';
 
-class NotificationsScreen extends StatefulWidget {
+class RatingScreen extends StatefulWidget {
   @override
-  _NotificationsController createState() => _NotificationsController();
+  _RatingController createState() => _RatingController();
 }
 
 /*
@@ -14,13 +14,13 @@ class NotificationsScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _NotificationsController extends State<NotificationsScreen>
-    with AutomaticKeepAliveClientMixin<NotificationsScreen> {
+class _RatingController extends State<RatingScreen>
+    with AutomaticKeepAliveClientMixin<RatingScreen> {
   @override
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) => _NotificationsView(this);
+  Widget build(BuildContext context) => _RatingView(this);
 }
 
 /*
@@ -29,13 +29,12 @@ class _NotificationsController extends State<NotificationsScreen>
 * **********************************************
 */
 
-class _NotificationsView
-    extends WidgetView<NotificationsScreen, _NotificationsController> {
-  _NotificationsView(_NotificationsController state) : super(state);
+class _RatingView extends WidgetView<RatingScreen, _RatingController> {
+  _RatingView(_RatingController state) : super(state);
 
   Widget _buildBody() {
     return Center(
-      child: Text("Notifications"),
+      child: Text("Rating"),
     );
   }
 

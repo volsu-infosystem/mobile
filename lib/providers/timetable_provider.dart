@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/storage/LessonModel.dart';
+import 'package:volsu_app_v1/storage/lesson_model.dart';
 import 'package:volsu_app_v1/utils/extensions.dart';
 
 class TimetableProvider with ChangeNotifier {

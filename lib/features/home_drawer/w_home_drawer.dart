@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/providers/AuthProvider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/providers/auth_provider.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
 import '../../architecture_generics.dart';
-import 'DrawerItem.dart';
+import 'w_drawer_item.dart';
 
 class HomeDrawerScreen extends StatefulWidget {
   @override
@@ -51,8 +51,7 @@ class _HomeDrawerController extends State<HomeDrawerScreen> {
 * **********************************************
 */
 
-class _HomeDrawerView
-    extends WidgetView<HomeDrawerScreen, _HomeDrawerController> {
+class _HomeDrawerView extends WidgetView<HomeDrawerScreen, _HomeDrawerController> {
   _HomeDrawerView(_HomeDrawerController state) : super(state);
 
   Widget _buildUserArea(BuildContext context) {
@@ -67,8 +66,7 @@ class _HomeDrawerView
           children: [
             CircleAvatar(
               radius: 24,
-              backgroundImage: NetworkImage(
-                  "https://randomuser.me/api/portraits/women/9.jpg"),
+              backgroundImage: NetworkImage("https://randomuser.me/api/portraits/women/9.jpg"),
             ),
             Expanded(
               child: Padding(

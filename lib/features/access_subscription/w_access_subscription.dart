@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/providers/AuthProvider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/providers/auth_provider.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
 import '../../architecture_generics.dart';
 
@@ -12,8 +12,7 @@ class AccessSubscriptionScreen extends StatefulWidget {
   const AccessSubscriptionScreen(this.email);
 
   @override
-  _AccessSubscriptionController createState() =>
-      _AccessSubscriptionController();
+  _AccessSubscriptionController createState() => _AccessSubscriptionController();
 }
 
 /*
@@ -66,8 +65,8 @@ class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
 * **********************************************
 */
 
-class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
-    _AccessSubscriptionController> {
+class _AccessSubscriptionView
+    extends WidgetView<AccessSubscriptionScreen, _AccessSubscriptionController> {
   _AccessSubscriptionView(_AccessSubscriptionController state) : super(state);
 
   Widget _buildButtonArea(BuildContext context) {
@@ -211,14 +210,12 @@ class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
                           fillColor: theme.colors.inputBorders,
                           border: OutlineInputBorder(
                             gapPadding: 0,
-                            borderSide:
-                                BorderSide(color: theme.colors.inputBorders),
+                            borderSide: BorderSide(color: theme.colors.inputBorders),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             gapPadding: 0,
-                            borderSide:
-                                BorderSide(color: theme.colors.inputBorders),
+                            borderSide: BorderSide(color: theme.colors.inputBorders),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           focusedBorder: OutlineInputBorder(

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
-import '../exceptions/NetworkExceptions.dart';
+import '../exceptions/network_exceptions.dart';
 
 class DanielApi {
   DanielApi._() {

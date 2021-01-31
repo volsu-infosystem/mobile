@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
-import 'package:volsu_app_v1/providers/AuthProvider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/exceptions/logic_exceptions.dart';
+import 'package:volsu_app_v1/providers/auth_provider.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
 import '../../architecture_generics.dart';
 
@@ -76,8 +76,7 @@ class _AuthPasscodeController extends State<AuthPasscodeScreen> {
 * **********************************************
 */
 
-class _AuthPasscodeView
-    extends WidgetView<AuthPasscodeScreen, _AuthPasscodeController> {
+class _AuthPasscodeView extends WidgetView<AuthPasscodeScreen, _AuthPasscodeController> {
   _AuthPasscodeView(_AuthPasscodeController state) : super(state);
 
   Widget _buildErrorMessage(BuildContext context) {
