@@ -6,6 +6,7 @@ class TimetableProvider with ChangeNotifier {
   List<LessonModel> _lessons;
 
   bool _isLoading = true;
+
   bool get isLoading => _isLoading;
 
   TimetableProvider() {

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/providers/auth_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 import '../../architecture_generics.dart';
@@ -142,6 +141,7 @@ class _AccessSubscriptionView
   }
 
   static const _paddingBetween = 15.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);

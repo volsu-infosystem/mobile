@@ -8,7 +8,9 @@ class UserCredentials {
   UserCredentials({this.email, this.token, this.subgroup});
 
   bool get hasCorrectEmail => email != null && email.isNotEmpty;
+
   bool get hasCorrectToken => token != null && token.isNotEmpty;
+
   bool get hasCorrectSubgroup => true; // TODO subgroup != null;
 
   bool get isReady {

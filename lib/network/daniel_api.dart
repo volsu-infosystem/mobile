@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-import 'dart:io';
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 
 import '../exceptions/network_exceptions.dart';
 
@@ -17,6 +16,7 @@ class DanielApi {
   }
 
   static final _instance = DanielApi._();
+
   static DanielApi get instance => _instance; // Singleton
 
   static Dio _dio;

@@ -24,13 +24,21 @@ class _HomeDrawerController extends State<HomeDrawer> {
   var isLogoutDialogShow = false;
 
   void _onDrawerItemClicked_profile() {}
+
   void _onDrawerItemClicked_rating() {}
+
   void _onDrawerItemClicked_timetable() {}
+
   void _onDrawerItemClicked_navigation() {}
+
   void _onDrawerItemClicked_mail() {}
+
   void _onDrawerItemClicked_notifications() {}
+
   void _onDrawerItemClicked_help() {}
+
   void _onDrawerItemClicked_settings() {}
+
   void _onDrawerItemClicked_logout() {
     setState(() => isLogoutDialogShow = true);
   }

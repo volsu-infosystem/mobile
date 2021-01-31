@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
-import 'package:volsu_app_v1/features/timetable/w_timetable_companion.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/storage/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
@@ -80,6 +78,7 @@ class _TimetableController extends State<TimetableScreen>
       }
       _dateToLoad = _dateToLoad.add(Duration(days: 1));
     }
+
     return _timetableWidgets[pos];
   }
 }

@@ -5,9 +5,8 @@ import 'package:volsu_app_v1/features/auth/w_auth_passcode.dart';
 import 'package:volsu_app_v1/providers/auth_provider.dart';
 
 import 'exceptions/logic_exceptions.dart';
-import 'features/home/s_home.dart';
-import 'themes/app_theme.dart';
 import 'features/auth/w_auth_email.dart';
+import 'features/home/s_home.dart';
 import 'themes/app_theme.dart';
 
 void main() {

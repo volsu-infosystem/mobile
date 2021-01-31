@@ -5,7 +5,6 @@ import 'package:volsu_app_v1/features/notifications/s_notifications.dart';
 import 'package:volsu_app_v1/features/rating/s_rating.dart';
 import 'package:volsu_app_v1/features/search/s_search.dart';
 import 'package:volsu_app_v1/features/timetable/s_timetable.dart';
-import 'package:volsu_app_v1/providers/auth_provider.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 

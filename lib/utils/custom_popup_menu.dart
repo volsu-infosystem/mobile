@@ -6,8 +6,7 @@ mixin CustomPopupMenu<T extends StatefulWidget> on State<T> {
   Offset _tapPosition;
 
   /// Pass this method to an onTapDown parameter to record the tap position.
-  void storePosition(TapDownDetails details) =>
-      _tapPosition = details.globalPosition;
+  void storePosition(TapDownDetails details) => _tapPosition = details.globalPosition;
 
   /// Use this method to show the menu.
   Future<T> showMenu<T>({
