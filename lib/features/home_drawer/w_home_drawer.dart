@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/providers/auth_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
-import '../../architecture_generics.dart';
-import 'w_drawer_item.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/features/home_drawer/w_drawer_item.dart';
 
 class HomeDrawer extends StatefulWidget {
   @override

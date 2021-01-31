@@ -50,7 +50,7 @@ class _AuthEmailController extends State<AuthEmail> {
       setState(() {
         errorMsg = null;
       });
-    } on EmailIsNotInWhiteList catch (e) {
+    } on EmailIsNotInWhiteList {
       setState(
         () {
           errorMsg = " ";

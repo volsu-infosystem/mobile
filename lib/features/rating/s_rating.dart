@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/_globals/w_work_in_progress.dart';
-
-import '../../architecture_generics.dart';
 
 class RatingScreen extends StatefulWidget {
   @override

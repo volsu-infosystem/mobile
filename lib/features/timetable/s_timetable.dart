@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
+import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
+import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
+import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/storage/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
-
-import '../../architecture_generics.dart';
-import 'w_lesson_item.dart';
-import 'w_no_lessons.dart';
-import 'w_timetable_break.dart';
 
 class TimetableScreen extends StatefulWidget {
   @override

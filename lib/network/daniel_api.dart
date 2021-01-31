@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-
-import '../exceptions/network_exceptions.dart';
+import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
 
 class DanielApi {
   DanielApi._() {

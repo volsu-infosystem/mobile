@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
-
-import '../../architecture_generics.dart';
 
 class AccessSubscription extends StatefulWidget {
   final String email;

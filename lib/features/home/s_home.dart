@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/home_drawer/w_home_drawer.dart';
 import 'package:volsu_app_v1/features/notifications/s_notifications.dart';
 import 'package:volsu_app_v1/features/rating/s_rating.dart';
@@ -7,8 +8,6 @@ import 'package:volsu_app_v1/features/search/s_search.dart';
 import 'package:volsu_app_v1/features/timetable/s_timetable.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
-
-import '../../architecture_generics.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
