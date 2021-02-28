@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
+import 'package:volsu_app_v1/storage/lesson_model.dart';
 
 class DanielApi {
   DanielApi._() {
@@ -65,5 +67,172 @@ class DanielApi {
       else
         throw ConnectionFailure(e.message, e);
     }
+  }
+
+  Future<List<LessonModel>> getLessons() async {
+    return Future.delayed(
+      Duration(milliseconds: 1500),
+      () => [
+        LessonModel(
+          name: "Матемаический анализ",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-01 А",
+          type: "Лекция",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 8, minute: 30),
+          endTime: TimeOfDay(hour: 10, minute: 00),
+          weekday: DateTime.monday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Информатика и программирование",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-02 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 10, minute: 10),
+          endTime: TimeOfDay(hour: 11, minute: 40),
+          weekday: DateTime.monday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Матемаический анализ",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-03 А",
+          type: "Лекция",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 12, minute: 00),
+          endTime: TimeOfDay(hour: 13, minute: 30),
+          weekday: DateTime.monday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Информатика и программирование",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-04 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 13, minute: 40),
+          endTime: TimeOfDay(hour: 15, minute: 10),
+          weekday: DateTime.monday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        ////////////////////////////////
+        LessonModel(
+          name: "Матемаический анализ",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-01 А",
+          type: "Лекция",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 8, minute: 30),
+          endTime: TimeOfDay(hour: 10, minute: 00),
+          weekday: DateTime.tuesday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Информатика и программирование",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-02 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 12, minute: 00),
+          endTime: TimeOfDay(hour: 13, minute: 30),
+          weekday: DateTime.tuesday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Информатика и программирование",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-03 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 13, minute: 40),
+          endTime: TimeOfDay(hour: 15, minute: 10),
+          weekday: DateTime.tuesday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        //////////////////////
+        LessonModel(
+          name: "Матемаический анализ",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "3-01 А",
+          type: "Лекция",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 12, minute: 00),
+          endTime: TimeOfDay(hour: 13, minute: 30),
+          weekday: DateTime.wednesday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Числительная техника",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "3-02 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 13, minute: 40),
+          endTime: TimeOfDay(hour: 15, minute: 10),
+          weekday: DateTime.wednesday,
+          periodicity: LessonPeriodicity.chis,
+        ),
+        /////////////////////////// thursday is no lessons
+        LessonModel(
+          name: "Физическая культура",
+          teacherName: "Халтурин Эдуард Рудольфович",
+          location: "4-01 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 10, minute: 10),
+          endTime: TimeOfDay(hour: 11, minute: 40),
+          weekday: DateTime.friday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        ////////////////////////////////////
+        LessonModel(
+          name: "Педагогика",
+          teacherName: "Путин Владимир Владимирович",
+          location: "4-01 А",
+          type: "Практика",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 8, minute: 30),
+          endTime: TimeOfDay(hour: 10, minute: 00),
+          weekday: DateTime.saturday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Педагогика",
+          teacherName: "Путин Владимир Владимирович",
+          location: "4-01 А",
+          type: "Лабораторная",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 10, minute: 10),
+          endTime: TimeOfDay(hour: 11, minute: 40),
+          weekday: DateTime.saturday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Педагогика",
+          teacherName: "Путин Владимир Владимирович",
+          location: "4-01 А",
+          type: "Лабораторная",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 12, minute: 00),
+          endTime: TimeOfDay(hour: 13, minute: 30),
+          weekday: DateTime.saturday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        LessonModel(
+          name: "Педагогика",
+          teacherName: "Путин Владимир Владимирович",
+          location: "4-01 А",
+          type: "Лабораторная",
+          importance: LessonImportance.usual,
+          startTime: TimeOfDay(hour: 13, minute: 40),
+          endTime: TimeOfDay(hour: 15, minute: 10),
+          weekday: DateTime.saturday,
+          periodicity: LessonPeriodicity.always,
+        ),
+        // sunday is weekend
+      ],
+    );
   }
 }

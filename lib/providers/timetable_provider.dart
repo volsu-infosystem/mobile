@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:volsu_app_v1/network/daniel_api.dart';
+import 'package:volsu_app_v1/storage/cache.dart';
 import 'package:volsu_app_v1/storage/lesson_model.dart';
 import 'package:volsu_app_v1/utils/extensions.dart';
 
@@ -10,20 +12,33 @@ class TimetableProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   TimetableProvider() {
-    if (shouldFetch()) {
-      forceUpdate();
-    } else {
-      _lessons = _getFromLocal();
-      _isLoading = false;
-      notifyListeners();
-    }
+    Cache.instance.isLessonsCached().then((isCached) {
+      if (isCached) {
+        Cache.instance.getLessons().then((lessons) {
+          _lessons = lessons;
+          _isLoading = false;
+          notifyListeners();
+        });
+      } else {
+        DanielApi.instance.getLessons().then((lessons) {
+          _lessons = lessons;
+          _isLoading = false;
+          notifyListeners();
+          Cache.instance.saveLessons(_lessons);
+        });
+      }
+    });
   }
 
-  Future<void> forceUpdate() async {
-    _lessons = await _getFromNetwork();
-    _isLoading = false;
+  void forceUpdate() async {
+    _isLoading = true;
     notifyListeners();
-    _cacheLessons(_lessons);
+    DanielApi.instance.getLessons().then((lessons) {
+      _lessons = lessons;
+      _isLoading = false;
+      notifyListeners();
+      Cache.instance.saveLessons(_lessons);
+    });
   }
 
   List<LessonModel> getLessonsForDay(DateTime dateTime) {
@@ -38,192 +53,5 @@ class TimetableProvider with ChangeNotifier {
       final isDateMatch = lesson.weekday == dateTime.weekday;
       return isPeriodicityMatch && isDateMatch;
     }).toList();
-  }
-
-  bool _isLessonsSavedLocally() {
-    // TODO: Is lessons saved in DB?
-    return false;
-  }
-
-  Future<List<LessonModel>> _getFromNetwork() async {
-    // TODO: Get lessons from network
-    return Future.delayed(
-      Duration(milliseconds: 1500),
-      () => [
-        LessonModel(
-          name: "Матемаический анализ",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-01 А",
-          type: "Лекция",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 8, minute: 30),
-          endTime: TimeOfDay(hour: 10, minute: 00),
-          weekday: DateTime.monday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Информатика и программирование",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-02 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 10, minute: 10),
-          endTime: TimeOfDay(hour: 11, minute: 40),
-          weekday: DateTime.monday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Матемаический анализ",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-03 А",
-          type: "Лекция",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 12, minute: 00),
-          endTime: TimeOfDay(hour: 13, minute: 30),
-          weekday: DateTime.monday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Информатика и программирование",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-04 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 13, minute: 40),
-          endTime: TimeOfDay(hour: 15, minute: 10),
-          weekday: DateTime.monday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        ////////////////////////////////
-        LessonModel(
-          name: "Матемаический анализ",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-01 А",
-          type: "Лекция",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 8, minute: 30),
-          endTime: TimeOfDay(hour: 10, minute: 00),
-          weekday: DateTime.tuesday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Информатика и программирование",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-02 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 12, minute: 00),
-          endTime: TimeOfDay(hour: 13, minute: 30),
-          weekday: DateTime.tuesday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Информатика и программирование",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-03 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 13, minute: 40),
-          endTime: TimeOfDay(hour: 15, minute: 10),
-          weekday: DateTime.tuesday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        //////////////////////
-        LessonModel(
-          name: "Матемаический анализ",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "3-01 А",
-          type: "Лекция",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 12, minute: 00),
-          endTime: TimeOfDay(hour: 13, minute: 30),
-          weekday: DateTime.wednesday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Числительная техника",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "3-02 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 13, minute: 40),
-          endTime: TimeOfDay(hour: 15, minute: 10),
-          weekday: DateTime.wednesday,
-          periodicity: LessonPeriodicity.chis,
-        ),
-        /////////////////////////// thursday is no lessons
-        LessonModel(
-          name: "Физическая культура",
-          teacherName: "Халтурин Эдуард Рудольфович",
-          location: "4-01 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 10, minute: 10),
-          endTime: TimeOfDay(hour: 11, minute: 40),
-          weekday: DateTime.friday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        ////////////////////////////////////
-        LessonModel(
-          name: "Педагогика",
-          teacherName: "Путин Владимир Владимирович",
-          location: "4-01 А",
-          type: "Практика",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 8, minute: 30),
-          endTime: TimeOfDay(hour: 10, minute: 00),
-          weekday: DateTime.saturday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Педагогика",
-          teacherName: "Путин Владимир Владимирович",
-          location: "4-01 А",
-          type: "Лабораторная",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 10, minute: 10),
-          endTime: TimeOfDay(hour: 11, minute: 40),
-          weekday: DateTime.saturday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Педагогика",
-          teacherName: "Путин Владимир Владимирович",
-          location: "4-01 А",
-          type: "Лабораторная",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 12, minute: 00),
-          endTime: TimeOfDay(hour: 13, minute: 30),
-          weekday: DateTime.saturday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        LessonModel(
-          name: "Педагогика",
-          teacherName: "Путин Владимир Владимирович",
-          location: "4-01 А",
-          type: "Лабораторная",
-          importance: LessonImportance.usual,
-          startTime: TimeOfDay(hour: 13, minute: 40),
-          endTime: TimeOfDay(hour: 15, minute: 10),
-          weekday: DateTime.saturday,
-          periodicity: LessonPeriodicity.always,
-        ),
-        // sunday is weekend
-      ],
-    );
-  }
-
-  bool shouldFetch() {
-    if (!_isLessonsSavedLocally()) return true;
-    // TODO: Сделать легковесный запрос на сервер: "обновилось ли расписание?"
-    return true;
-  }
-
-  List<LessonModel> _getFromLocal() {
-    // TODO: Get from DB
-  }
-
-  void _cacheLessons(List<LessonModel> lessons) {
-    // TODO: Save to DB
   }
 }

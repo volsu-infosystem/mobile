@@ -47,4 +47,29 @@ class LessonModel {
     @required this.periodicity,
     this.exactDate,
   });
+
+  Map<String, dynamic> toJson() => {
+        "name": this.name,
+        "teacherName": this.teacherName,
+        "location": this.location,
+        "type": this.type,
+        "importance": this.importance.toString(),
+        "startTime": this.startTime,
+        "endTime": this.endTime,
+        "weekday": this.weekday,
+        "periodicity": this.periodicity.toString(),
+        "exactDate": this.exactDate.microsecondsSinceEpoch,
+      };
+
+  LessonModel.fromJson(Map<String, dynamic> json)
+      : name = json["name"],
+        teacherName = json["teacherName"],
+        location = json["location"],
+        type = json["type"],
+        importance = json["importance"],
+        startTime = json["startTime"],
+        endTime = json["endTime"],
+        weekday = json["weekday"],
+        periodicity = json["periodicity"],
+        exactDate = DateTime.fromMicrosecondsSinceEpoch(json["exactDate"]);
 }
