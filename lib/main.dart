@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
     initializeDateFormatting("ru_RU");
     final auth = Provider.of<AuthProvider>(context);
     final appTheme = Provider.of<AppTheme>(context);
-    print("ed__ main rebuild. auth.isAuth=${auth.isAuth}");
     return MaterialApp(
       title: 'ВолГУ',
       theme: appTheme.theme,

@@ -29,7 +29,6 @@ class AppTheme with ChangeNotifier {
   }
 
   void updateColorStyle(ColorStyle colorStyle) {
-    print("updateColorStyle $colorStyle");
     cs = colorStyle;
     notifyListeners();
   }

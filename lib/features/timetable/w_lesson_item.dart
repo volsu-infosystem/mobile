@@ -88,7 +88,6 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
       context: context,
       items: [LessonLPMenu(widget.lessonModel, widget.date)],
     ).then((value) {
-      print("showMenu clicked $value");
       setState(() => isHighlighted = false);
     });
   }
@@ -188,9 +187,6 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
     return GestureDetector(
       onLongPress: state._showPopup,
       onTapDown: state.storePosition,
-      onTap: () {
-        print("LessonItem #${widget.lessonModel.name} clicked");
-      },
       // TODO: IntrinsicHeight согласно документации дорог в использовании. Нужно посмотреть как это можно оптимизировать, используя другой виджет
       child: IntrinsicHeight(
         child: Opacity(

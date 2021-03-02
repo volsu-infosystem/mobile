@@ -23,7 +23,6 @@ class UserCredentials {
         subgroup = json['subgroup'];
 
   static UserCredentials fromJson(String json) {
-    print("ed__ UserCredentials.fromJson");
     return UserCredentials.fromMap(jsonDecode(json));
   }
 
@@ -36,7 +35,6 @@ class UserCredentials {
   }
 
   String toJson() {
-    print("ed__ UserCredentials.toJson");
     return json.encode(this.toMap());
   }
 
