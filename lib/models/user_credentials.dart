@@ -8,7 +8,9 @@ class UserCredentials {
   UserCredentials({this.email, this.token, this.subgroup});
 
   bool get hasCorrectEmail => email != null && email.isNotEmpty;
+
   bool get hasCorrectToken => token != null && token.isNotEmpty;
+
   bool get hasCorrectSubgroup => true; // TODO subgroup != null;
 
   bool get isReady {
@@ -21,7 +23,6 @@ class UserCredentials {
         subgroup = json['subgroup'];
 
   static UserCredentials fromJson(String json) {
-    print("ed__ UserCredentials.fromJson");
     return UserCredentials.fromMap(jsonDecode(json));
   }
 
@@ -34,7 +35,6 @@ class UserCredentials {
   }
 
   String toJson() {
-    print("ed__ UserCredentials.toJson");
     return json.encode(this.toMap());
   }
 

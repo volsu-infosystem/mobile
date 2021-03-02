@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:volsu_app_v1/exceptions/LogicExceptions.dart';
-import 'package:volsu_app_v1/exceptions/NetworkExceptions.dart';
-import 'package:volsu_app_v1/models/UserCredentials.dart';
-import 'package:volsu_app_v1/network/DanielApi.dart';
+import 'package:volsu_app_v1/exceptions/logic_exceptions.dart';
+import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
+import 'package:volsu_app_v1/models/user_credentials.dart';
+import 'package:volsu_app_v1/network/daniel_api.dart';
+import 'package:volsu_app_v1/storage/cache.dart';
 
 class AuthProvider extends ChangeNotifier {
   /// За любым обновлением поля у [_userCredentials] **необходимо** вызывать
@@ -13,9 +14,7 @@ class AuthProvider extends ChangeNotifier {
   UserCredentials _userCredentials;
 
   AuthProvider() {
-    print("ed__ AuthProvider");
     _getUserCredentialsCache().then((value) {
-      print("ed__ _getUserCredentialsCache().then((value) ");
       _userCredentials = value;
       notifyListeners();
     });
@@ -38,7 +37,6 @@ class AuthProvider extends ChangeNotifier {
   /// Read only.
   /// Изменения на выданный объект не затронут общего состояния приложения
   UserCredentials get userCredentials {
-    print("ed__ get userCredentials");
     if (_userCredentials == null) {
       return null;
     }
@@ -46,8 +44,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    print("ed__ logout");
     _userCredentials = null;
+    Cache.instance.clearAll();
     _updateUserCredentialsCache();
     notifyListeners();
   }
@@ -56,7 +54,6 @@ class AuthProvider extends ChangeNotifier {
   /// записывает данный емейл в [_userCredentials] и
   /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> requestPassCodeForEmail(String email) async {
-    print("ed__ requestPassCodeForEmail");
     Response<dynamic> response;
     try {
       response = await DanielApi.instance.requestPassCode(email);
@@ -68,7 +65,7 @@ class AuthProvider extends ChangeNotifier {
       _userCredentials = UserCredentials(email: email);
       _updateUserCredentialsCache();
       notifyListeners();
-    } on ConnectionFailure catch (e) {
+    } on ConnectionFailure {
       throw ConnectionFailure("");
     }
   }
@@ -77,7 +74,6 @@ class AuthProvider extends ChangeNotifier {
   /// запрос удался, записывает возвращённый токен в [_userCredentials] и
   /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> authWithCode(String email, String code) async {
-    print("ed__ authWithCode");
     Response<dynamic> response;
     try {
       response = await DanielApi.instance.authWithCode(email, code);
@@ -89,7 +85,7 @@ class AuthProvider extends ChangeNotifier {
       _userCredentials.token = (response.data)['access_token'] as String;
       _updateUserCredentialsCache();
       notifyListeners();
-    } on ConnectionFailure catch (e) {
+    } on ConnectionFailure {
       throw ConnectionFailure("");
     }
   }
@@ -101,7 +97,6 @@ class AuthProvider extends ChangeNotifier {
   /// Перезаписывает текущую версию [_userCredentials] из оперативной памяти
   /// в локальное хранилище в фоновом потоке. Оптимистичная операция.
   Future<void> _updateUserCredentialsCache() async {
-    print("ed__ _updateUserCredentialsCache");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_userCredentials == null) {
       if (prefs.containsKey(_sharpref_userCredentials)) {
@@ -113,15 +108,11 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<UserCredentials> _getUserCredentialsCache() async {
-    print("ed__ _getUserCredentialsCache");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(_sharpref_userCredentials)) {
-      print("ed__ UC from cache: null");
       return null;
     } else {
-      final uc =
-          UserCredentials.fromJson(prefs.getString(_sharpref_userCredentials));
-      print("ed__ UC from cache: $uc");
+      final uc = UserCredentials.fromJson(prefs.getString(_sharpref_userCredentials));
       return uc;
     }
   }

@@ -12,7 +12,9 @@ const bold = FontWeight.w700;
 
 class AppTheme with ChangeNotifier {
   final BuildContext context;
+
   AppTheme(this.context);
+
   ColorStyle cs = ColorStyle.light;
 
   static WhiteAppAppearance white = WhiteAppAppearance();
@@ -27,7 +29,6 @@ class AppTheme with ChangeNotifier {
   }
 
   void updateColorStyle(ColorStyle colorStyle) {
-    print("updateColorStyle $colorStyle");
     cs = colorStyle;
     notifyListeners();
   }

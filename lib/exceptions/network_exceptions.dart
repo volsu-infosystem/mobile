@@ -1,4 +1,4 @@
-import 'BaseException.dart';
+import 'package:volsu_app_v1/exceptions/base_exception.dart';
 
 class NetworkException extends BaseException {
   const NetworkException(

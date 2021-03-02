@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/features/home_drawer/HomeDrawer.dart';
-import 'package:volsu_app_v1/features/notifications/Notifications.dart';
-import 'package:volsu_app_v1/features/rating/Rating.dart';
-import 'package:volsu_app_v1/features/search/Search.dart';
-import 'package:volsu_app_v1/features/timetable/Timetable.dart';
-import 'package:volsu_app_v1/providers/AuthProvider.dart';
-import 'package:volsu_app_v1/providers/TimetableProvider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
-
-import '../../architecture_generics.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/features/home_drawer/w_home_drawer.dart';
+import 'package:volsu_app_v1/features/notifications/s_notifications.dart';
+import 'package:volsu_app_v1/features/rating/s_rating.dart';
+import 'package:volsu_app_v1/features/search/s_search.dart';
+import 'package:volsu_app_v1/features/timetable/s_timetable.dart';
+import 'package:volsu_app_v1/providers/timetable_provider.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -86,7 +84,7 @@ class _HomeView extends WidgetView<HomeScreen, _HomeController> {
           physics: NeverScrollableScrollPhysics(),
           children: state.pages,
         ),
-        endDrawer: HomeDrawerScreen(),
+        endDrawer: HomeDrawer(),
         bottomNavigationBar: Builder(
           builder: (context) => BottomNavigationBar(
             backgroundColor: theme.colors.background,

@@ -1,19 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/providers/AuthProvider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
-import '../../architecture_generics.dart';
-
-class AccessSubscriptionScreen extends StatefulWidget {
+class AccessSubscription extends StatefulWidget {
   final String email;
 
-  const AccessSubscriptionScreen(this.email);
+  const AccessSubscription(this.email);
 
   @override
-  _AccessSubscriptionController createState() =>
-      _AccessSubscriptionController();
+  _AccessSubscriptionController createState() => _AccessSubscriptionController();
 }
 
 /*
@@ -22,7 +19,7 @@ class AccessSubscriptionScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
+class _AccessSubscriptionController extends State<AccessSubscription> {
   @override
   Widget build(BuildContext context) => _AccessSubscriptionView(this);
 
@@ -66,8 +63,8 @@ class _AccessSubscriptionController extends State<AccessSubscriptionScreen> {
 * **********************************************
 */
 
-class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
-    _AccessSubscriptionController> {
+class _AccessSubscriptionView
+    extends WidgetView<AccessSubscription, _AccessSubscriptionController> {
   _AccessSubscriptionView(_AccessSubscriptionController state) : super(state);
 
   Widget _buildButtonArea(BuildContext context) {
@@ -143,6 +140,7 @@ class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
   }
 
   static const _paddingBetween = 15.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<AppTheme>(context, listen: false);
@@ -211,14 +209,12 @@ class _AccessSubscriptionView extends WidgetView<AccessSubscriptionScreen,
                           fillColor: theme.colors.inputBorders,
                           border: OutlineInputBorder(
                             gapPadding: 0,
-                            borderSide:
-                                BorderSide(color: theme.colors.inputBorders),
+                            borderSide: BorderSide(color: theme.colors.inputBorders),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             gapPadding: 0,
-                            borderSide:
-                                BorderSide(color: theme.colors.inputBorders),
+                            borderSide: BorderSide(color: theme.colors.inputBorders),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           focusedBorder: OutlineInputBorder(

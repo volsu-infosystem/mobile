@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 /// Шаблон для определния всех цветов в приложении
 abstract class AppAppearanceGenerator {
   MaterialColor matColor(int hex) {
-    print("matColor");
     final color = Color(hex);
     List strengths = <double>[.05];
     Map swatch = <int, Color>{};

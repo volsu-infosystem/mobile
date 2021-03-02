@@ -10,12 +10,3 @@ abstract class WidgetView<T1, T2> extends StatelessWidget {
   @override
   Widget build(BuildContext context);
 }
-
-abstract class StatelessView<T1> extends StatelessWidget {
-  final T1 widget;
-
-  const StatelessView(this.widget, {Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context);
-}

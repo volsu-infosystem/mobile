@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/features/_globals/WorkInProgress.dart';
-
-import '../../architecture_generics.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/features/_globals/w_work_in_progress.dart';
 
 class NotificationsScreen extends StatefulWidget {
   @override
@@ -29,8 +28,7 @@ class _NotificationsController extends State<NotificationsScreen>
 * **********************************************
 */
 
-class _NotificationsView
-    extends WidgetView<NotificationsScreen, _NotificationsController> {
+class _NotificationsView extends WidgetView<NotificationsScreen, _NotificationsController> {
   _NotificationsView(_NotificationsController state) : super(state);
 
   Widget _buildBody() {

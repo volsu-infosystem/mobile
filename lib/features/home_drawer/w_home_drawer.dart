@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/providers/AuthProvider.dart';
-import 'package:volsu_app_v1/themes/AppTheme.dart';
+import 'package:volsu_app_v1/providers/auth_provider.dart';
+import 'package:volsu_app_v1/themes/app_theme.dart';
 
-import '../../architecture_generics.dart';
-import 'DrawerItem.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/features/home_drawer/w_drawer_item.dart';
 
-class HomeDrawerScreen extends StatefulWidget {
+class HomeDrawer extends StatefulWidget {
   @override
   _HomeDrawerController createState() => _HomeDrawerController();
 }
@@ -17,20 +17,28 @@ class HomeDrawerScreen extends StatefulWidget {
 * **********************************************
 */
 
-class _HomeDrawerController extends State<HomeDrawerScreen> {
+class _HomeDrawerController extends State<HomeDrawer> {
   @override
   Widget build(BuildContext context) => _HomeDrawerView(this);
 
   var isLogoutDialogShow = false;
 
   void _onDrawerItemClicked_profile() {}
+
   void _onDrawerItemClicked_rating() {}
+
   void _onDrawerItemClicked_timetable() {}
+
   void _onDrawerItemClicked_navigation() {}
+
   void _onDrawerItemClicked_mail() {}
+
   void _onDrawerItemClicked_notifications() {}
+
   void _onDrawerItemClicked_help() {}
+
   void _onDrawerItemClicked_settings() {}
+
   void _onDrawerItemClicked_logout() {
     setState(() => isLogoutDialogShow = true);
   }
@@ -51,8 +59,7 @@ class _HomeDrawerController extends State<HomeDrawerScreen> {
 * **********************************************
 */
 
-class _HomeDrawerView
-    extends WidgetView<HomeDrawerScreen, _HomeDrawerController> {
+class _HomeDrawerView extends WidgetView<HomeDrawer, _HomeDrawerController> {
   _HomeDrawerView(_HomeDrawerController state) : super(state);
 
   Widget _buildUserArea(BuildContext context) {
@@ -67,8 +74,7 @@ class _HomeDrawerView
           children: [
             CircleAvatar(
               radius: 24,
-              backgroundImage: NetworkImage(
-                  "https://randomuser.me/api/portraits/women/9.jpg"),
+              backgroundImage: NetworkImage("https://randomuser.me/api/portraits/women/9.jpg"),
             ),
             Expanded(
               child: Padding(

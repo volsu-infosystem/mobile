@@ -1,51 +1,75 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/storage/LessonModel.dart';
-import 'package:volsu_app_v1/utils/extensions.dart';
+import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
+import 'package:volsu_app_v1/storage/lesson_model.dart';
 
-class TimetableProvider with ChangeNotifier {
-  List<LessonModel> _lessons;
+class DanielApi {
+  DanielApi._() {
+    _dio = Dio();
+    _dio.options.baseUrl = "http://64.227.74.131/api/";
+    _dio.interceptors.add(LogInterceptor(
+      responseBody: true,
+      requestBody: true,
+    ));
+  }
 
-  bool _isLoading = true;
-  bool get isLoading => _isLoading;
+  static final _instance = DanielApi._();
 
-  TimetableProvider() {
-    if (shouldFetch()) {
-      forceUpdate();
-    } else {
-      _lessons = _getFromLocal();
-      _isLoading = false;
-      notifyListeners();
+  static DanielApi get instance => _instance; // Singleton
+
+  static Dio _dio;
+
+  Future<Response<dynamic>> requestPassCode(String email) async {
+    const url = "auth/request";
+    Response<dynamic> response;
+    try {
+      response = await _dio.post(
+        url,
+        data: json.encode(
+          {
+            "email": email,
+          },
+        ),
+      );
+      return response;
+    } on DioError catch (e) {
+      if (e.response != null) {
+        // statusCode != 2xx && != 304
+        // Обработка таких ошибок на стороне бизнес-логики
+        return e.response;
+      } else {
+        // Проблемы с соединением. Ответа от сервера не пришло.
+        throw ConnectionFailure(e.message, e);
+      }
     }
   }
 
-  Future<void> forceUpdate() async {
-    _lessons = await _getFromNetwork();
-    _isLoading = false;
-    notifyListeners();
-    _cacheLessons(_lessons);
+  Future<Response<dynamic>> authWithCode(String email, String passCode) async {
+    const url = "auth/login";
+    Response<dynamic> response;
+    try {
+      response = await _dio.post(
+        url,
+        data: json.encode(
+          {
+            "email": email,
+            "secretCode": int.parse(passCode),
+          },
+        ),
+      );
+      return response;
+    } on DioError catch (e) {
+      if (e.response != null)
+        return e.response;
+      else
+        throw ConnectionFailure(e.message, e);
+    }
   }
 
-  List<LessonModel> getLessonsForDay(DateTime dateTime) {
-    // TODO: Добавить правильный просчёт числительно-знаменательных недель
-    // Сейчас чётные недели будут числ, нечётные знам
-    LessonPeriodicity curWeekPeriodicity =
-        dateTime.week % 2 == 0 ? LessonPeriodicity.chis : LessonPeriodicity.znam;
-
-    return _lessons.where((LessonModel lesson) {
-      final isPeriodicityMatch = lesson.periodicity == LessonPeriodicity.always ||
-          lesson.periodicity == curWeekPeriodicity;
-      final isDateMatch = lesson.weekday == dateTime.weekday;
-      return isPeriodicityMatch && isDateMatch;
-    }).toList();
-  }
-
-  bool _isLessonsSavedLocally() {
-    // TODO: Is lessons saved in DB?
-    return false;
-  }
-
-  Future<List<LessonModel>> _getFromNetwork() async {
-    // TODO: Get lessons from network
+  Future<List<LessonModel>> getLessons() async {
     return Future.delayed(
       Duration(milliseconds: 1500),
       () => [
@@ -210,19 +234,5 @@ class TimetableProvider with ChangeNotifier {
         // sunday is weekend
       ],
     );
-  }
-
-  bool shouldFetch() {
-    if (!_isLessonsSavedLocally()) return true;
-    // TODO: Сделать легковесный запрос на сервер: "обновилось ли расписание?"
-    return true;
-  }
-
-  List<LessonModel> _getFromLocal() {
-    // TODO: Get from DB
-  }
-
-  void _cacheLessons(List<LessonModel> lessons) {
-    // TODO: Save to DB
   }
 }
