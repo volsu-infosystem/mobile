@@ -187,6 +187,7 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
     return GestureDetector(
       onLongPress: state._showPopup,
       onTapDown: state.storePosition,
+      onTap: widget.onTap,
       // TODO: IntrinsicHeight согласно документации дорог в использовании. Нужно посмотреть как это можно оптимизировать, используя другой виджет
       child: IntrinsicHeight(
         child: Opacity(
