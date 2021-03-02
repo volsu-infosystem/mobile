@@ -34,48 +34,55 @@ class _TimetableController extends State<TimetableScreen>
   Widget _buildTimetableItem(int pos) {
     if (pos >= _timetableWidgets.length) {
       final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
-      final theme = Provider.of<AppTheme>(context, listen: false);
 
-      List<LessonModel> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
-      _timetableWidgets.add(DateHeader(_dateToLoad));
-      if (dayLessons.isEmpty) {
-        _timetableWidgets.add(NoLessons());
+      if (pos == 0) {
+        _timetableWidgets.add(FlatButton(
+          onPressed: timetableProvider.forceUpdate,
+          child: Text("Обновить"),
+        ));
       } else {
-        for (int i = 0; i < dayLessons.length; i++) {
-          _timetableWidgets.add(
-            LessonItem(
-              lessonModel: dayLessons[i],
-              date: _dateToLoad,
-              onTap: null,
-            ),
-          );
+        final theme = Provider.of<AppTheme>(context, listen: false);
+        List<LessonModel> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
+        _timetableWidgets.add(DateHeader(_dateToLoad));
+        if (dayLessons.isEmpty) {
+          _timetableWidgets.add(NoLessons());
+        } else {
+          for (int i = 0; i < dayLessons.length; i++) {
+            _timetableWidgets.add(
+              LessonItem(
+                lessonModel: dayLessons[i],
+                date: _dateToLoad,
+                onTap: null,
+              ),
+            );
 
-          if (i != dayLessons.length - 1) {
-            final minCur = dayLessons[i].endTime.hour * 60 + dayLessons[i].endTime.minute;
-            final minNext =
-                dayLessons[i + 1].startTime.hour * 60 + dayLessons[i + 1].startTime.minute;
+            if (i != dayLessons.length - 1) {
+              final minCur = dayLessons[i].endTime.hour * 60 + dayLessons[i].endTime.minute;
+              final minNext =
+                  dayLessons[i + 1].startTime.hour * 60 + dayLessons[i + 1].startTime.minute;
 
-            if (minNext - minCur > 20) {
-              final h = (minNext - minCur) ~/ 60;
-              final m = (minNext - minCur) % 60;
-              _timetableWidgets.add(TimetableBreak("Перерыв $hч $mмин"));
-            } else {
-              _timetableWidgets.add(
-                // My divider
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: theme.colors.divider[100],
+              if (minNext - minCur > 20) {
+                final h = (minNext - minCur) ~/ 60;
+                final m = (minNext - minCur) % 60;
+                _timetableWidgets.add(TimetableBreak("Перерыв $hч $mмин"));
+              } else {
+                _timetableWidgets.add(
+                  // My divider
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: Container(
+                      width: double.infinity,
+                      height: 1,
+                      color: theme.colors.divider[100],
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             }
           }
         }
+        _dateToLoad = _dateToLoad.add(Duration(days: 1));
       }
-      _dateToLoad = _dateToLoad.add(Duration(days: 1));
     }
 
     return _timetableWidgets[pos];
