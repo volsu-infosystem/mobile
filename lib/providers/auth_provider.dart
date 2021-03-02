@@ -5,6 +5,7 @@ import 'package:volsu_app_v1/exceptions/logic_exceptions.dart';
 import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
 import 'package:volsu_app_v1/models/user_credentials.dart';
 import 'package:volsu_app_v1/network/daniel_api.dart';
+import 'package:volsu_app_v1/storage/cache.dart';
 
 class AuthProvider extends ChangeNotifier {
   /// За любым обновлением поля у [_userCredentials] **необходимо** вызывать
@@ -46,8 +47,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    print("ed__ logout");
     _userCredentials = null;
+    Cache.instance.clearAll();
     _updateUserCredentialsCache();
     notifyListeners();
   }
@@ -56,7 +57,6 @@ class AuthProvider extends ChangeNotifier {
   /// записывает данный емейл в [_userCredentials] и
   /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> requestPassCodeForEmail(String email) async {
-    print("ed__ requestPassCodeForEmail");
     Response<dynamic> response;
     try {
       response = await DanielApi.instance.requestPassCode(email);
