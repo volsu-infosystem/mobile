@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/lesson_detail/w_lesson_info.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 class LessonDetailScreen extends StatefulWidget {
@@ -45,17 +45,45 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
       ),
       LessonInfo(
         icon: Icons.room_rounded,
-        label: "3-01 А",
+        label: widget.lesson.location,
       ),
       LessonInfo(
         icon: Icons.school_rounded,
-        label: "доц. Иванов Иван Иванович",
+        label: widget.lesson.teacherName,
       ),
     ];
   }
 
   Widget _buildBody(BuildContext context) {
     final theme = Provider.of<AppTheme>(context);
+    var dayweek;
+    switch (widget.lesson.weekday) {
+      case 1:
+        dayweek = "понедельник";
+        break;
+      case 2:
+        dayweek = "вторник";
+        break;
+      case 3:
+        dayweek = "среда";
+        break;
+      case 4:
+        dayweek = "четверг";
+        break;
+      case 5:
+        dayweek = "пятница";
+        break;
+      case 6:
+        dayweek = "суббота";
+        break;
+      case 7:
+        dayweek = "воскресенье";
+        break;
+      default:
+        dayweek = "[ошибка]";
+        break;
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +109,12 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
         ),
         SizedBox(height: 5),
         Text(
-          "xx октября, суббота\n10:10 — 11:40",
+          "xx месяц, " +
+              dayweek +
+              "\n" +
+              widget.lesson.startTime.format(context) +
+              " — " +
+              widget.lesson.endTime.format(context),
           style: TextStyle(
             fontWeight: semibold,
           ),
@@ -142,7 +175,40 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
             highlightColor: theme.colors.background[600],
             splashColor: theme.colors.background,
             highlightElevation: 0,
-            elevation: 4,
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          // Create notification
+          width: double.infinity,
+          height: 45,
+          child: RaisedButton(
+            onPressed: () {},
+            child: Row(
+              children: [
+                Icon(Icons.map_rounded),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Text(
+                    "Показать аудиторию на карте",
+                    style: TextStyle(
+                        // fontWeight: semibold,
+                        ),
+                  ),
+                ),
+                Icon(Icons.keyboard_arrow_right_rounded),
+              ],
+            ),
+            color: theme.colors.background,
+            textColor: theme.colors.text,
+            highlightColor: theme.colors.background[600],
+            splashColor: theme.colors.background,
+            highlightElevation: 0,
+            elevation: 3,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -175,7 +241,7 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
             highlightColor: theme.colors.primary[600],
             splashColor: theme.colors.primary,
             highlightElevation: 0,
-            elevation: 4,
+            elevation: 3,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -195,14 +261,28 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10),
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: theme.colors.weakIconOnBackground,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: theme.colors.iconOnBackground,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Expanded(child: Container()),
+                IconButton(
+                  icon: Icon(
+                    Icons.share_rounded,
+                    color: theme.colors.iconOnBackground,
+                  ),
+                  onPressed: () {
+                    // TODO Share
+                  },
+                ),
+              ],
             ),
             Expanded(
               child: Padding(

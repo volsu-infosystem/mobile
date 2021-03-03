@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 
 class DanielApi {
   DanielApi._() {

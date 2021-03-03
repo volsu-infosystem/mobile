@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 /// LP означает Long Press

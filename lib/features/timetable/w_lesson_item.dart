@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/_globals/lpmenu_lesson.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 import 'package:volsu_app_v1/utils/custom_popup_menu.dart';
 import 'package:volsu_app_v1/utils/extensions.dart';

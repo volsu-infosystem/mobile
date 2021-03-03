@@ -6,8 +6,8 @@ import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
 import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
 import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
 import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 class TimetableScreen extends StatefulWidget {
