@@ -44,7 +44,7 @@ class TimetableProvider with ChangeNotifier {
 
   List<BaseLesson> getLessonsForDay(DateTime dateTime) {
     if (_base == null) {
-      return [];
+      return <BaseLesson>[];
     }
     // TODO: Добавить правильный просчёт числительно-знаменательных недель
     // Сейчас чётные недели будут числ, нечётные знам

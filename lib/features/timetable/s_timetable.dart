@@ -6,8 +6,8 @@ import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
 import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
 import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
 import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
+import 'package:volsu_app_v1/features/timetable/w_timetable_companion.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
-import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
@@ -33,6 +33,49 @@ class _TimetableController extends State<TimetableScreen>
   DateTime _dateToLoad = DateTime.now();
   List<Widget> _timetableWidgets = [];
 
+  List<TimetableCompanion> _companions = [];
+
+  void _defineCompanions() {
+    final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
+    final theme = Provider.of<AppTheme>(context, listen: false);
+    final todayLessons = timetableProvider.getLessonsForDay(DateTime.now());
+
+    if (todayLessons.isEmpty) {
+      _companions = [
+        TimetableCompanion(
+          label: 'Сегодня пар нет',
+          color: theme.colors.primary,
+          icon: Icons.blur_on,
+        ),
+      ];
+    } else {
+      if (DateTime.now().isBefore(DateTime(
+        _dateToLoad.year,
+        _dateToLoad.month,
+        _dateToLoad.day,
+        todayLessons.first.startTimeHour,
+        todayLessons.first.startTimeMin,
+      ))) {
+        String f(int n) => n < 10 ? '0$n' : '$n';
+        _companions = [
+          TimetableCompanion(
+            label: 'Сегодня пары с '
+                '${todayLessons.first.startTimeHour}:${f(todayLessons.first.startTimeMin)}'
+                ' до '
+                '${todayLessons.last.endTimeHour}:${f(todayLessons.first.endTimeMin)}',
+            color: theme.colors.primary,
+            icon: Icons.school_rounded,
+          ),
+          TimetableCompanion(
+            label: 'Первая пара в ${todayLessons.first.location}',
+            color: theme.colors.primary,
+            icon: Icons.location_on_rounded,
+          ),
+        ];
+      }
+    }
+  }
+
   Widget _buildTimetableItem(int pos) {
     if (pos >= _timetableWidgets.length) {
       final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
@@ -42,6 +85,13 @@ class _TimetableController extends State<TimetableScreen>
           FlatButton(
             onPressed: timetableProvider.forceUpdate,
             child: Text("Обновить"),
+          ),
+        );
+      } else if (pos <= _companions.length) {
+        _timetableWidgets.add(
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: _companions[pos - 1],
           ),
         );
       } else {
@@ -125,6 +175,7 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
   @override
   Widget build(BuildContext context) {
     final timetableProvider = Provider.of<TimetableProvider>(context);
+    state._defineCompanions();
     return SafeArea(
       child: timetableProvider.isLoading
           ? Center(child: CircularProgressIndicator())

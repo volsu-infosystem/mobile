@@ -90,7 +90,9 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
       context: context,
       items: [LessonLPMenu(widget.lesson, widget.date)],
     ).then((value) {
-      setState(() => isHighlighted = false);
+      setState(() {
+        isHighlighted = false;
+      });
     });
   }
 }
