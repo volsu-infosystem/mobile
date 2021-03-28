@@ -1,10 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:volsu_app_v1/exceptions/logic_exceptions.dart';
-import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
 import 'package:volsu_app_v1/models/user_credentials.dart';
 import 'package:volsu_app_v1/network/daniel_api.dart';
+import 'package:volsu_app_v1/network/network_exceptions.dart';
+import 'package:volsu_app_v1/providers/logic_exceptions.dart';
 import 'package:volsu_app_v1/storage/cache.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -54,19 +53,15 @@ class AuthProvider extends ChangeNotifier {
   /// записывает данный емейл в [_userCredentials] и
   /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> requestPassCodeForEmail(String email) async {
-    Response<dynamic> response;
     try {
-      response = await DanielApi.instance.requestPassCode(email);
-      if (response.statusCode >= 400) {
-        throw EmailIsNotInWhiteList(email);
-      }
-
-      // Success
+      await DanielApi.instance.requestPassCode(email);
       _userCredentials = UserCredentials(email: email);
       _updateUserCredentialsCache();
       notifyListeners();
-    } on ConnectionFailure {
-      throw ConnectionFailure("");
+    } on ConnectionFailure catch (e) {
+      throw e;
+    } on ErrorStatusCode catch (e) {
+      throw EmailIsNotInWhiteList('Email $email is not in white list', e);
     }
   }
 
@@ -74,19 +69,17 @@ class AuthProvider extends ChangeNotifier {
   /// запрос удался, записывает возвращённый токен в [_userCredentials] и
   /// обновляет локальное хранилище вызывая [updateUserCredentialsCache()].
   Future<void> authWithCode(String email, String code) async {
-    Response<dynamic> response;
     try {
-      response = await DanielApi.instance.authWithCode(email, code);
-      if (response.statusCode >= 400) {
-        throw InvalidPassCode("");
-      }
-
-      // Success
-      _userCredentials.token = (response.data)['access_token'] as String;
+      final response = await DanielApi.instance.authWithCode(email, code);
+      _userCredentials.token = response.accessToken;
       _updateUserCredentialsCache();
       notifyListeners();
     } on ConnectionFailure {
       throw ConnectionFailure("");
+    } on ErrorStatusCode catch (e) {
+      if (e.code >= 400) {
+        throw InvalidPassCode("Invalid pass code ($code) for email $email", e);
+      }
     }
   }
 

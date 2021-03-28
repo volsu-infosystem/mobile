@@ -10,5 +10,5 @@ class BaseException implements Exception {
   ]);
 
   @override
-  String toString() => "$tag: $msg\n>>>>${previous.toString()}";
+  String toString() => "$tag: $msg\n>>${previous.toString()}";
 }
