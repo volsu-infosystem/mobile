@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
-import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 /// LP означает Long Press
@@ -29,7 +29,15 @@ class LessonLPMenu extends PopupMenuEntry<int> {
 
 class _LessonLPMenuState extends State<LessonLPMenu> {
   String getCopyableString() {
-    return 'stub';
+    return widget.lesson.disciplineName +
+        ".\nДата и время: " +
+        DateFormat('d MMMM, E\nHH:mm', 'ru_RU').format(widget.lesson.exactStart) +
+        " — " +
+        DateFormat('HH:mm', 'ru_RU').format(widget.lesson.exactEnd) +
+        ".\nПреподаватель: " +
+        widget.lesson.teacherName +
+        ".\nМесто проведения: " +
+        widget.lesson.location;
   }
 
   Widget _buildItem({
@@ -83,24 +91,11 @@ class _LessonLPMenuState extends State<LessonLPMenu> {
         child: Column(
           children: [
             _buildItem(
-              icon: Icons.alarm_rounded,
-              label: "Уведомить за...",
-              value: 1,
-              onTap: () {},
-            ),
-            _buildItem(
-              icon: Icons.map_outlined,
-              label: "Где аудитория?",
-              value: 2,
-              onTap: () {},
-            ),
-            Divider(),
-            _buildItem(
               icon: Icons.share_outlined,
               label: "Поделиться",
               value: 3,
               onTap: () {
-                // Share.share(getCopyableString());
+                Share.share(getCopyableString());
               },
             ),
             _buildItem(
@@ -109,9 +104,9 @@ class _LessonLPMenuState extends State<LessonLPMenu> {
               value: 4,
               onTap: () {
                 Clipboard.setData(ClipboardData(text: getCopyableString()));
-                // Scaffold.of(context).showSnackBar(SnackBar(
-                //   content: Text("Скопировано!"),
-                // ));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Скопировано")),
+                );
               },
             ),
           ],
