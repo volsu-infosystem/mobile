@@ -69,7 +69,7 @@ class DanielApi {
       throw NotAuthenticated('');
     }
 
-    Future.delayed(
+    return Future.delayed(
       Duration(seconds: 1),
       () => BaseTimetable(
         [

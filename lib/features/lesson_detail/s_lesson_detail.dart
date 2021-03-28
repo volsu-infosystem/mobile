@@ -41,11 +41,6 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
   List<Widget> _buildInfos(BuildContext context) {
     return [
       LessonInfo(
-        icon: Icons.warning_rounded,
-        label: "Отменена преподавателем",
-        type: LessonInfoType.warning,
-      ),
-      LessonInfo(
         icon: Icons.room_rounded,
         label: widget.lesson.location,
       ),
@@ -111,33 +106,15 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
         ),
         SizedBox(height: 5),
         Text(
-          DateFormat('d MMMM, E\nHH:mm').format(widget.lesson.exactStart) +
+          DateFormat('d MMMM, $dayweek\nHH:mm', 'ru_RU').format(widget.lesson.exactStart) +
               " — " +
-              DateFormat('HH:mm').format(widget.lesson.exactEnd),
+              DateFormat('HH:mm', 'ru_RU').format(widget.lesson.exactEnd),
           style: TextStyle(
             fontWeight: semibold,
           ),
         ),
         SizedBox(height: 20),
         ..._buildInfos(context),
-        SizedBox(height: 20),
-        Text(
-          "КОММЕНТАРИЙ ПРЕПОДАВАТЕЛЯ",
-          style: TextStyle(
-            fontFamily: montserrat,
-            fontWeight: semibold,
-            fontSize: 11,
-            color: theme.colors.textWeak[200],
-          ),
-        ),
-        SizedBox(height: 5),
-        Text(
-          "Я приболел, пару проведём в другой день. Напишите мне на почту, что вы думаете об этом",
-          style: TextStyle(
-            fontWeight: semibold,
-            color: theme.colors.text,
-          ),
-        ),
       ],
     );
   }
@@ -173,72 +150,6 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
             textColor: theme.colors.text,
             highlightColor: theme.colors.background[600],
             splashColor: theme.colors.background,
-            highlightElevation: 0,
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-        Container(
-          // Create notification
-          width: double.infinity,
-          height: 45,
-          child: RaisedButton(
-            onPressed: () {},
-            child: Row(
-              children: [
-                Icon(Icons.map_rounded),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Text(
-                    "Показать аудиторию на карте",
-                    style: TextStyle(
-                        // fontWeight: semibold,
-                        ),
-                  ),
-                ),
-                Icon(Icons.keyboard_arrow_right_rounded),
-              ],
-            ),
-            color: theme.colors.background,
-            textColor: theme.colors.text,
-            highlightColor: theme.colors.background[600],
-            splashColor: theme.colors.background,
-            highlightElevation: 0,
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-        Container(
-          // Zoom button
-          width: double.infinity,
-          height: 45,
-          child: RaisedButton(
-            onPressed: () {},
-            child: Row(
-              children: [
-                Icon(Icons.wifi_tethering_rounded),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Text(
-                    "Перейти в Zoom",
-                    style: TextStyle(
-                      fontWeight: semibold,
-                    ),
-                  ),
-                ),
-                Icon(Icons.keyboard_arrow_right_rounded),
-              ],
-            ),
-            color: theme.colors.primary,
-            textColor: theme.colors.textOnPrimary,
-            highlightColor: theme.colors.primary[600],
-            splashColor: theme.colors.primary,
             highlightElevation: 0,
             elevation: 3,
             shape: RoundedRectangleBorder(
