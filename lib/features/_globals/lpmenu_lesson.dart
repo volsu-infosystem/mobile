@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:volsu_app_v1/models/base_timetable.dart';
 import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 /// LP означает Long Press
 class LessonLPMenu extends PopupMenuEntry<int> {
-  final LessonModel lessonModel;
+  final LessonModel lesson; // TODO: Заменить на конкретный урок
   final DateTime date;
 
   LessonLPMenu(
-    this.lessonModel,
+    this.lesson,
     this.date,
   );
 
@@ -28,17 +29,7 @@ class LessonLPMenu extends PopupMenuEntry<int> {
 
 class _LessonLPMenuState extends State<LessonLPMenu> {
   String getCopyableString() {
-    return widget.lessonModel.name +
-        ".\nДата и время: " +
-        DateFormat("d MMMM, E", "ru_RU").format(widget.date) +
-        " " +
-        widget.lessonModel.startTime.format(context) +
-        " - " +
-        widget.lessonModel.endTime.format(context) +
-        ".\nПреподаватель: " +
-        widget.lessonModel.teacherName +
-        ".\nМесто проведения: " +
-        widget.lessonModel.location;
+    return 'stub';
   }
 
   Widget _buildItem({

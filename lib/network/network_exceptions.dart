@@ -22,3 +22,10 @@ class ErrorStatusCode extends NetworkException {
     Exception previous,
   ]) : super(msg, previous);
 }
+
+class NotAuthenticated extends NetworkException {
+  const NotAuthenticated(
+    String msg, [
+    Exception previous,
+  ]) : super(msg, previous);
+}

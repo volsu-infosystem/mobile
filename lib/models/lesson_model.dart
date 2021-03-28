@@ -5,6 +5,7 @@ const insignificantYear = 1999;
 enum LessonImportance { usual, high, special }
 enum LessonPeriodicity { always, chis, znam, once }
 
+@deprecated
 class LessonModel {
   /// Название дисциплины (либо события)
   final String name;

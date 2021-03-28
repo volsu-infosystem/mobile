@@ -12,19 +12,19 @@ class TimetableProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   TimetableProvider() {
-    Cache.instance.isLessonsCached().then((isCached) {
+    Cache.instance.isBaseTimetableCached().then((isCached) {
       if (isCached) {
-        Cache.instance.getLessons().then((lessons) {
+        Cache.instance.getBaseTimetable().then((lessons) {
           _lessons = lessons;
           _isLoading = false;
           notifyListeners();
         });
       } else {
-        DanielApi.instance.getLessons().then((lessons) {
+        DanielApi.instance.getBaseTimetable().then((lessons) {
           _lessons = lessons;
           _isLoading = false;
           notifyListeners();
-          Cache.instance.saveLessons(_lessons);
+          Cache.instance.saveBaseTimetable(_lessons);
         });
       }
     });
@@ -33,11 +33,11 @@ class TimetableProvider with ChangeNotifier {
   void forceUpdate() async {
     _isLoading = true;
     notifyListeners();
-    DanielApi.instance.getLessons().then((lessons) {
+    DanielApi.instance.getBaseTimetable().then((lessons) {
       _lessons = lessons;
       _isLoading = false;
       notifyListeners();
-      Cache.instance.saveLessons(_lessons);
+      Cache.instance.saveBaseTimetable(_lessons);
     });
   }
 
