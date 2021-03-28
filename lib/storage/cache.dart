@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:volsu_app_v1/models/base_timetable.dart';
+import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/models/lesson_model.dart';
 
 class Cache {
@@ -21,7 +21,7 @@ class Cache {
   }
 
   /*
-   * Lessons
+   * BaseTimetable
    */
   Future<bool> isBaseTimetableCached() async {
     final file = File(await pathLessons);
@@ -30,14 +30,12 @@ class Cache {
 
   Future<BaseTimetable> getBaseTimetable() async {
     final json = await File(await pathLessons).readAsString();
-    final map = jsonDecode(json);
-    return List<LessonModel>.from(map.map((lessonJson) => LessonModel.fromJson(lessonJson)));
+    return BaseTimetable.fromJson(jsonDecode(json));
   }
 
   /// Оптимистичное выполнение
   Future<void> saveBaseTimetable(BaseTimetable baseTimetable) async {
-    String json = '';
-    await File(await pathLessons).writeAsString(jsonEncode(preparedList));
+    await File(await pathLessons).writeAsString(jsonEncode(baseTimetable));
   }
 
   /// Оптимистичное выполнение

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const insignificantYear = 1999;
 
 enum LessonImportance { usual, high, special }
-enum LessonPeriodicity { always, chis, znam, once }
+enum LessonPeriodicityX { always, chis, znam, once }
 
 @deprecated
 class LessonModel {
@@ -32,8 +32,8 @@ class LessonModel {
   final int weekday;
 
   /// Периодичность (всегда, только числ, только знам, однажды). Если указан
-  /// параметр [LessonPeriodicity.once], нужно указать [exactDate].
-  final LessonPeriodicity periodicity;
+  /// параметр [LessonPeriodicityX.once], нужно указать [exactDate].
+  final LessonPeriodicityX periodicity;
 
   LessonModel({
     @required this.name,
@@ -70,5 +70,5 @@ class LessonModel {
         startTime = TimeOfDay(hour: json["startTime_h"], minute: json["startTime_min"]),
         endTime = TimeOfDay(hour: json["endTime_h"], minute: json["endTime_min"]),
         weekday = json["weekday"],
-        periodicity = LessonPeriodicity.values[json["periodicity"]];
+        periodicity = LessonPeriodicityX.values[json["periodicity"]];
 }

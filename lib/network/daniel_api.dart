@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/models/base_timetable.dart';
-import 'package:volsu_app_v1/models/lesson_model.dart';
+import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/network/daniel_api_responses.dart';
 import 'package:volsu_app_v1/network/network_exceptions.dart';
 import 'package:volsu_app_v1/providers/auth_provider.dart';

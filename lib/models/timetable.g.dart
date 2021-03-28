@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'base_timetable.dart';
+part of 'timetable.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -17,13 +17,11 @@ BaseLesson _$BaseLessonFromJson(Map<String, dynamic> json) {
     endTimeHour: json['endTimeHour'] as int,
     endTimeMin: json['endTimeMin'] as int,
     weekday: json['weekday'] as int,
-    periodicity:
-        _$enumDecodeNullable(_$LessonPeriodicityEnumMap, json['periodicity']),
+    periodicity: _$enumDecodeNullable(_$LessonPeriodicityEnumMap, json['periodicity']),
   );
 }
 
-Map<String, dynamic> _$BaseLessonToJson(BaseLesson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$BaseLessonToJson(BaseLesson instance) => <String, dynamic>{
       'disciplineName': instance.disciplineName,
       'teacherName': instance.teacherName,
       'location': instance.location,
@@ -46,9 +44,7 @@ T _$enumDecode<T>(
         '${enumValues.values.join(', ')}');
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
+  final value = enumValues.entries.singleWhere((e) => e.value == source, orElse: () => null)?.key;
 
   if (value == null && unknownValue == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
@@ -77,13 +73,11 @@ const _$LessonPeriodicityEnumMap = {
 BaseTimetable _$BaseTimetableFromJson(Map<String, dynamic> json) {
   return BaseTimetable(
     (json['lessons'] as List)
-        ?.map((e) =>
-            e == null ? null : BaseLesson.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : BaseLesson.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$BaseTimetableToJson(BaseTimetable instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$BaseTimetableToJson(BaseTimetable instance) => <String, dynamic>{
       'lessons': instance.lessons,
     };

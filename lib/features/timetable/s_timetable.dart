@@ -6,6 +6,7 @@ import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
 import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
 import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
 import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
+import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
@@ -37,26 +38,43 @@ class _TimetableController extends State<TimetableScreen>
       final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
 
       if (pos == 0) {
-        _timetableWidgets.add(FlatButton(
-          onPressed: timetableProvider.forceUpdate,
-          child: Text("Обновить"),
-        ));
+        _timetableWidgets.add(
+          FlatButton(
+            onPressed: timetableProvider.forceUpdate,
+            child: Text("Обновить"),
+          ),
+        );
       } else {
         final theme = Provider.of<AppTheme>(context, listen: false);
-        List<LessonModel> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
+        List<BaseLesson> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
         _timetableWidgets.add(DateHeader(_dateToLoad));
         if (dayLessons.isEmpty) {
           _timetableWidgets.add(NoLessons());
         } else {
           for (int i = 0; i < dayLessons.length; i++) {
+            final start = DateTime(
+              _dateToLoad.year,
+              _dateToLoad.month,
+              _dateToLoad.day,
+              dayLessons[i].startTimeHour,
+              dayLessons[i].startTimeMin,
+            );
+            final end = DateTime(
+              _dateToLoad.year,
+              _dateToLoad.month,
+              _dateToLoad.day,
+              dayLessons[i].endTimeHour,
+              dayLessons[i].endTimeMin,
+            );
+            final exactLesson = ExactLesson.fromBase(dayLessons[i], start, end);
             _timetableWidgets.add(
               LessonItem(
-                lessonModel: dayLessons[i],
+                lesson: exactLesson,
                 date: _dateToLoad,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => LessonDetailScreen(dayLessons[i]),
+                      builder: (context) => LessonDetailScreen(exactLesson),
                     ),
                   );
                 },
@@ -64,9 +82,8 @@ class _TimetableController extends State<TimetableScreen>
             );
 
             if (i != dayLessons.length - 1) {
-              final minCur = dayLessons[i].endTime.hour * 60 + dayLessons[i].endTime.minute;
-              final minNext =
-                  dayLessons[i + 1].startTime.hour * 60 + dayLessons[i + 1].startTime.minute;
+              final minCur = dayLessons[i].endTimeHour * 60 + dayLessons[i].endTimeMin;
+              final minNext = dayLessons[i + 1].startTimeHour * 60 + dayLessons[i + 1].startTimeMin;
 
               if (minNext - minCur > 20) {
                 final h = (minNext - minCur) ~/ 60;

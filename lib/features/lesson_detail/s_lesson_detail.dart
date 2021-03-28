@@ -3,13 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/lesson_detail/w_lesson_info.dart';
 import 'package:volsu_app_v1/models/lesson_model.dart';
+import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
+import 'package:intl/intl.dart';
 
 class LessonDetailScreen extends StatefulWidget {
   @override
   _LessonDetailController createState() => _LessonDetailController();
 
-  final LessonModel lesson;
+  final ExactLesson lesson;
 
   LessonDetailScreen(
     this.lesson,
@@ -100,7 +102,7 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
         ),
         SizedBox(height: 3),
         Text(
-          widget.lesson.name,
+          widget.lesson.disciplineName,
           style: TextStyle(
             fontFamily: montserrat,
             fontWeight: semibold,
@@ -109,12 +111,9 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
         ),
         SizedBox(height: 5),
         Text(
-          "xx месяц, " +
-              dayweek +
-              "\n" +
-              widget.lesson.startTime.format(context) +
+          DateFormat('d MMMM, E\nHH:mm').format(widget.lesson.exactStart) +
               " — " +
-              widget.lesson.endTime.format(context),
+              DateFormat('HH:mm').format(widget.lesson.exactEnd),
           style: TextStyle(
             fontWeight: semibold,
           ),

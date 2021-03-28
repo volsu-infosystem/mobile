@@ -3,20 +3,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/_globals/lpmenu_lesson.dart';
+import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 import 'package:volsu_app_v1/utils/custom_popup_menu.dart';
 import 'package:volsu_app_v1/utils/extensions.dart';
+import 'package:intl/intl.dart';
 
-import '../../architecture_generics.dart';
+import 'package:volsu_app_v1/architecture_generics.dart';
 
 class LessonItem extends StatefulWidget {
-  final LessonModel lessonModel;
+  final ExactLesson lesson;
   final Function onTap;
   final DateTime date;
 
   LessonItem({
-    @required this.lessonModel,
+    @required this.lesson,
     @required this.date,
     @required this.onTap,
   });
@@ -66,13 +68,13 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
   }
 
   void _updateTimeState() {
-    final minsNow = DateTime.now().hour * 60 + DateTime.now().minute;
+    final now = DateTime.now();
     setState(() {
       if (widget.date.ordinalDate != DateTime.now().ordinalDate) {
         timeState = LessonItemTimeState.futureNotToday;
-      } else if (widget.lessonModel.endTime.mins() < minsNow) {
+      } else if (widget.lesson.exactEnd.isBefore(now)) {
         timeState = LessonItemTimeState.past;
-      } else if (widget.lessonModel.startTime.mins() > minsNow) {
+      } else if (widget.lesson.exactStart.isAfter(now)) {
         timeState = LessonItemTimeState.futureToday;
       } else {
         timeState = LessonItemTimeState.now;
@@ -86,7 +88,7 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
       color: Colors.transparent,
       elevation: 0,
       context: context,
-      items: [LessonLPMenu(widget.lessonModel, widget.date)],
+      items: [LessonLPMenu(widget.lesson, widget.date)],
     ).then((value) {
       setState(() => isHighlighted = false);
     });
@@ -112,7 +114,7 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
         children: [
           Expanded(
             child: Text(
-              widget.lessonModel.startTime.format(context),
+              DateFormat('HH:mm').format(widget.lesson.exactStart),
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: semibold,
@@ -120,7 +122,7 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
             ),
           ),
           Text(
-            widget.lessonModel.endTime.format(context),
+            DateFormat('HH:mm').format(widget.lesson.exactEnd),
             style: TextStyle(
               fontSize: 11,
               color: theme.colors.textWeak[200],
@@ -148,7 +150,7 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
             if (state.isWarning) SizedBox(width: 4),
             Expanded(
               child: Text(
-                widget.lessonModel.type.toUpperCase(),
+                widget.lesson.type.toUpperCase(),
                 style: TextStyle(
                   color: theme.colors.primary,
                   fontFamily: montserrat,
@@ -161,7 +163,7 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
         ),
         SizedBox(height: 2),
         Text(
-          widget.lessonModel.name,
+          widget.lesson.disciplineName,
           style: TextStyle(
             fontFamily: montserrat,
             fontWeight: semibold,
@@ -169,10 +171,10 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
           ),
         ),
         SizedBox(height: 2),
-        Text(widget.lessonModel.location),
+        Text(widget.lesson.location),
         SizedBox(height: 2),
         Text(
-          widget.lessonModel.teacherName,
+          widget.lesson.teacherName,
           style: TextStyle(
             color: theme.colors.textWeak,
           ),
