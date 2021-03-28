@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/lesson_detail/w_lesson_info.dart';
-import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
-import 'package:intl/intl.dart';
 
 class LessonDetailScreen extends StatefulWidget {
   @override
@@ -189,7 +189,7 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
                     color: theme.colors.iconOnBackground,
                   ),
                   onPressed: () {
-                    // TODO Share
+                    Share.share(widget.lesson.getCopyableString());
                   },
                 ),
               ],

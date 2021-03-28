@@ -36,6 +36,7 @@ class _TimetableController extends State<TimetableScreen>
   List<TimetableCompanion> _companions = [];
 
   void _defineCompanions() {
+    _companions = [];
     final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
     final theme = Provider.of<AppTheme>(context, listen: false);
     final todayLessons = timetableProvider.getLessonsForDay(DateTime.now());
@@ -49,14 +50,14 @@ class _TimetableController extends State<TimetableScreen>
         ),
       ];
     } else {
-      if (DateTime.now().isBefore(todayLessons.first.exactStart)) {
+      if (DateTime.now().isBefore(todayLessons.first.exactStart.add(Duration(minutes: 15)))) {
         String f(int n) => n < 10 ? '0$n' : '$n';
         _companions = [
           TimetableCompanion(
             label: 'Сегодня пары с '
                 '${todayLessons.first.startTimeHour}:${f(todayLessons.first.startTimeMin)}'
                 ' до '
-                '${todayLessons.last.endTimeHour}:${f(todayLessons.first.endTimeMin)}',
+                '${todayLessons.last.endTimeHour}:${f(todayLessons.last.endTimeMin)}',
             color: theme.colors.primary,
             icon: Icons.school_rounded,
           ),

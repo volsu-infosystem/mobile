@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
-import 'file:///C:/flutter_projects/volsu_app_v1/lib/providers/logic_exceptions.dart';
 import 'package:volsu_app_v1/features/auth/w_auth_email.dart';
 import 'package:volsu_app_v1/features/auth/w_auth_passcode.dart';
 import 'package:volsu_app_v1/features/home/s_home.dart';
 import 'package:volsu_app_v1/network/daniel_api.dart';
 import 'package:volsu_app_v1/providers/auth_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
+
+import 'file:///C:/flutter_projects/volsu_app_v1/lib/providers/logic_exceptions.dart';
 
 void main() {
   runApp(
