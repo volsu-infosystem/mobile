@@ -42,6 +42,7 @@ class AppAppearance {
 
   MaterialColor iconOnBackground;
   MaterialColor iconOnBackground_selected;
+  MaterialColor weakIconOnBackground;
 
   MaterialColor divider;
 
@@ -58,6 +59,7 @@ class AppAppearance {
     @required this.iconOnBackground_selected,
     @required this.textOnError,
     @required this.divider,
+    @required this.weakIconOnBackground,
   });
 }
 
@@ -76,6 +78,7 @@ class WhiteAppAppearance extends AppAppearanceGenerator {
       iconOnBackground_selected: matColor(0xff2B82D8),
       textOnError: matColor(0xffffffff),
       divider: matColor(0xffEAEAEA),
+      weakIconOnBackground: matColor(0xff949494),
     );
   }
 

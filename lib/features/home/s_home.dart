@@ -27,7 +27,7 @@ class _HomeController extends State<HomeScreen> {
   final pages = <Widget>[
     ChangeNotifierProvider(
       create: (ctx) => TimetableProvider(),
-      child: TimetableScreen(),
+      child: MaterialApp(home: Scaffold(body: TimetableScreen())),
     ),
     RatingScreen(),
     SearchScreen(),

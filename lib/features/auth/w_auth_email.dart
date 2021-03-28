@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
-import 'package:volsu_app_v1/exceptions/logic_exceptions.dart';
 import 'package:volsu_app_v1/features/access_subscription/w_access_subscription.dart';
 import 'package:volsu_app_v1/providers/auth_provider.dart';
+import 'package:volsu_app_v1/providers/logic_exceptions.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 class AuthEmail extends StatefulWidget {

@@ -17,7 +17,6 @@ mixin CustomPopupMenu<T extends StatefulWidget> on State<T> {
     String semanticLabel,
     ShapeBorder shape,
     Color color,
-    bool captureInheritedThemes = true,
     bool useRootNavigator = false,
   }) {
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
@@ -36,7 +35,6 @@ mixin CustomPopupMenu<T extends StatefulWidget> on State<T> {
       semanticLabel: semanticLabel,
       shape: shape,
       color: color,
-      captureInheritedThemes: captureInheritedThemes,
       useRootNavigator: useRootNavigator,
     );
   }

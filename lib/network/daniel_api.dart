@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:volsu_app_v1/exceptions/network_exceptions.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
+import 'package:volsu_app_v1/network/daniel_api_responses.dart';
+import 'package:volsu_app_v1/network/network_exceptions.dart';
+import 'package:volsu_app_v1/providers/auth_provider.dart';
 
 class DanielApi {
   DanielApi._() {
@@ -22,50 +22,45 @@ class DanielApi {
 
   static Dio _dio;
 
-  Future<Response<dynamic>> requestPassCode(String email) async {
-    const url = "auth/request";
-    Response<dynamic> response;
-    try {
-      response = await _dio.post(
-        url,
-        data: json.encode(
-          {
-            "email": email,
-          },
-        ),
-      );
-      return response;
-    } on DioError catch (e) {
-      if (e.response != null) {
-        // statusCode != 2xx && != 304
-        // Обработка таких ошибок на стороне бизнес-логики
-        return e.response;
-      } else {
-        // Проблемы с соединением. Ответа от сервера не пришло.
-        throw ConnectionFailure(e.message, e);
-      }
+  static AuthProvider authProvider;
+
+  Exception defineError(DioError e, String url) {
+    if (e.response != null) {
+      return ErrorStatusCode(
+          'Error code ($url): ${e.response.statusCode}', e.response.statusCode, e);
+    } else {
+      return ConnectionFailure('Connection failure ($url)', e);
     }
   }
 
-  Future<Response<dynamic>> authWithCode(String email, String passCode) async {
-    const url = "auth/login";
-    Response<dynamic> response;
+  Future<bool> requestPassCode(String email) async {
+    const url = "auth/request";
     try {
-      response = await _dio.post(
+      await _dio.post(
         url,
-        data: json.encode(
-          {
-            "email": email,
-            "secretCode": int.parse(passCode),
-          },
-        ),
+        data: {
+          "email": email,
+        },
       );
-      return response;
+      return true;
     } on DioError catch (e) {
-      if (e.response != null)
-        return e.response;
-      else
-        throw ConnectionFailure(e.message, e);
+      throw defineError(e, url);
+    }
+  }
+
+  Future<AuthLoginResponse> authWithCode(String email, String passCode) async {
+    const url = 'auth/login';
+    try {
+      final response = await _dio.post(
+        url,
+        data: {
+          "email": email,
+          "secretCode": int.parse(passCode),
+        },
+      );
+      return AuthLoginResponse(response.data['access_token']);
+    } on DioError catch (e) {
+      throw defineError(e, url);
     }
   }
 

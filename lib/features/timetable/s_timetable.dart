@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/features/lesson_detail/s_lesson_detail.dart';
 import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
 import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
 import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
 import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
 class TimetableScreen extends StatefulWidget {
@@ -52,7 +53,13 @@ class _TimetableController extends State<TimetableScreen>
               LessonItem(
                 lessonModel: dayLessons[i],
                 date: _dateToLoad,
-                onTap: null,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LessonDetailScreen(dayLessons[i]),
+                    ),
+                  );
+                },
               ),
             );
 

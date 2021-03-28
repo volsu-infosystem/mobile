@@ -54,7 +54,7 @@ class UserCredentials {
     } else if (token.isEmpty) {
       t = "<EMPTY>";
     } else {
-      t = "OK (length=${token.length})";
+      t = "<NON-EMPTY (length=${token.length})>";
     }
     return 'UserCredentials{email: $email, token: $t, subgroup: $subgroup}';
   }

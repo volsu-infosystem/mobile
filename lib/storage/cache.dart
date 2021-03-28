@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:volsu_app_v1/storage/lesson_model.dart';
+import 'package:volsu_app_v1/models/lesson_model.dart';
 
 class Cache {
   Cache._();
