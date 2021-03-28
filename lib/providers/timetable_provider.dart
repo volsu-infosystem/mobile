@@ -42,20 +42,42 @@ class TimetableProvider with ChangeNotifier {
     });
   }
 
-  List<BaseLesson> getLessonsForDay(DateTime dateTime) {
+  List<ExactLesson> getLessonsForDay(DateTime dateTime) {
     if (_base == null) {
-      return <BaseLesson>[];
+      return <ExactLesson>[];
     }
     // TODO: Добавить правильный просчёт числительно-знаменательных недель
     // Сейчас чётные недели будут числ, нечётные знам
     LessonPeriodicity curWeekPeriodicity =
         dateTime.week % 2 == 0 ? LessonPeriodicity.chis : LessonPeriodicity.znam;
 
-    return _base.lessons.where((BaseLesson lesson) {
-      final isPeriodicityMatch = lesson.periodicity == LessonPeriodicity.always ||
-          lesson.periodicity == curWeekPeriodicity;
-      final isDateMatch = lesson.weekday == dateTime.weekday;
-      return isPeriodicityMatch && isDateMatch;
-    }).toList();
+    return _base.lessons
+        .where((BaseLesson lesson) {
+          final isPeriodicityMatch = lesson.periodicity == LessonPeriodicity.always ||
+              lesson.periodicity == curWeekPeriodicity;
+          final isDateMatch = lesson.weekday == dateTime.weekday;
+          return isPeriodicityMatch && isDateMatch;
+        })
+        .toList()
+        .map(
+          (baseLesson) => ExactLesson.fromBase(
+            baseLesson,
+            DateTime(
+              dateTime.year,
+              dateTime.month,
+              dateTime.day,
+              baseLesson.startTimeHour,
+              baseLesson.startTimeMin,
+            ),
+            DateTime(
+              dateTime.year,
+              dateTime.month,
+              dateTime.day,
+              baseLesson.endTimeHour,
+              baseLesson.endTimeMin,
+            ),
+          ),
+        )
+        .toList();
   }
 }

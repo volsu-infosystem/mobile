@@ -49,13 +49,7 @@ class _TimetableController extends State<TimetableScreen>
         ),
       ];
     } else {
-      if (DateTime.now().isBefore(DateTime(
-        _dateToLoad.year,
-        _dateToLoad.month,
-        _dateToLoad.day,
-        todayLessons.first.startTimeHour,
-        todayLessons.first.startTimeMin,
-      ))) {
+      if (DateTime.now().isBefore(todayLessons.first.exactStart)) {
         String f(int n) => n < 10 ? '0$n' : '$n';
         _companions = [
           TimetableCompanion(
@@ -96,35 +90,20 @@ class _TimetableController extends State<TimetableScreen>
         );
       } else {
         final theme = Provider.of<AppTheme>(context, listen: false);
-        List<BaseLesson> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
+        List<ExactLesson> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
         _timetableWidgets.add(DateHeader(_dateToLoad));
         if (dayLessons.isEmpty) {
           _timetableWidgets.add(NoLessons());
         } else {
           for (int i = 0; i < dayLessons.length; i++) {
-            final start = DateTime(
-              _dateToLoad.year,
-              _dateToLoad.month,
-              _dateToLoad.day,
-              dayLessons[i].startTimeHour,
-              dayLessons[i].startTimeMin,
-            );
-            final end = DateTime(
-              _dateToLoad.year,
-              _dateToLoad.month,
-              _dateToLoad.day,
-              dayLessons[i].endTimeHour,
-              dayLessons[i].endTimeMin,
-            );
-            final exactLesson = ExactLesson.fromBase(dayLessons[i], start, end);
             _timetableWidgets.add(
               LessonItem(
-                lesson: exactLesson,
+                lesson: dayLessons[i],
                 date: _dateToLoad,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => LessonDetailScreen(exactLesson),
+                      builder: (context) => LessonDetailScreen(dayLessons[i]),
                     ),
                   );
                 },
