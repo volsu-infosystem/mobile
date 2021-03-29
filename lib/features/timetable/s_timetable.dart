@@ -39,20 +39,23 @@ class _TimetableController extends State<TimetableScreen>
     _companions = [];
     final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
     final theme = Provider.of<AppTheme>(context, listen: false);
-    final todayLessons = timetableProvider.getLessonsForDay(DateTime.now());
+    final now = DateTime.now();
+    final todayLessons = timetableProvider.getLessonsForDay(now);
 
-    if (todayLessons.isEmpty) {
-      _companions = [
-        TimetableCompanion(
-          label: 'Сегодня пар нет',
-          color: theme.colors.primary,
-          icon: Icons.blur_on,
-        ),
-      ];
-    } else {
-      if (DateTime.now().isBefore(todayLessons.first.exactStart.add(Duration(minutes: 15)))) {
-        String f(int n) => n < 10 ? '0$n' : '$n';
-        _companions = [
+    String f(int n) => n < 10 ? '0$n' : '$n';
+
+    if (todayLessons.isNotEmpty) {
+      /// Сегодня есть пары
+      int iLessonNow = -1;
+      for (int i = 0; i < todayLessons.length; i++) {
+        if (now.isAfter(todayLessons[i].exactStart) && now.isBefore(todayLessons[i].exactEnd)) {
+          iLessonNow = i;
+          break;
+        }
+      }
+      if (now.isBefore(todayLessons.first.exactStart.add(Duration(minutes: 15)))) {
+        /// До начала первой пары +15 минут (на опоздания)
+        _companions.addAll([
           TimetableCompanion(
             label: 'Сегодня пары с '
                 '${todayLessons.first.startTimeHour}:${f(todayLessons.first.startTimeMin)}'
@@ -66,7 +69,86 @@ class _TimetableController extends State<TimetableScreen>
             color: theme.colors.primary,
             icon: Icons.location_on_rounded,
           ),
-        ];
+        ]);
+      } else if (now.isAfter(todayLessons.first.exactStart) &&
+          now.isBefore(todayLessons.last.exactEnd)) {
+        /// Во время учебного времени
+        if (iLessonNow == -1) {
+          /// Сейчас перемена
+          _companions.addAll([
+            TimetableCompanion(
+              label: 'До начала пары '
+                  '${todayLessons[iLessonNow + 1].exactStart.difference(now).inMinutes}'
+                  ' минут',
+              color: theme.colors.primary,
+              icon: Icons.watch_later_rounded,
+            ),
+            TimetableCompanion(
+                label: 'Следующая пара в ${todayLessons[iLessonNow + 1].location}',
+                color: theme.colors.primary,
+                icon: Icons.location_on_rounded),
+          ]);
+        } else {
+          /// Сейчас идёт пара
+          _companions.addAll([
+            TimetableCompanion(
+              label: 'До конца пары '
+                  '${todayLessons[iLessonNow].exactEnd.difference(now).inMinutes}'
+                  ' минут',
+              color: theme.colors.primary,
+              icon: Icons.watch_later_rounded,
+            ),
+          ]);
+          if (now.isAfter(todayLessons[iLessonNow].exactEnd.subtract(Duration(minutes: 15)))) {
+            /// До конца пары осталось меньше 15 минут
+            _companions.addAll([
+              TimetableCompanion(
+                label: 'Следующая пара в ${todayLessons[iLessonNow + 1].location}',
+                color: theme.colors.primary,
+                icon: Icons.location_on_rounded,
+              ),
+            ]);
+          }
+        }
+      } else {
+        /// После учебного времени
+        final tomorrowLessons = timetableProvider.getLessonsForDay(now.add(Duration(days: 1)));
+        if (tomorrowLessons.isNotEmpty) {
+          /// Завтра есть пары
+          _companions.addAll([
+            TimetableCompanion(
+              label: 'Завтра пары с '
+                  '${tomorrowLessons.first.startTimeHour}:${f(tomorrowLessons.first.startTimeMin)}'
+                  ' до '
+                  '${tomorrowLessons.last.endTimeHour}:${f(tomorrowLessons.last.endTimeMin)}',
+              color: theme.colors.primary,
+              icon: Icons.school_rounded,
+            ),
+          ]);
+        }
+      }
+    } else {
+      /// Сегодня нет пар
+      _companions.addAll([
+        TimetableCompanion(
+          label: 'Сегодня пар нет',
+          color: theme.colors.primary,
+          icon: Icons.blur_on,
+        ),
+      ]);
+      final tomorrowLessons = timetableProvider.getLessonsForDay(now.add(Duration(days: 1)));
+      if (tomorrowLessons.isNotEmpty) {
+        /// Завтра есть пары
+        _companions.addAll([
+          TimetableCompanion(
+            label: 'Завтра пары с '
+                '${tomorrowLessons.first.startTimeHour}:${f(tomorrowLessons.first.startTimeMin)}'
+                ' до '
+                '${tomorrowLessons.last.endTimeHour}:${f(tomorrowLessons.last.endTimeMin)}',
+            color: theme.colors.primary,
+            icon: Icons.school_rounded,
+          ),
+        ]);
       }
     }
   }
