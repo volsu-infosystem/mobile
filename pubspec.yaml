@@ -85,6 +85,8 @@ flutter:
    - family: Montserrat
      fonts:
        - asset: assets/fonts/Montserrat-SemiBold.ttf
+         weight: 600
+       - asset: assets/fonts/Montserrat-Bold.ttf
          weight: 700
    - family: Open Sans
      fonts:

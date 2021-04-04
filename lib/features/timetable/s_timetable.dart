@@ -27,7 +27,7 @@ class TimetableScreen extends StatefulWidget {
 class _TimetableController extends State<TimetableScreen>
     with AutomaticKeepAliveClientMixin<TimetableScreen> {
   @override
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) => _TimetableView(this);
