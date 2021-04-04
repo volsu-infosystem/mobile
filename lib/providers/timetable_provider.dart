@@ -33,11 +33,12 @@ class TimetableProvider with ChangeNotifier {
   void forceUpdate() async {
     _isLoading = true;
     notifyListeners();
-    DanielApi.instance.getBaseTimetable().then((lessons) {
+    await Cache.instance.clearBaseTimetable();
+    DanielApi.instance.getBaseTimetable().then((lessons) async {
       _base = lessons;
       _isLoading = false;
       notifyListeners();
-      Cache.instance.saveBaseTimetable(_base);
+      await Cache.instance.saveBaseTimetable(_base);
     });
   }
 

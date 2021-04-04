@@ -1,12 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/lesson_detail/s_lesson_detail.dart';
+import 'package:volsu_app_v1/features/timetable/w_companions_area.dart';
 import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
 import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
 import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
 import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
-import 'package:volsu_app_v1/features/timetable/w_timetable_companion.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
@@ -25,133 +27,19 @@ class TimetableScreen extends StatefulWidget {
 class _TimetableController extends State<TimetableScreen>
     with AutomaticKeepAliveClientMixin<TimetableScreen> {
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 
   @override
   Widget build(BuildContext context) => _TimetableView(this);
 
+  @override
+  void didChangeDependencies() {
+    _timetableWidgets = [];
+    super.didChangeDependencies();
+  }
+
   DateTime _dateToLoad = DateTime.now();
   List<Widget> _timetableWidgets = [];
-
-  List<TimetableCompanion> _companions = [];
-
-  void _defineCompanions() {
-    _companions = [];
-    final timetableProvider = Provider.of<TimetableProvider>(context, listen: false);
-    final theme = Provider.of<AppTheme>(context, listen: false);
-    final now = DateTime.now();
-    final todayLessons = timetableProvider.getLessonsForDay(now);
-
-    String f(int n) => n < 10 ? '0$n' : '$n';
-
-    if (todayLessons.isNotEmpty) {
-      /// Сегодня есть пары
-      int iLessonNow = -1;
-      for (int i = 0; i < todayLessons.length; i++) {
-        if (now.isAfter(todayLessons[i].exactStart) && now.isBefore(todayLessons[i].exactEnd)) {
-          iLessonNow = i;
-          break;
-        }
-      }
-      if (now.isBefore(todayLessons.first.exactStart.add(Duration(minutes: 15)))) {
-        /// До начала первой пары +15 минут (на опоздания)
-        _companions.addAll([
-          TimetableCompanion(
-            label: 'Сегодня пары с '
-                '${todayLessons.first.startTimeHour}:${f(todayLessons.first.startTimeMin)}'
-                ' до '
-                '${todayLessons.last.endTimeHour}:${f(todayLessons.last.endTimeMin)}',
-            color: theme.colors.primary,
-            icon: Icons.school_rounded,
-          ),
-          TimetableCompanion(
-            label: 'Первая пара в ${todayLessons.first.location}',
-            color: theme.colors.primary,
-            icon: Icons.location_on_rounded,
-          ),
-        ]);
-      } else if (now.isAfter(todayLessons.first.exactStart) &&
-          now.isBefore(todayLessons.last.exactEnd)) {
-        /// Во время учебного времени
-        if (iLessonNow == -1) {
-          /// Сейчас перемена
-          _companions.addAll([
-            TimetableCompanion(
-              label: 'До начала пары '
-                  '${todayLessons[iLessonNow + 1].exactStart.difference(now).inMinutes}'
-                  ' минут',
-              color: theme.colors.primary,
-              icon: Icons.watch_later_rounded,
-            ),
-            TimetableCompanion(
-                label: 'Следующая пара в ${todayLessons[iLessonNow + 1].location}',
-                color: theme.colors.primary,
-                icon: Icons.location_on_rounded),
-          ]);
-        } else {
-          /// Сейчас идёт пара
-          _companions.addAll([
-            TimetableCompanion(
-              label: 'До конца пары '
-                  '${todayLessons[iLessonNow].exactEnd.difference(now).inMinutes}'
-                  ' минут',
-              color: theme.colors.primary,
-              icon: Icons.watch_later_rounded,
-            ),
-          ]);
-          if (now.isAfter(todayLessons[iLessonNow].exactEnd.subtract(Duration(minutes: 15)))) {
-            /// До конца пары осталось меньше 15 минут
-            _companions.addAll([
-              TimetableCompanion(
-                label: 'Следующая пара в ${todayLessons[iLessonNow + 1].location}',
-                color: theme.colors.primary,
-                icon: Icons.location_on_rounded,
-              ),
-            ]);
-          }
-        }
-      } else {
-        /// После учебного времени
-        final tomorrowLessons = timetableProvider.getLessonsForDay(now.add(Duration(days: 1)));
-        if (tomorrowLessons.isNotEmpty) {
-          /// Завтра есть пары
-          _companions.addAll([
-            TimetableCompanion(
-              label: 'Завтра пары с '
-                  '${tomorrowLessons.first.startTimeHour}:${f(tomorrowLessons.first.startTimeMin)}'
-                  ' до '
-                  '${tomorrowLessons.last.endTimeHour}:${f(tomorrowLessons.last.endTimeMin)}',
-              color: theme.colors.primary,
-              icon: Icons.school_rounded,
-            ),
-          ]);
-        }
-      }
-    } else {
-      /// Сегодня нет пар
-      _companions.addAll([
-        TimetableCompanion(
-          label: 'Сегодня пар нет',
-          color: theme.colors.primary,
-          icon: Icons.blur_on,
-        ),
-      ]);
-      final tomorrowLessons = timetableProvider.getLessonsForDay(now.add(Duration(days: 1)));
-      if (tomorrowLessons.isNotEmpty) {
-        /// Завтра есть пары
-        _companions.addAll([
-          TimetableCompanion(
-            label: 'Завтра пары с '
-                '${tomorrowLessons.first.startTimeHour}:${f(tomorrowLessons.first.startTimeMin)}'
-                ' до '
-                '${tomorrowLessons.last.endTimeHour}:${f(tomorrowLessons.last.endTimeMin)}',
-            color: theme.colors.primary,
-            icon: Icons.school_rounded,
-          ),
-        ]);
-      }
-    }
-  }
 
   Widget _buildTimetableItem(int pos) {
     if (pos >= _timetableWidgets.length) {
@@ -161,15 +49,12 @@ class _TimetableController extends State<TimetableScreen>
         _timetableWidgets.add(
           FlatButton(
             onPressed: timetableProvider.forceUpdate,
-            child: Text("Обновить"),
+            child: Text("Обновить #" + (Random().nextInt(99999 - 10000) + 100000).toString()),
           ),
         );
-      } else if (pos <= _companions.length) {
+      } else if (pos == 1) {
         _timetableWidgets.add(
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            child: _companions[pos - 1],
-          ),
+          CompanionsArea(),
         );
       } else {
         final theme = Provider.of<AppTheme>(context, listen: false);
@@ -237,7 +122,6 @@ class _TimetableView extends WidgetView<TimetableScreen, _TimetableController> {
   @override
   Widget build(BuildContext context) {
     final timetableProvider = Provider.of<TimetableProvider>(context);
-    state._defineCompanions();
     return SafeArea(
       child: timetableProvider.isLoading
           ? Center(child: CircularProgressIndicator())

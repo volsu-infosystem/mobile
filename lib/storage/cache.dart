@@ -39,9 +39,11 @@ class Cache {
 
   /// Оптимистичное выполнение
   Future<void> clearBaseTimetable() async {
-    final file = File(await pathLessons);
-    if (await file.exists()) {
-      await file.delete();
-    }
+    try {
+      final file = File(await pathLessons);
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (FileSystemException) {}
   }
 }

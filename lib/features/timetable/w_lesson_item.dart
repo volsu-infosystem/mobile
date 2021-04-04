@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/features/_globals/lpmenu_lesson.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/models/lesson_model.dart';
+import 'package:volsu_app_v1/providers/refresher_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 import 'package:volsu_app_v1/utils/custom_popup_menu.dart';
 import 'package:volsu_app_v1/utils/extensions.dart';
@@ -50,7 +51,7 @@ class _LessonItemController extends State<LessonItem> with CustomPopupMenu {
     super.initState();
     _updateTimeState();
     if (timeState == LessonItemTimeState.now || timeState == LessonItemTimeState.futureToday) {
-      timeStateUpdating = Timer.periodic(Duration(seconds: 20), (timer) {
+      timeStateUpdating = Timer.periodic(Duration(seconds: 5), (timer) {
         _updateTimeState();
         if (timeState == LessonItemTimeState.past) {
           timer.cancel();
