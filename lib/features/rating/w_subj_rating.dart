@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
+import 'package:volsu_app_v1/features/rating/w_graph.dart';
 import 'package:volsu_app_v1/providers/auth_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
@@ -41,17 +42,12 @@ class _SubjRatingView extends WidgetView<SubjRating, _SubjRatingController> {
     final theme = Provider.of<AppTheme>(context, listen: false);
     return [
       Padding(
-        padding: const EdgeInsets.only(left: 26),
+        padding: const EdgeInsets.only(left: 29),
         child: Text('Зачёт с оценкой'),
       ),
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Container(
-          width: double.infinity,
-          height: 125,
-          color: theme.colors.primary.withOpacity(0.2),
-          child: Center(child: Text("График", style: TextStyle(color: theme.colors.primary))),
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Graph(),
       ),
       Row(
         children: [
@@ -98,7 +94,7 @@ class _SubjRatingView extends WidgetView<SubjRating, _SubjRatingController> {
                   Text(
                     '🔥',
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 18,
                     ),
                   ),
                   SizedBox(width: 8),
@@ -107,7 +103,7 @@ class _SubjRatingView extends WidgetView<SubjRating, _SubjRatingController> {
                       "Математический анализ",
                       style: TextStyle(
                         fontWeight: semibold,
-                        fontFamily: opensans,
+                        fontFamily: montserrat,
                         fontSize: 15,
                       ),
                     ),
