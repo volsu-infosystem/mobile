@@ -121,6 +121,7 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: semibold,
+                fontFamily: opensans,
               ),
             ),
           ),
@@ -174,12 +175,18 @@ class _LessonItemView extends WidgetView<LessonItem, _LessonItemController> {
           ),
         ),
         SizedBox(height: 2),
-        Text(widget.lesson.location),
+        Text(
+          widget.lesson.location,
+          style: TextStyle(
+            fontFamily: opensans,
+          ),
+        ),
         SizedBox(height: 2),
         Text(
           widget.lesson.teacherName,
           style: TextStyle(
             color: theme.colors.textWeak,
+            fontFamily: opensans,
           ),
         ),
       ],

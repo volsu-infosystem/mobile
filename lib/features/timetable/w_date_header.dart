@@ -25,6 +25,7 @@ class DateHeader extends StatelessWidget {
               style: TextStyle(
                 color: theme.colors.textWeak[100],
                 fontWeight: semibold,
+                fontFamily: opensans,
               ),
             ),
           ),

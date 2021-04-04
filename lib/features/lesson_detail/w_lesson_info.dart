@@ -34,6 +34,7 @@ class LessonInfo extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
+                fontFamily: opensans,
                 fontWeight: semibold,
                 color: type == LessonInfoType.normal ? theme.colors.text : theme.colors.error,
               ),

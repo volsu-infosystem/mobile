@@ -24,15 +24,18 @@ class _HomeController extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) => _HomeView(this);
 
-  final pages = <Widget>[
-    ChangeNotifierProvider(
-      create: (ctx) => TimetableProvider(),
-      child: MaterialApp(home: Scaffold(body: TimetableScreen())),
-    ),
-    RatingScreen(),
-    SearchScreen(),
-    NotificationsScreen(),
-  ];
+  List<Widget> pages() => <Widget>[
+        ChangeNotifierProvider(
+          create: (ctx) => TimetableProvider(),
+          child: MaterialApp(
+            home: Scaffold(body: TimetableScreen()),
+            theme: Provider.of<AppTheme>(context, listen: false).theme,
+          ),
+        ),
+        RatingScreen(),
+        SearchScreen(),
+        NotificationsScreen(),
+      ];
 
   var _curTab = 0;
 
@@ -82,7 +85,7 @@ class _HomeView extends WidgetView<HomeScreen, _HomeController> {
         body: PageView(
           controller: state._pageController,
           physics: NeverScrollableScrollPhysics(),
-          children: state.pages,
+          children: state.pages(),
         ),
         endDrawer: HomeDrawer(),
         bottomNavigationBar: Builder(

@@ -111,6 +111,7 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
               DateFormat('HH:mm', 'ru_RU').format(widget.lesson.exactEnd),
           style: TextStyle(
             fontWeight: semibold,
+            fontFamily: opensans,
           ),
         ),
         SizedBox(height: 20),
@@ -139,8 +140,9 @@ class _LessonDetailView extends WidgetView<LessonDetailScreen, _LessonDetailCont
                   child: Text(
                     "Создать напоминание",
                     style: TextStyle(
-                        // fontWeight: semibold,
-                        ),
+                      fontFamily: opensans,
+                      fontWeight: semibold,
+                    ),
                   ),
                 ),
                 Icon(Icons.keyboard_arrow_right_rounded),

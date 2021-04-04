@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
@@ -7,7 +5,6 @@ import 'package:volsu_app_v1/features/timetable/w_timetable_companion.dart';
 import 'package:volsu_app_v1/providers/refresher_provider.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
-
 import 'package:volsu_app_v1/utils/extensions.dart';
 
 class CompanionsArea extends StatefulWidget {
