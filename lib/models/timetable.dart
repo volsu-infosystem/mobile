@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'timetable.g.dart';
@@ -31,16 +32,19 @@ class BaseLesson {
   });
 
   factory BaseLesson.fromJson(Map<String, dynamic> json) => _$BaseLessonFromJson(json);
+
   Map<String, dynamic> toJson() => _$BaseLessonToJson(this);
 }
 
 @JsonSerializable()
 class BaseTimetable {
   List<BaseLesson> lessons;
+
   // TODO: Учитывать семестр тут
   BaseTimetable(this.lessons);
 
   factory BaseTimetable.fromJson(Map<String, dynamic> json) => _$BaseTimetableFromJson(json);
+
   Map<String, dynamic> toJson() => _$BaseTimetableToJson(this);
 }
 
@@ -89,5 +93,17 @@ class ExactLesson extends BaseLesson {
       start,
       end,
     );
+  }
+
+  String getCopyableString() {
+    return this.disciplineName +
+        ".\nДата и время: " +
+        DateFormat('d MMMM, E\nHH:mm', 'ru_RU').format(this.exactStart) +
+        " — " +
+        DateFormat('HH:mm', 'ru_RU').format(this.exactEnd) +
+        ".\nПреподаватель: " +
+        this.teacherName +
+        ".\nМесто проведения: " +
+        this.location;
   }
 }

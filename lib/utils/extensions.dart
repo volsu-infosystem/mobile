@@ -43,6 +43,16 @@ extension DateTimeWeekExtensions on DateTime {
   }
 }
 
+extension OrEqual on DateTime {
+  bool isAfterOrEq(DateTime dt) {
+    return this.isAtSameMomentAs(dt) || this.isAfter(dt);
+  }
+
+  bool isBeforeOrEq(DateTime dt) {
+    return this.isAtSameMomentAs(dt) || this.isBefore(dt);
+  }
+}
+
 extension TimeToMins on TimeOfDay {
   int mins() => this.hour * 60 + this.minute;
 }

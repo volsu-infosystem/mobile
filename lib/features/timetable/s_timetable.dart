@@ -1,13 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:volsu_app_v1/architecture_generics.dart';
 import 'package:volsu_app_v1/features/lesson_detail/s_lesson_detail.dart';
+import 'package:volsu_app_v1/features/timetable/w_companions_area.dart';
 import 'package:volsu_app_v1/features/timetable/w_date_header.dart';
 import 'package:volsu_app_v1/features/timetable/w_lesson_item.dart';
 import 'package:volsu_app_v1/features/timetable/w_no_lessons.dart';
 import 'package:volsu_app_v1/features/timetable/w_timetable_break.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
-import 'package:volsu_app_v1/models/lesson_model.dart';
 import 'package:volsu_app_v1/providers/timetable_provider.dart';
 import 'package:volsu_app_v1/themes/app_theme.dart';
 
@@ -25,10 +27,16 @@ class TimetableScreen extends StatefulWidget {
 class _TimetableController extends State<TimetableScreen>
     with AutomaticKeepAliveClientMixin<TimetableScreen> {
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 
   @override
   Widget build(BuildContext context) => _TimetableView(this);
+
+  @override
+  void didChangeDependencies() {
+    _timetableWidgets = [];
+    super.didChangeDependencies();
+  }
 
   DateTime _dateToLoad = DateTime.now();
   List<Widget> _timetableWidgets = [];
@@ -41,40 +49,29 @@ class _TimetableController extends State<TimetableScreen>
         _timetableWidgets.add(
           FlatButton(
             onPressed: timetableProvider.forceUpdate,
-            child: Text("Обновить"),
+            child: Text("Обновить #" + (Random().nextInt(99999 - 10000) + 100000).toString()),
           ),
+        );
+      } else if (pos == 1) {
+        _timetableWidgets.add(
+          CompanionsArea(),
         );
       } else {
         final theme = Provider.of<AppTheme>(context, listen: false);
-        List<BaseLesson> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
+        List<ExactLesson> dayLessons = timetableProvider.getLessonsForDay(_dateToLoad);
         _timetableWidgets.add(DateHeader(_dateToLoad));
         if (dayLessons.isEmpty) {
           _timetableWidgets.add(NoLessons());
         } else {
           for (int i = 0; i < dayLessons.length; i++) {
-            final start = DateTime(
-              _dateToLoad.year,
-              _dateToLoad.month,
-              _dateToLoad.day,
-              dayLessons[i].startTimeHour,
-              dayLessons[i].startTimeMin,
-            );
-            final end = DateTime(
-              _dateToLoad.year,
-              _dateToLoad.month,
-              _dateToLoad.day,
-              dayLessons[i].endTimeHour,
-              dayLessons[i].endTimeMin,
-            );
-            final exactLesson = ExactLesson.fromBase(dayLessons[i], start, end);
             _timetableWidgets.add(
               LessonItem(
-                lesson: exactLesson,
+                lesson: dayLessons[i],
                 date: _dateToLoad,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => LessonDetailScreen(exactLesson),
+                      builder: (context) => LessonDetailScreen(dayLessons[i]),
                     ),
                   );
                 },

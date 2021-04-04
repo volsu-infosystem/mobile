@@ -16,6 +16,7 @@ class ConnectionFailure extends NetworkException {
 
 class ErrorStatusCode extends NetworkException {
   final int code;
+
   const ErrorStatusCode(
     String msg,
     this.code, [

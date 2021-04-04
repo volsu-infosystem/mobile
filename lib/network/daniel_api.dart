@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:volsu_app_v1/models/timetable.dart';
 import 'package:volsu_app_v1/network/daniel_api_responses.dart';
@@ -75,19 +76,7 @@ class DanielApi {
         [
           // ПН
           BaseLesson(
-            disciplineName: "Математический анализ",
-            type: "Лекция",
-            weekday: 1,
-            teacherName: "Халтурин Эдуард Рудольфович",
-            periodicity: LessonPeriodicity.always,
-            location: "4-01 А",
-            startTimeHour: 8,
-            startTimeMin: 30,
-            endTimeHour: 10,
-            endTimeMin: 0,
-          ),
-          BaseLesson(
-            disciplineName: "Физическая культура",
+            disciplineName: "Физическая культураааа",
             type: "Практика",
             weekday: 1,
             teacherName: "Цветочкина Галина Ивановна",
@@ -97,6 +86,18 @@ class DanielApi {
             startTimeMin: 10,
             endTimeHour: 11,
             endTimeMin: 40,
+          ),
+          BaseLesson(
+            disciplineName: "Математический анализ",
+            type: "Лекция",
+            weekday: 1,
+            teacherName: "Халтурин Эдуард Рудольфович",
+            periodicity: LessonPeriodicity.always,
+            location: "4-01 А",
+            startTimeHour: 12,
+            startTimeMin: 00,
+            endTimeHour: 13,
+            endTimeMin: 30,
           ),
           // ВТ
           BaseLesson(
@@ -178,7 +179,30 @@ class DanielApi {
           // СБ
           // Выходной
           // ВС
-          // Выходной
+          BaseLesson(
+            disciplineName: "Информатика и программирование",
+            type: "Практика",
+            weekday: 7,
+            teacherName: "Тюльпанчик Олег Геннадьевич",
+            periodicity: LessonPeriodicity.always,
+            location: "2-01 Г",
+            startTimeHour: 14,
+            startTimeMin: 05,
+            endTimeHour: 14,
+            endTimeMin: 07,
+          ),
+          BaseLesson(
+            disciplineName: "Информатика и программирование",
+            type: "Практика",
+            weekday: 7,
+            teacherName: "Тюльпанчик Олег Геннадьевич",
+            periodicity: LessonPeriodicity.always,
+            location: "2-02 В",
+            startTimeHour: 14,
+            startTimeMin: 25,
+            endTimeHour: 14,
+            endTimeMin: 27,
+          ),
         ],
       ),
     );
