@@ -12,9 +12,13 @@ class AuthProvider extends ChangeNotifier {
   /// памяти были одинаковые версии объекта и [notifyListeners()]
   UserCredentials _userCredentials;
 
+  bool isLoading = true;
+
   AuthProvider() {
+    isLoading = true;
     _getUserCredentialsCache().then((value) {
       _userCredentials = value;
+      isLoading = false;
       notifyListeners();
     });
   }

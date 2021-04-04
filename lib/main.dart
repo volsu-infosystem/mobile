@@ -26,6 +26,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   Widget _getCorrespondingAuthBody(AuthProvider auth) {
+    if (auth.isLoading) {
+      return Container();
+    }
     if (auth.userCredentials == null || !auth.userCredentials.hasCorrectEmail) {
       return AuthEmail();
     } else if (!auth.userCredentials.hasCorrectToken) {
